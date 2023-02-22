@@ -1,15 +1,14 @@
 import React from 'react';
-import Recipes from "../../../components/recipe/Recipes";
-import getRecipes from "../../../lib/DB/getRecipes";
+import Recipes from "../../../../components/recipe/Recipes";
+import getRecipes from "../../../../lib/DB/getRecipes";
 
-type PageProps = {
-    searchParams: {
-        query: string
+type PageProp = {
+    params: {
+        searchTerm: string[]
     }
 }
 
-export default function Page({searchParams: {query}}: PageProps) {
-    // console.log(query)      //todo use this query
+export default function Page({params: {searchTerm}}: PageProp) {
     const recipes = getRecipes()
 
     return (

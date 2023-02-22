@@ -1,9 +1,9 @@
-import Recipes from "../components/recipe/Recipes";
+import Landing from "../../components/layouts/Landing";
 
 export default function Home() {
   return (
     <div>
-      <Recipes/>
+      <Landing/>
     </div>
   )
 }

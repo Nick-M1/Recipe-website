@@ -1,9 +1,21 @@
 import getCategories from "./getCategories";
+import {db} from "../../../firebase";
+import {collection, getDocs} from "@firebase/firestore";
 
-export default function getRecipes(): Recipe[] {
+// Only works on server
+export default async function getAllRecipes(): Promise<Recipe[]> {
+    const recipes = [] as Recipe[]
+
+    const querySnapshot = await getDocs(collection(db, "recipes"));
+    querySnapshot.forEach((doc) => recipes.push(<Recipe> doc.data()));
+
+    return recipes
+}
+
+function getAllRecipes_Mock(): Recipe[] {
     return [
         {
-            id: 1,
+            id: '1',
             author: 'James',
             categories: [getCategories()[0]],
 

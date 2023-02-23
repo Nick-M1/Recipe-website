@@ -1,6 +1,9 @@
 import React from 'react';
-import Recipes from "../../../../components/recipe/Recipes";
-import getRecipes from "../../../../lib/DB/getRecipes";
+import Recipes from "../../../../components/recipe/search/Recipes";
+import getAllRecipes from "../../../../lib/DB/server/getAllRecipes";
+import getUserByEmail from "../../../../lib/DB/server/getUserByEmail";
+
+export const dynamic = 'force-dynamic'
 
 type PageProp = {
     params: {
@@ -8,12 +11,16 @@ type PageProp = {
     }
 }
 
-export default function Page({params: {searchTerm}}: PageProp) {
-    const recipes = getRecipes()
+export default async function Page({params: {searchTerm}}: PageProp) {
+    const recipes = await getAllRecipes()
+    const user = await getUserByEmail('test-email')
+
+    if (user == null)
+        throw new Error('User not found')
 
     return (
         <div>
-            <Recipes recipes={recipes}/>
+            <Recipes recipes={recipes} user={user}/>
         </div>
     );
 }

@@ -1,10 +1,10 @@
 type Recipe = {
-    id: number
+    id: string
     author: string
     categories: Category[]
 
     title: string
-    cookTime: number
+    cookTime: number        // in mins
     description: string
 
     ingredients: Ingredient[]
@@ -36,4 +36,10 @@ type MethodItem = {
     title: string
     description: string
     imgs: string[]
+}
+
+type UserDB = {
+    email: string
+    likedRecipes: string[]
+    bookmarkedRecipes: string[]
 }

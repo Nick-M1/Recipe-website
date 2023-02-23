@@ -1,4 +1,4 @@
-import {Fragment, useState} from "react";
+import {Dispatch, Fragment, SetStateAction, useState} from "react";
 // import { useSelector, useDispatch } from "react-redux";
 
 import {Dialog, Transition} from "@headlessui/react";
@@ -7,25 +7,19 @@ import {
     BookmarkIcon,
     ClockIcon, XMarkIcon,
 } from "@heroicons/react/24/outline";
-import getRecipes from "../../lib/DB/getRecipes";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
+import BookmarkAndLikes from "../detailed_view/BookmarkAndLikes";
 
-// import { likeRecipe, saveRecipe } from "../../redux/actions/recipes";
+type Props = {
+    open: boolean
+    setOpen: Dispatch<SetStateAction<boolean>>
+    recipe: Recipe
+    user: UserDB
+}
 
-
-export default function QuickView({open, setOpen, id}: any) {
-    // const { recipes, is_loading } = useSelector((state) => state.recipes);
-
-    // const dispatch = useDispatch();
-
-    const recipes = getRecipes()
-    const recipe = recipes.filter((recipe) => recipe.id === id);
-
-    const [like, setLike] = useState(recipe[0].numberOfLikes);
-    const [bookmark, setBookmark] = useState(recipe[0].numberOfBookmarks);
-
+export default function QuickView({open, setOpen, recipe, user}: Props) {
     return (
         <>
             <Transition.Root show={open} as={Fragment}>
@@ -86,15 +80,15 @@ export default function QuickView({open, setOpen, id}: any) {
                                                 className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                                                 <Image
                                                     height={500} width={500}
-                                                    src={recipe[0].imgSrc}
-                                                    alt={recipe[0].imgAlt}
+                                                    src={recipe.imgSrc}
+                                                    alt={recipe.imgAlt}
                                                     className="w-full h-full display-img"
                                                 />
                                             </div>
                                         </div>
                                         <div className="sm:col-span-8 lg:col-span-7">
                                             <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">
-                                                {recipe[0].title}
+                                                {recipe.title}
                                             </h2>
 
                                             <section
@@ -106,14 +100,14 @@ export default function QuickView({open, setOpen, id}: any) {
                                                 </h3>
                                                 <span
                                                     className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 ">
-                                                  {recipe[0].categories[0].title}
+                                                  {recipe.categories[0].title}
                                                 </span>
 
                                                 <div className="mt-6">
                                                     <h4 className="sr-only">Description</h4>
 
                                                     <p className="text-sm text-gray-700 opacity-95">
-                                                        <ReactMarkdown>{recipe[0].description}</ReactMarkdown>
+                                                        <ReactMarkdown>{recipe.description}</ReactMarkdown>
                                                     </p>
                                                 </div>
                                             </section>
@@ -123,56 +117,16 @@ export default function QuickView({open, setOpen, id}: any) {
                                                 className="mt-2"
                                             >
                                                 <div className="flex justify-between">
-                                                    <div className="flex sm:flex-col1">
-                                                        <div
-                                                            className="inline-flex items-center text-teal-600 border px-4 border-transparent bg-teal-50 rounded-md">
-                                                            <ClockIcon className="h-8 w-8 text-teal-600 pr-1"/>{" "}
-                                                            <span className="font-medium">{recipe[0].cookTime}</span>
-                                                        </div>
-                                                        <button
-                                                            type="button"
-                                                            className="group py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                                                            // onClick={() => {
-                                                            //   dispatch(saveRecipe(recipe[0].author, id));
-                                                            //   setBookmark(bookmark + 1);
-                                                            // }}
-                                                        >
-                                                            <BookmarkIcon
-                                                                className="h-6 w-6 flex-shrink-0"
-                                                                aria-hidden="true"
-                                                            />
-                                                            <p className="hidden ml-1 group-hover:block">
-                                                                Save
-                                                            </p>
-                                                            <span className="ml-2">{bookmark}</span>
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            className="group py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                                                            // onClick={() => {
-                                                            //   dispatch(likeRecipe(id));
-                                                            //   setLike(like + 1);
-                                                            // }}
-                                                        >
-                                                            <HeartIcon
-                                                                className="h-6 w-6 flex-shrink-0"
-                                                                aria-hidden="true"
-                                                            />
-                                                            <p className="hidden ml-1 group-hover:block">
-                                                                Like
-                                                            </p>
-                                                            <span className="ml-2">{like}</span>
-                                                        </button>
-                                                    </div>
+                                                    <BookmarkAndLikes recipe={recipe} user={user}/>
 
                                                     <p className="mt-8 text-sm font-weight text-gray-500 truncate">
-                                                        by {recipe[0].author}
+                                                        by {recipe.author}
                                                     </p>
                                                 </div>
 
                                                 <div className="mt-6">
                                                     <Link
-                                                        href={`/recipe/${id}`}
+                                                        href={`/recipe/${recipe.id}`}
                                                         className="font-medium text-teal-600 hover:text-teal-500"
                                                     >
                                                         <button

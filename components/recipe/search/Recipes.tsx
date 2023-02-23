@@ -8,9 +8,10 @@ import Image from "next/image";
 
 type Props = {
     recipes: Recipe[]
+    user: UserDB
 }
 
-export default function Recipes({recipes}: Props) {
+export default function Recipes({recipes, user}: Props) {
 
     // const dispatch = useDispatch();
     // const { recipes, is_loading } = useSelector((state) => state.recipes);
@@ -51,7 +52,7 @@ export default function Recipes({recipes}: Props) {
                         what doesn’t."
                     </p>
                 </div>
-                <RecipeCard recipes={recipes} quickview={true}/>
+                <RecipeCard recipes={recipes} quickview={true} user={user}/>
             </div>
         </>
     );

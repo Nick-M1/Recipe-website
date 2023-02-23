@@ -1,46 +1,14 @@
-'use client'
-import {useState, useEffect} from "react";
-// import { useParams } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-
-import {Disclosure} from "@headlessui/react";
-import {
-    HeartIcon,
-    MinusIcon,
-    PlusIcon,
-    BookmarkIcon,
-    PencilIcon,
-    TrashIcon,
-    ClockIcon,
-} from "@heroicons/react/24/outline";
-
-// import {
-//   getDetailRecipe,
-//   likeRecipe,
-//   saveRecipe,
-// } from "../../redux/actions/recipes";
-import RecipeDelete from "./RecipeDelete";
 import Link from "next/link";
-import {classNames} from "../../lib/utils/textUtils";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
+import BookmarkAndLikes from "./BookmarkAndLikes";
 
 type Props = {
     recipe: Recipe
+    user: UserDB
 }
 
-export default function RecipeDetail({recipe}: Props) {
-    const [modal, setModal] = useState(false);
-
-    // if (!detailRecipe || detailRecipe.length === 0)
-    //   return (
-    //     <div className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-15">
-    //       <p className="text-3xl text-center text-gray-700">
-    //         Can not find any recipes, sorry (:
-    //       </p>
-    //     </div>
-    //   );
-
+export default function RecipeDetail({ recipe, user }: Props) {
     return (
         <>
             <div className="bg-white">
@@ -72,12 +40,10 @@ export default function RecipeDetail({recipe}: Props) {
                                     <Link href={`/recipe/${recipe.id}/edit/`}>
                                         <button
                                             type="button"
-                                            className="group ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
+                                            className="group ml-4 px-3 py-1.5 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
                                         >
-                                            <PencilIcon
-                                                className="h-5 w-5 flex-shrink-0"
-                                                aria-hidden="true"
-                                            />
+                                            <Image src={'/animations/edit-pencil.png'} alt={''} width={25} height={25} className='group-hover:hidden'/>
+                                            <Image src={'/animations/edit-pencil.gif'} alt={''} width={25} height={25} className='hidden group-hover:block'/>
                                             <p className="hidden ml-2 group-hover:block text-sm smooth-transition">
                                                 Edit Recipe
                                             </p>
@@ -85,13 +51,11 @@ export default function RecipeDetail({recipe}: Props) {
                                     </Link>
                                     <button
                                         type="button"
-                                        className="group ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
-                                        onClick={() => setModal(true)}
+                                        className="group ml-1 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
+                                        // onClick={() => setModal(true)}
                                     >
-                                        <TrashIcon
-                                            className="h-5 w-5 flex-shrink-0"
-                                            aria-hidden="true"
-                                        />
+                                        <Image src={'/animations/trash-can.png'} alt={''} width={25} height={25} className='group-hover:hidden'/>
+                                        <Image src={'/animations/trash-can.gif'} alt={''} width={25} height={25} className='hidden group-hover:block'/>
                                         <p className="hidden ml-2 group-hover:block text-sm smooth-transition">
                                             Delete Recipe
                                         </p>
@@ -113,47 +77,7 @@ export default function RecipeDetail({recipe}: Props) {
                                     </div>
                                 </div>
 
-                                <div className="mt-2 flex sm:flex-col1">
-                                    <div
-                                        className="inline-flex items-center text-teal-600 border px-4 border-transparent bg-teal-50 rounded-md">
-                                        <ClockIcon className="h-8 w-8 text-teal-600 pr-1"/>{" "}
-                                        <span className="font-medium">{recipe.cookTime}</span>
-                                    </div>
-
-                                    <button
-                                        type="button"
-                                        className="group py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                                        // onClick={() =>
-                                        //   dispatch(saveRecipe(detailRecipe.author, id))
-                                        // }
-                                    >
-                                        <BookmarkIcon
-                                            className="h-6 w-6 flex-shrink-0"
-                                            aria-hidden="true"
-                                        />
-                                        <p className="hidden ml-1 group-hover:block">Save</p>
-                                        <span className="ml-2">
-                                          {recipe.numberOfBookmarks}
-                                        </span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="group py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                                        // onClick={() => dispatch(likeRecipe(id))}
-                                    >
-                                        <HeartIcon
-                                            className="h-6 w-6 flex-shrink-0"
-                                            aria-hidden="true"
-                                        />
-                                        <p className="hidden ml-1 group-hover:block">Like</p>
-                                        <span className="ml-2">
-                                          {recipe.numberOfBookmarks}
-                                        </span>
-                                    </button>
-
-                                </div>
-
-
+                                <BookmarkAndLikes recipe={recipe} user={user}/>
 
                                 <section aria-labelledby="details-heading" className="mt-8">
                                     <div className="border-t divide-gray-200 py-5">
@@ -185,9 +109,9 @@ export default function RecipeDetail({recipe}: Props) {
                                         <span className='ml-16 flex py-0.5 font-normal text-gray-500'>
                                             <ReactMarkdown>{methodItem.description}</ReactMarkdown>
                                         </span>
-                                        <div className='ml-16 flex relative gap-x-5 pt-3 pb-6'>
+                                        <div className='ml-16 md:flex relative gap-x-5 pt-3 pb-6'>
                                             { methodItem.imgs.map( (imgItem, imgIdx) => (
-                                                <Image key={imgItem} src={imgItem} alt={''} width={250} height={250} className='aspect-video display-img' />
+                                                <Image key={imgItem} src={imgItem} alt={''} width={250} height={250} className='py-1 md:py-0 aspect-video display-img' />
                                             ))}
                                         </div>
                                     </li>

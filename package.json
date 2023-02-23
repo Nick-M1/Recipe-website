@@ -10,6 +10,7 @@
     "@heroicons/react": "^2.0.16",
     "@next/font": "^13.1.6",
     "@types/marked": "^4.0.8",
+    "firebase": "^9.17.1",
     "gray-matter": "^4.0.3",
     "heroicons": "^2.0.16",
     "markdown-loader": "^8.0.0",

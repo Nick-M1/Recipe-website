@@ -48,8 +48,8 @@ export default function UpdateProfile({ user }: Prop) {
         updateDoc(
             userRef,
             { name: displayname }
-        )
-        router.refresh()
+
+        ).finally(() => router.refresh())
     }
 
     // Change profile pic url button
@@ -62,8 +62,8 @@ export default function UpdateProfile({ user }: Prop) {
         updateDoc(
             userRef,
             { pic: profilepic }
-        )
-        router.refresh()
+
+        ).finally(() => router.refresh())
     }
 
     return (

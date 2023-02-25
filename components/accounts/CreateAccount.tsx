@@ -5,6 +5,8 @@ import Image from "next/image";
 import {signIn} from "next-auth/react";
 import {BsFacebook, BsGoogle} from "react-icons/bs";
 
+
+//todo: Also need user's name & Profile pic
 export default function CreateAccount() {
     return (
         <div className="flex min-h-full items-center justify-center py-12 px-4 mt-10 sm:px-6 lg:px-8">

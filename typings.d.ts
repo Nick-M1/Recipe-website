@@ -39,8 +39,13 @@ type MethodItem = {
 
 type UserDB = {
     email: string
-    // name: string
-    // profileImg: string
+    name: string
+    pic: string
     likedRecipes: string[]
     bookmarkedRecipes: string[]
+}
+
+type RecipeAndAuthor = {
+    recipe: Recipe
+    author: UserDB
 }

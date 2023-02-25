@@ -1,14 +1,19 @@
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-import BookmarkAndLikes from "./BookmarkAndLikes";
+import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLikes/BookmarkAndLikesHander";
+import RecipeDelete from "../../interactive_components/RecipeDelete";
 
 type Props = {
     recipe: Recipe
-    user: UserDB
+    author: UserDB
+
+    user: UserDB | null
 }
 
-export default function RecipeDetail({ recipe, user }: Props) {
+export default function RecipeDetail({ recipe, author, user }: Props) {
+    const isEditor = user != null && recipe.author == user.email
+
     return (
         <>
             <div className="bg-white">
@@ -37,29 +42,32 @@ export default function RecipeDetail({ recipe, user }: Props) {
                                         {recipe.title}
                                     </h1>
 
-                                    <Link href={`/recipe/${recipe.id}/edit/`}>
-                                        <button
-                                            type="button"
-                                            className="group ml-4 px-3 py-1.5 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
-                                        >
-                                            <Image src={'/animations/edit-pencil.png'} alt={''} width={25} height={25} className='group-hover:hidden'/>
-                                            <Image src={'/animations/edit-pencil.gif'} alt={''} width={25} height={25} className='hidden group-hover:block'/>
-                                            <p className="hidden ml-2 group-hover:block text-sm smooth-transition">
-                                                Edit Recipe
-                                            </p>
-                                        </button>
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="group ml-1 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
-                                        // onClick={() => setModal(true)}
-                                    >
-                                        <Image src={'/animations/trash-can.png'} alt={''} width={25} height={25} className='group-hover:hidden'/>
-                                        <Image src={'/animations/trash-can.gif'} alt={''} width={25} height={25} className='hidden group-hover:block'/>
-                                        <p className="hidden ml-2 group-hover:block text-sm smooth-transition">
-                                            Delete Recipe
-                                        </p>
-                                    </button>
+                                    { isEditor && (
+                                        <Link href={`/recipe/${recipe.id}/edit/`}>
+                                            <button
+                                                type="button"
+                                                className="group ml-4 px-3 py-1.5 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 smooth-transition"
+                                            >
+                                                <Image src={'/animations/edit-pencil.png'} alt={''} width={25} height={25} className='group-hover:hidden'/>
+                                                <Image src={'/animations/edit-pencil.gif'} alt={''} width={25} height={25} className='hidden group-hover:block'/>
+                                                <p className="hidden ml-2 group-hover:block text-sm smooth-transition">
+                                                    Edit Recipe
+                                                </p>
+                                            </button>
+                                        </Link>
+                                    )}
+
+                                    { isEditor && (
+                                        <RecipeDelete recipe={recipe} user={user} />
+                                    )}
+
+                                </div>
+
+                                <div className='flex pt-1'>
+                                    <Image src={author.pic} alt='profile-pic' width={70} height={70} className='rounded-full h-8 w-8' />
+                                    <p className=" text-sm font-weight text-gray-500 truncate ml-2 my-auto">
+                                        By {author.name}
+                                    </p>
                                 </div>
 
                                 <div className="mt-3">
@@ -75,7 +83,9 @@ export default function RecipeDetail({ recipe, user }: Props) {
                                     <ReactMarkdown className="text-base text-gray-700 space-y-6">{recipe.description}</ReactMarkdown>
                                 </div>
 
-                                <BookmarkAndLikes recipe={recipe} user={user} showText={true} />
+
+
+                                <BookmarkAndLikesHander recipe={recipe} user={user} showText={true} />
 
                                 <section aria-labelledby="details-heading" className="mt-8">
                                     <div className="border-t divide-gray-200 py-5">
@@ -129,7 +139,7 @@ export default function RecipeDetail({ recipe, user }: Props) {
                     </div>
                 </main>
             </div>
-            {/*{modal && <RecipeDelete modal={modal} setModal={setModal} id={recipe.id} />}*/}
+            {/*{ isEditor && <RecipeDelete recipe={recipe}/> }*/}
         </>
     );
 }

@@ -1,6 +1,5 @@
 'use client'
 
-import getAllRecipes from "../../../lib/DB/server/getAllRecipes";
 
 export default function DashboadComponent() {
     // const recipe = await getAllRecipes()           //todo: Need to create new from user input

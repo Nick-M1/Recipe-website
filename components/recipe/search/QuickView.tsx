@@ -10,16 +10,16 @@ import {
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-import BookmarkAndLikes from "../detailed_view/BookmarkAndLikes";
+import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLikes/BookmarkAndLikesHander";
 
 type Props = {
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>
-    recipe: Recipe
-    user: UserDB
+    recipeAndAuthor: RecipeAndAuthor
+    user: UserDB | null
 }
 
-export default function QuickView({open, setOpen, recipe, user}: Props) {
+export default function QuickView({open, setOpen, recipeAndAuthor, user}: Props) {
     return (
         <>
             <Transition.Root show={open} as={Fragment}>
@@ -80,15 +80,15 @@ export default function QuickView({open, setOpen, recipe, user}: Props) {
                                                 className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden">
                                                 <Image
                                                     height={500} width={500}
-                                                    src={recipe.imgSrc}
-                                                    alt={recipe.imgAlt}
+                                                    src={recipeAndAuthor.recipe.imgSrc}
+                                                    alt={recipeAndAuthor.recipe.imgAlt}
                                                     className="w-full h-full display-img"
                                                 />
                                             </div>
                                         </div>
                                         <div className="sm:col-span-8 lg:col-span-7">
                                             <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">
-                                                {recipe.title}
+                                                {recipeAndAuthor.recipe.title}
                                             </h2>
 
                                             <section
@@ -100,12 +100,12 @@ export default function QuickView({open, setOpen, recipe, user}: Props) {
                                                 </h3>
                                                 <span
                                                     className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 ">
-                                                  {recipe.categories[0].title}
+                                                  {recipeAndAuthor.recipe.categories[0].title}
                                                 </span>
 
                                                 <div className="mt-6">
                                                     <h4 className="sr-only">Description</h4>
-                                                    <ReactMarkdown className="text-sm text-gray-700 opacity-95">{recipe.description}</ReactMarkdown>
+                                                    <ReactMarkdown className="text-sm text-gray-700 opacity-95">{recipeAndAuthor.recipe.description}</ReactMarkdown>
                                                 </div>
                                             </section>
 
@@ -114,23 +114,23 @@ export default function QuickView({open, setOpen, recipe, user}: Props) {
                                                 className="mt-2"
                                             >
                                                 <div className="flex justify-between">
-                                                    <BookmarkAndLikes recipe={recipe} user={user} showText={true}/>
+                                                    <BookmarkAndLikesHander recipe={recipeAndAuthor.recipe} user={user} showText={true}/>
 
                                                     <p className="mt-8 text-sm font-weight text-gray-500 truncate">
-                                                        by {recipe.author}
+                                                        by {recipeAndAuthor.author.name}
                                                     </p>
                                                 </div>
 
                                                 <div className="mt-6">
                                                     <Link
-                                                        href={`/recipe/${recipe.id}`}
+                                                        href={`/recipe/${recipeAndAuthor.recipe.id}`}
                                                         className="font-medium text-teal-600 hover:text-teal-500"
                                                     >
                                                         <button
                                                             type="submit"
                                                             className="w-full py-3 px-8 flex items-center justify-center btn-primary"
                                                         >
-                                                            View Full Detail
+                                                            View Full Details
                                                         </button>
                                                     </Link>
                                                 </div>

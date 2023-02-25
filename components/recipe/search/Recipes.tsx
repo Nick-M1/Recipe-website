@@ -7,11 +7,11 @@ import RecipeCard from "./RecipeCard";
 import Image from "next/image";
 
 type Props = {
-    recipes: Recipe[]
-    user: UserDB
+    recipesAndAuthors: RecipeAndAuthor[]
+    user: UserDB | null
 }
 
-export default function Recipes({recipes, user}: Props) {
+export default function Recipes({recipesAndAuthors, user}: Props) {
 
     // const dispatch = useDispatch();
     // const { recipes, is_loading } = useSelector((state) => state.recipes);
@@ -52,7 +52,7 @@ export default function Recipes({recipes, user}: Props) {
                         what doesn’t."
                     </p>
                 </div>
-                <RecipeCard recipes={recipes} quickview={true} user={user}/>
+                <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user}/>
             </div>
         </>
     );

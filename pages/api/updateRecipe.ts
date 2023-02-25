@@ -17,19 +17,17 @@ export default async function handler(
     res: NextApiResponse<Data | ErrorData>
 ) {
 
-    if (req.method !== 'POST') {
+    if (req.method !== 'PUT') {
         res.status(405).json({body: 'Method not allowed'})
         return
     }
 
     const recipe = req.body.newRecipe as Recipe
-    const newId = randomUUID()
 
     await setDoc(
-        doc(db, 'recipes', newId),
-        {
-            ...recipe, id: newId, numberOfLikes: 0, numberOfBookmarks: 0
-        }
+        doc(db, 'recipes', recipe.id),
+        recipe
 
-    ).finally(() => res.status(200).json({ body: newId }))
+    ).finally(() =>
+        res.status(200).json({ body: recipe.id }))
 }

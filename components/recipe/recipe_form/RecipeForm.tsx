@@ -20,28 +20,36 @@ type Props = {
 }
 
 export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCategories, recipe }: Props) {
-    if (sessionAuth == null) {
+    const router = useRouter();
+
+    // Incorrect params - Coding error
+    if (editMode && recipe == null)
+        throw new Error("Incorrect params for 'RecipeForm'")
+
+    // If user not signed in
+    if (sessionAuth == null) {          //todo: Make nice
         signIn()
         return <div className='text-center p-20'>Redirecting to sign in</div>
     }
 
-    if (editMode && recipe == null)
-        throw new Error('Incorrect params for "RecipeForm"')
+    // If in editMode, but user is not author of this recipe
+    if ( (editMode && sessionAuth.user?.email != recipe?.author) ) {
+        router.push(`/recipe/${recipe?.id}`)
+        return <div className='text-center p-20'>Error</div>
+    }
 
     const [selectedTitle, setSelectedTitle] = useState(editMode ? recipe!.title : '')
     const [selectedDescription, setSelectedDescription] = useState(editMode ? recipe!.description : '')
 
-    const [selectedCategory, setSelectedCategory] = useState<Category>(editMode ? recipe!.categories[0] : allCategories[0])
+    const [selectedCategory, setSelectedCategory] = useState<Category>(editMode ? allCategories[recipe!.categories[0].id-1] : allCategories[0])
     const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(editMode ? recipe!.ingredients : [])
     const [selectedMethod, setSelectedMethod] = useState<MethodItem[]>(editMode ? recipe!.method : [])
 
     const [selectedCookTime, setSelectedCookTime] = useState(editMode ? recipe!.cookTime : 30)
-    const [selectedPicture, setSelectedPicture] = useState("")
+    const [selectedPicture, setSelectedPicture] = useState(editMode ? recipe!.imgSrc : '')
 
     const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
     const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true])
-
-    const router = useRouter();
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -63,7 +71,7 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             return
 
         const newRecipe = {
-            id: '0',
+            id: editMode ? recipe?.id : '0',
             author: sessionAuth.user?.email,
             categories: [selectedCategory],       //todo: select multiple categories
 
@@ -77,25 +85,28 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             imgSrc: selectedPicture,
             imgAlt: 'img of food',
 
-            numberOfLikes: 0,
-            numberOfBookmarks: 0,
+            numberOfLikes: editMode ? recipe?.numberOfLikes : 0,
+            numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
         } as Recipe
 
-        const res = await fetch('/api/addRecipe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                newRecipe
-            })
-        })
-        const data = await res.json()
+        const res = await fetch(
+            editMode ? '/api/updateRecipe' : '/api/addRecipe',
+            {
+                    method: editMode ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        newRecipe
+                    })
+            }
+        )
+        const resData = await res.json()
 
-        if (data.body == 'method not allowed')
+        if (resData.body == 'method not allowed')
             return          //todo tell user there is an error
 
-        router.push(`/recipe/${data.body}`)
+        router.push(`/recipe/${resData.body}`)
     };
 
     return (

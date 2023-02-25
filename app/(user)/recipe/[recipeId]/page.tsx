@@ -1,6 +1,8 @@
 import RecipeDetail from "../../../../components/recipe/detailed_view/RecipeDetail";
-import getRecipeById from "../../../../lib/DB/server/getRecipeById";
+import getRecipeAuthorById from "../../../../lib/DB/server/getRecipeAuthorById";
 import getUserByEmail from "../../../../lib/DB/server/getUserByEmail";
+import {getServerSession} from "next-auth";
+import {authOptions} from "../../../../pages/api/auth/[...nextauth]";
 
 export const dynamic = 'force-dynamic'
 
@@ -11,10 +13,12 @@ type PageProps = {
 }
 
 export default async function Page({params: {recipeId}}: PageProps) {
-    const recipe = await getRecipeById(recipeId)
-    const user = await getUserByEmail('test-email')
+    const sessionAuth = await getServerSession(authOptions)
+    const user = sessionAuth != null && sessionAuth.user != null ? await getUserByEmail(sessionAuth.user.email!) : null
 
-    if (recipe == null)
+    const recipeSearchRes = await getRecipeAuthorById(recipeId)
+
+    if (recipeSearchRes == null)
         return (
             <div className='py-10 h-screen'>
                 <p className='text-center'>
@@ -23,13 +27,9 @@ export default async function Page({params: {recipeId}}: PageProps) {
             </div>
         )
 
-    if (user == null)
-        throw new Error('User not found')
-
-
     return (
         <div>
-            <RecipeDetail recipe={recipe} user={user}/>
+            <RecipeDetail recipe={recipeSearchRes.recipe} author={recipeSearchRes.author} user={user}/>
         </div>
     );
 }

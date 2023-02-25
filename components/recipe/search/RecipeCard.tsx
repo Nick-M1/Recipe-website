@@ -1,29 +1,25 @@
 'use client'
 import {useState} from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { likeRecipe, saveRecipe } from "../../redux/actions/recipes";
-
 import QuickView from "./QuickView";
 import Link from "next/link";
-import {BookmarkIcon, HeartIcon} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import BookmarkAndLikes from "../detailed_view/BookmarkAndLikes";
+import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLikes/BookmarkAndLikesHander";
 
 type Props = {
-    recipes: Recipe[]
+    recipesAndAuthors: RecipeAndAuthor[]
     quickview: boolean
-    user: UserDB
+    user: UserDB | null
 }
 
-export default function RecipeCard({recipes, quickview, user}: Props) {
+export default function RecipeCard({recipesAndAuthors, quickview, user}: Props) {
     const [open, setOpen] = useState(false);
-    const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+    const [selectedRecipe, setSelectedRecipe] = useState<RecipeAndAuthor | null>(null);
 
     return (
         <>
             <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {recipes.map((recipe, index) => (
+                {recipesAndAuthors.map(( recipeAndAuthor, index) => (
                     <div
                         key={index}
                         className="bg-white overflow-hidden shadow rounded-lg"
@@ -35,8 +31,8 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                                         <dt>
                                             <div>
                                                 <Image
-                                                    src={recipe.imgSrc}
-                                                    alt={recipe.imgAlt}
+                                                    src={ recipeAndAuthor.recipe.imgSrc}
+                                                    alt={ recipeAndAuthor.recipe.imgAlt}
                                                     width={300} height={300}
                                                     className="object-cover w-full h-48 display-img"
                                                 />
@@ -44,14 +40,14 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                                         </dt>
                                         <div className="mt-4 flex justify-between md:mt-2">
                                             <dt className="text-lg font-medium text-gray-500 truncate">
-                                                {recipe.title}
+                                                { recipeAndAuthor.recipe.title}
                                             </dt>
                                             <dt className="text-xs font-light border border-gray-200 p-1 rounded-lg text-gray-500 truncate">
-                                                by {recipe.author}
+                                                by { recipeAndAuthor.author.name}
                                             </dt>
                                         </div>
                                         <dd>
-                                            <ReactMarkdown className="text-sm text-gray-900 opacity-70">{recipe.description}</ReactMarkdown>
+                                            <ReactMarkdown className="text-sm text-gray-900 opacity-70">{ recipeAndAuthor.recipe.description}</ReactMarkdown>
                                         </dd>
                                     </dl>
                                 </div>
@@ -64,14 +60,14 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                                         className="font-medium text-teal-700 hover:text-teal-900"
                                         onClick={() => {
                                             setOpen(true);
-                                            setSelectedRecipe(recipe);
+                                            setSelectedRecipe( recipeAndAuthor);
                                         }}
                                     >
                                         Quick View
                                     </button>
                                 ) : (
                                     <Link
-                                        href={`/recipe/${recipe.id}`}
+                                        href={`/recipe/${ recipeAndAuthor.recipe.id}`}
                                         className="font-medium text-teal-700 hover:text-teal-900"
                                     >
                                         View detail
@@ -80,7 +76,7 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                             </div>
 
                             <div className='scale-90 -mt-1'>
-                                <BookmarkAndLikes recipe={recipe} user={user} showText={false}/>
+                                <BookmarkAndLikesHander recipe={ recipeAndAuthor.recipe} user={user} showText={false}/>
                             </div>
                         </div>
                     </div>
@@ -113,7 +109,7 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
           </a>
         </div>
       </nav> */}
-            {open && <QuickView open={open} setOpen={setOpen} recipe={selectedRecipe!} user={user}/>}
+            {open && <QuickView open={open} setOpen={setOpen} recipeAndAuthor={selectedRecipe!} user={user}/>}
         </>
     );
 }

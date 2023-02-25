@@ -2,19 +2,20 @@ import React from 'react';
 import Recipes from "../../../components/recipe/search/Recipes";
 import getAllRecipes from "../../../lib/DB/server/getAllRecipes";
 import getUserByEmail from "../../../lib/DB/server/getUserByEmail";
+import {getServerSession} from "next-auth";
+import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-    const recipes = await getAllRecipes()
-    const user = await getUserByEmail('test-email')
+    const sessionAuth = await getServerSession(authOptions)
+    const user = sessionAuth != null && sessionAuth.user != null ? await getUserByEmail(sessionAuth.user.email!) : null
 
-    if (user == null)
-        throw new Error('User not found')
+    const recipesAndAuthors = await getAllRecipes()
 
     return (
         <div>
-            <Recipes recipes={recipes} user={user}/>
+            <Recipes recipesAndAuthors={recipesAndAuthors} user={user}/>
         </div>
     );
 }

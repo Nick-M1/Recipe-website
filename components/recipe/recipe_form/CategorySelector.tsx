@@ -12,7 +12,6 @@ type Props = {
 }
 
 export default function CategorySelector({allCategories, selectedCategory, setSelectedCategory, isValid}: Props) {
-
     return (
         <RadioGroup value={selectedCategory} onChange={setSelectedCategory}>
             <RadioGroup.Label className="text-lg leading-6 font-medium text-gray-900">

@@ -7,7 +7,7 @@ module.exports = {
   },
 
   images: {
-    domains: ['upload.wikimedia.org', 'img.icons8.com', 'fastly.picsum.photo']
+    domains: ['upload.wikimedia.org', 'img.icons8.com', 'fastly.picsum.photo', 'lh3.googleusercontent.com']
   },
 
 

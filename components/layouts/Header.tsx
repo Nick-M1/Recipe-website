@@ -12,11 +12,12 @@ import {Session} from "next-auth";
 
 type Props = {
     sessionAuth: Session | null
+    userDB: UserDB | null
 }
 
 const userNavigation = [{name: "Dashboard", to: "/dashboard"}, {name: "Create recipes", to: "/create"}];
 
-export default function Header({sessionAuth}: Props) {
+export default function Header({sessionAuth, userDB}: Props) {
 
     return (
         <>
@@ -76,7 +77,7 @@ export default function Header({sessionAuth}: Props) {
                                                     <span className="sr-only">Open user menu</span>
                                                     <img
                                                         className="h-8 w-8 rounded-full"
-                                                        src={sessionAuth == null || sessionAuth.user?.image == null ? "https://res.cloudinary.com/dmtc1wlgq/image/upload/v1641911896/media/avatar/default_zrdbiq.png" : sessionAuth.user.image}
+                                                        src={ userDB == null ? "https://res.cloudinary.com/dmtc1wlgq/image/upload/v1641911896/media/avatar/default_zrdbiq.png" : userDB.pic}
                                                         alt=""
                                                     />
                                                 </Menu.Button>

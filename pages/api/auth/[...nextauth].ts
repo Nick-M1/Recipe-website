@@ -1,8 +1,11 @@
-import NextAuth from "next-auth"
+import NextAuth, {NextAuthOptions} from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import FacebookProvider from "next-auth/providers/facebook";
+import getRecipeAuthorById from "../../../lib/DB/server/getRecipeAuthorById";
+import getUserByEmail from "../../../lib/DB/server/getUserByEmail";
+import addUser from "../../../lib/DB/server/addUser";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
         GoogleProvider({
@@ -21,9 +24,23 @@ export const authOptions = {
     },
 
     callbacks: {
-        async redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
-            return '/'
-        }
+        async signIn({ user, account, profile }) {          // profile.given_name and profile.family_name   ?? useful
+            // console.log(user, account, profile)
+
+            if (user.email == null) {
+                console.log("User's email not provided. Can't log in")
+                return false
+            }
+
+            if ( (await getUserByEmail(user.email)) == null )
+                await addUser(user)
+
+            return true
+        },
+
+        async redirect({ url, baseUrl }) {
+            return '/'                      // NOTE:    url = '/',  baseURL = 'http://localhost:3000'
+        },
     },
 }
 

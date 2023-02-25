@@ -6,17 +6,16 @@ import ReactMarkdown from "react-markdown";
 type Props = {
     selectedMethod: MethodItem[]
     setSelectedMethod: Dispatch<SetStateAction<MethodItem[]>>
+    isValid: boolean
 }
 
-export default function MethodSelector({selectedMethod, setSelectedMethod}: Props) {
+export default function MethodSelector({ selectedMethod, setSelectedMethod, isValid }: Props) {
     const [titleInput, setTitleInput] = useState("");
     const [descriptionInput, setDescriptionInput] = useState("");
 
     const [img1Input, setImg1Input] = useState('');
     const [img2Input, setImg2Input] = useState('');
     const [img3Input, setImg3Input] = useState('');
-
-    useEffect(() => console.log(selectedMethod))
 
     const handleAddMethod = () => {
         if (titleInput == '' || descriptionInput == '')
@@ -49,10 +48,10 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
             <main className='pb-10'>
                 <div className="space-y-6">
                     <div>
-                        <h1 className="text-lg leading-6 font-medium text-gray-900">
+                        <h1 className={`text-lg leading-6 font-medium ${ isValid || selectedMethod.length != 0 ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
                             Method
                         </h1>
-                        <p className="mt-1 text-sm text-gray-500">
+                        <p className={`mt-1 text-sm ${ isValid || selectedMethod.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
                             Fill in the method to create your new recipe.
                         </p>
                     </div>
@@ -65,7 +64,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                         type="text"
                                         name="add-method-title"
                                         id="add-method-title"
-                                        className="block shadow-sm p-2 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md w-full"
+                                        className={`input-secondary block p-2.5 mb-1 w-full ${isValid || selectedMethod.length != 0 ? '' : 'input-secondary-invalid'}`}
                                         placeholder="Enter method title"
                                         aria-describedby="add-method-title"
                                         value={titleInput}
@@ -75,7 +74,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                         id="description"
                                         name="description"
                                         rows={5}
-                                        className="block w-full shadow-sm mb-5 p-2 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md"
+                                        className={`input-secondary block w-full mb-5 p-2.5 ${isValid || selectedMethod.length != 0 ? '' : 'input-secondary-invalid'}`}
                                         placeholder="Add egg and meat until egg mixture is combined..."
                                         value={descriptionInput}
                                         onChange={(e) => setDescriptionInput(e.target.value)}
@@ -87,7 +86,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                                 type="text"
                                                 name={`add-method-img-${idx}`}
                                                 id={`add-method-img-${idx}`}
-                                                className="block shadow-sm p-2 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md w-full"
+                                                className={`input-secondary block p-2.5 mb-1 md:mb-0 w-full ${isValid || selectedMethod.length != 0 ? '' : 'input-secondary-invalid'}`}
                                                 placeholder={`Enter img url ${idx+1} (optional)`}
                                                 aria-describedby="add-method-img"
                                                 value={stateTuple[0] as string}
@@ -100,7 +99,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                 <div className="ml-3">
                                     <button
                                         type="button"
-                                        className="bg-white inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                                        className="btn-tertiary inline-flex items-center px-4 py-2 text-sm"
                                         onClick={() => handleAddMethod()}
                                     >
                                         <PlusIcon
@@ -126,9 +125,9 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                                 </span>
 
                                                 <br/>
-                                                <p className='ml-4 text-sm text-gray-500'>
-                                                    <ReactMarkdown>{method.description}</ReactMarkdown>
-                                                </p>
+                                                {/*<p className=''>*/}
+                                                    <ReactMarkdown className='ml-4 text-sm text-gray-500 max-w-full'>{method.description}</ReactMarkdown>
+                                                {/*</p>*/}
                                                 <p className='ml-4 mt-4 text-sm text-gray-500'>
                                                     Image urls:
 
@@ -139,7 +138,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                             <div className="">
                                                 <button
                                                     type="button"
-                                                    className="bg-white inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                                                    className="btn-tertiary inline-flex items-center px-4 py-2 text-sm"
                                                     onClick={() => handleRemoveMethod(method)}
                                                 >
                                                     <MinusIcon
@@ -154,6 +153,7 @@ export default function MethodSelector({selectedMethod, setSelectedMethod}: Prop
                                     </li>
                                 ))}
                             </ul>
+                            <p className={`text-sm italic text-red-400 ${isValid || selectedMethod.length != 0 ? 'opacity-0' : 'opacity-100 pb-2'}`}>Please add at least 1 method</p>
                         </div>
                     </div>
                 </div>

@@ -51,14 +51,13 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                                             </dt>
                                         </div>
                                         <dd>
-                                            <div className="text-sm text-gray-900 opacity-70">
-                                                <ReactMarkdown>{recipe.description}</ReactMarkdown></div>
+                                            <ReactMarkdown className="text-sm text-gray-900 opacity-70">{recipe.description}</ReactMarkdown>
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-between bg-gray-50 -mr-3.5 md:mr-0 pl-5">
+                        <div className="flex justify-between bg-gray-50 pl-5">
                             <div className="text-sm py-3">
                                 {quickview ? (
                                     <button
@@ -81,7 +80,7 @@ export default function RecipeCard({recipes, quickview, user}: Props) {
                             </div>
 
                             <div className='scale-90 -mt-1'>
-                                <BookmarkAndLikes recipe={recipe} user={user}/>
+                                <BookmarkAndLikes recipe={recipe} user={user} showText={false}/>
                             </div>
                         </div>
                     </div>

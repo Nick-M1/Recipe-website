@@ -9,13 +9,14 @@ import Image from "next/image";
 type Props = {
     recipe: Recipe
     user: UserDB
+    showText: boolean
 }
 
 function containsRecipe( recipeList: string[], recipeId: string ) {
     return recipeList.findIndex( elem => elem === recipeId ) != -1
 }
 
-export default function BookmarkAndLikes({ recipe, user }: Props) {
+export default function BookmarkAndLikes({ recipe, user, showText }: Props) {
     const [isBookmarked, setIsBookmarked] = useState( containsRecipe(user.bookmarkedRecipes, recipe.id) )
     const [isLiked, setIsLiked] = useState( containsRecipe(user.likedRecipes, recipe.id) )
 
@@ -31,8 +32,6 @@ export default function BookmarkAndLikes({ recipe, user }: Props) {
 
 
     const updateLikes = async () => {
-        console.log(recipe.id)
-
         await updateDoc(
             doc(db, "recipes", recipe.id),
             {
@@ -44,7 +43,7 @@ export default function BookmarkAndLikes({ recipe, user }: Props) {
         await updateDoc(
             doc(db, "users", user.email),
             {
-                likedRecipes: isLiked ? arrayRemove(recipe.id) : arrayUnion(recipe.id)
+                likedRecipes: isLiked ? arrayRemove(recipe.id) : arrayUnion(recipe.id),
             }
         );
     }
@@ -80,10 +79,10 @@ export default function BookmarkAndLikes({ recipe, user }: Props) {
                 onClick={() => updateBookmarks()}
             >
                 <Image src={'/animations/bookmark.png'} alt={''} width={30} height={30} className={`hidden md:block md:group-hover:hidden ${isBookmarked ? 'md:hidden' : 'grayscale'}`}/>
-                <Image src={'/animations/bookmark.gif'} alt={''} width={30} height={30} className={`group-hover:block group-hover:grayscale-0 group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isBookmarked ? 'md:block' : 'md:hidden grayscale'}`}/>
+                <Image src={'/animations/bookmark.gif'} alt={''} width={30} height={30} className={`group-hover:block group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isBookmarked ? 'md:block' : 'md:hidden grayscale'}`}/>
 
-                <p className="hidden ml-1 group-hover:block">Save</p>
-                <span className="ml-2">
+                <p className={`hidden ml-1 ${showText ? 'group-hover:block' : 'sm:group-hover:block'}`}> Save </p>
+                <span className="ml-2 tabular-nums">
                   {isBookmarked ? recipe.numberOfBookmarks + 1 : recipe.numberOfBookmarks}
                 </span>
             </button>
@@ -93,9 +92,9 @@ export default function BookmarkAndLikes({ recipe, user }: Props) {
                 onClick={() => updateLikes()}
             >
                 <Image src={'/animations/heart-like.png'} alt={''} width={30} height={30} className={`hidden md:block md:group-hover:hidden ${isLiked ? 'md:hidden' : 'grayscale'}`}/>
-                <Image src={'/animations/heart-like.gif'} alt={''} width={30} height={30} className={`group-hover:block group-hover:grayscale-0 group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isLiked ? 'md:block' : 'md:hidden grayscale'}`}/>
-                <p className="hidden ml-1 group-hover:block">Like</p>
-                <span className="ml-2">
+                <Image src={'/animations/heart-like.gif'} alt={''} width={30} height={30} className={`group-hover:block group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isLiked ? 'md:block' : 'md:hidden grayscale'}`}/>
+                <p className={`hidden ml-1 ${showText ? 'group-hover:block' : 'sm:group-hover:block'}`}> Like </p>
+                <span className="ml-2 tabular-nums">
                     { isLiked ? recipe.numberOfLikes + 1 : recipe.numberOfLikes }
                 </span>
             </button>

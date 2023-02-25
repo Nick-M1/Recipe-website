@@ -24,9 +24,9 @@ function getAllRecipes_Mock(): Recipe[] {
             cookTime: 50,
 
             ingredients: [
-                { name: 'Bread', amount: '100g', img: 'https://img.icons8.com/dusk/64/null/bread.png' },
-                { name: 'Cheese', amount: '200g', img: 'https://img.icons8.com/dusk/64/null/cheese.png' },
-                { name: 'Almond butter', amount: '50g', img: 'https://img.icons8.com/dusk/64/null/almond-butter.png' },
+                { text: '100g of Bread', img: 'https://img.icons8.com/dusk/64/null/bread.png' },
+                { text: '200g of Cheese', img: 'https://img.icons8.com/dusk/64/null/cheese.png' },
+                { text: '50g of Almond butter', img: 'https://img.icons8.com/dusk/64/null/almond-butter.png' },
             ],
             method: [
                 { title: 'Add carrot', description: '**Add** carrot to pan',

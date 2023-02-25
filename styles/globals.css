@@ -12,7 +12,7 @@
     }
 
     .btn-tertiary {
-        @apply rounded-md border border-gray-200 drop-shadow-sm bg-white py-3 px-8 text-center font-medium text-gray-700 tracking-wide hover:bg-gray-100 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 ease-out
+        @apply rounded-md bg-white border border-gray-200 drop-shadow-sm bg-white py-3 px-8 text-center font-medium text-gray-700 tracking-wide hover:bg-gray-100 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 transition duration-300 ease-out
     }
 
     .btn-bouncy {
@@ -24,7 +24,13 @@
     }
 
     .input-primary {
-        @apply rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm hover:ring-1 hover:ring-indigo-500/[.55] focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 hover:ring-1 hover:ring-indigo-500/[.55] smooth-transition
+        @apply rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm hover:ring-1 hover:ring-cyan-500/[.55] focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 hover:ring-1 hover:ring-cyan-500/[.55] smooth-transition
+    }
+    .input-secondary {
+        @apply text-sm rounded-lg border border-gray-300 text-gray-800 placeholder-gray-400 shadow-sm hover:ring-1 hover:ring-teal-500/[.55] focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-teal-500 hover:ring-1 hover:ring-teal-500/[.55] smooth-transition
+    }
+    .input-secondary-invalid {
+        @apply border-red-500 bg-red-50 text-red-900 placeholder-red-700 placeholder:opacity-75 hover:border-red-500 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400
     }
 
     .display-img {

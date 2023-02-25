@@ -1,5 +1,8 @@
 import '../styles/globals.css'
-import {Montserrat} from "@next/font/google"
+import {Montserrat} from "next/font/google"
+import {getServerSession} from "next-auth";
+import {authOptions} from "../pages/api/auth/[...nextauth]";
+import {SessionProvider} from "../components/accounts/SessionProvider";
 
 const montserrat = Montserrat({
     weight: ['400', '700'],
@@ -13,13 +16,14 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
+    const session = await getServerSession(authOptions)
 
     return (
         <html lang="en" className='scrollbar'>
             <body className={`${montserrat.className} h-full`}>
-                {/*<SessionProvider session={session}>*/}
+                <SessionProvider session={session}>
                     {children}
-                {/*</SessionProvider>*/}
+                </SessionProvider>
             </body>
         </html>
     )

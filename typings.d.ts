@@ -27,8 +27,7 @@ type Category = {
 }
 
 type Ingredient = {
-    name: string
-    amount: string
+    text: string
     img: string
 }
 
@@ -40,6 +39,8 @@ type MethodItem = {
 
 type UserDB = {
     email: string
+    // name: string
+    // profileImg: string
     likedRecipes: string[]
     bookmarkedRecipes: string[]
 }

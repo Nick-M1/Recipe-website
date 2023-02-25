@@ -105,10 +105,7 @@ export default function QuickView({open, setOpen, recipe, user}: Props) {
 
                                                 <div className="mt-6">
                                                     <h4 className="sr-only">Description</h4>
-
-                                                    <p className="text-sm text-gray-700 opacity-95">
-                                                        <ReactMarkdown>{recipe.description}</ReactMarkdown>
-                                                    </p>
+                                                    <ReactMarkdown className="text-sm text-gray-700 opacity-95">{recipe.description}</ReactMarkdown>
                                                 </div>
                                             </section>
 
@@ -117,7 +114,7 @@ export default function QuickView({open, setOpen, recipe, user}: Props) {
                                                 className="mt-2"
                                             >
                                                 <div className="flex justify-between">
-                                                    <BookmarkAndLikes recipe={recipe} user={user}/>
+                                                    <BookmarkAndLikes recipe={recipe} user={user} showText={true}/>
 
                                                     <p className="mt-8 text-sm font-weight text-gray-500 truncate">
                                                         by {recipe.author}

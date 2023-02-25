@@ -1,22 +1,23 @@
-'use client'
 import RecipeForm from "./RecipeForm";
 import getCategories from "../../../lib/DB/server/getCategories";
+import {Session} from "next-auth";
 
-export default function RecipeCreate() {
-    const categories = getCategories()          //todo move to page
+type Props = {
+    sessionAuth: Session | null
+    categories: Category[]
+}
 
-  // const handleFormSubmit = (formData) => {
-  //   dispatch(createRecipe(formData));
-  // };
 
-  return (
-    <div className='py-3'>
-      <RecipeForm
-        buttonLabel="Create"
-        editMode={false}
-        allCategories={categories}
-        // handleFormSubmit={handleFormSubmit}
-      />
-    </div>
-  );
+export default function RecipeCreate({ sessionAuth, categories }: Props) {
+
+    return (
+        <div className='py-3'>
+            <RecipeForm
+                sessionAuth={sessionAuth}
+                buttonLabel="Create"
+                editMode={false}
+                allCategories={categories}
+            />
+        </div>
+    );
 }

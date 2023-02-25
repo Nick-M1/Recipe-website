@@ -5,45 +5,43 @@ import {PlusIcon} from "@heroicons/react/24/solid";
 type Props = {
     selectedIngredients: Ingredient[]
     setSelectedIngredients: Dispatch<SetStateAction<Ingredient[]>>
+    isValid: boolean
 }
 
-export default function IngredientsSelector({ selectedIngredients, setSelectedIngredients }: Props) {
-    const [inputNameValue, setInputNameValue] = useState("");
-    const [inputAmountValue, setInputAmountValue] = useState("");
+export default function IngredientsSelector({ selectedIngredients, setSelectedIngredients, isValid }: Props) {
+    const [inputTextValue, setInputTextValue] = useState("");
     const [inputImgValue, setInputImgValue] = useState("");
 
 
     const handleAddIngredient = () => {
-        if (inputNameValue == '' || inputAmountValue == '')
+        if (inputTextValue == '')
             return          //todo - not all fields filled in (disable button)
 
-        if ( selectedIngredients.findIndex( ingredient => ingredient.name === inputNameValue ) != -1 )
+        if ( selectedIngredients.findIndex( ingredient => ingredient.text === inputTextValue ) != -1 )
             return          //todo - duplicate attempted to be added
 
         const newIngredient = {
-            name: inputNameValue,
-            amount: inputAmountValue,
+            text: inputTextValue,
             img: inputImgValue
         } as Ingredient
 
         setSelectedIngredients( prevState => [...prevState, newIngredient] )
 
-        setInputNameValue('')
-        setInputAmountValue('')
+        setInputTextValue('')
         setInputImgValue('')
     };
 
     const handleRemoveIngredient = ( ingredientToRemove: Ingredient ) => {
-        setSelectedIngredients( prevState => prevState.filter( ingredient => ingredient.name != ingredientToRemove.name ))
+        setSelectedIngredients( prevState => prevState.filter( ingredient => ingredient.text != ingredientToRemove.text ))
     };
 
     return (
-        <div>
+        <div className='pt-3'>
             <div>
-                <h1 className="text-lg leading-6 font-medium text-gray-900">
+                <h1 className={`text-lg leading-6 font-medium ${ isValid || selectedIngredients.length != 0 ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
                     Ingredients
                 </h1>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className={`mt-1 text-sm ${ isValid || selectedIngredients.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
                     Add the necessary ingredients for your recipe.
                 </p>
             </div>
@@ -53,8 +51,8 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                     <section aria-labelledby="filter-heading">
                         {/* Active Ingredients */}
                         <div className="bg-gray-50">
-                            <div className="max-w-7xl mx-auto py-3 px-4 sm:flex sm:items-center sm:px-6 lg:px-8">
-                                <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                            <div className="max-w-7xl mx-auto py-2 px-4 sm:flex sm:items-center sm:px-6 lg:px-8">
+                                <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500 py-1.5">
                                     Ingredients
                                     <span className="sr-only">, active</span>
                                 </h3>
@@ -69,12 +67,12 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                                         { selectedIngredients.map((ingredient, index) => (
                                             <span
                                                 key={index}
-                                                className="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pl-3 pr-2 text-sm font-medium bg-white text-gray-900"
+                                                className="mx-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pl-3 pr-2 text-sm font-medium bg-white text-gray-900"
                                             >
-                                            <span>{ingredient.name}</span>
+                                            <span>{ingredient.text}</span>
                                             <button
                                                 type="button"
-                                                className="flex-shrink-0 ml-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500"
+                                                className="flex-shrink-0 ml-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500 smooth-transition"
                                                 onClick={() => handleRemoveIngredient(ingredient)}
                                             >
                                               <svg
@@ -101,44 +99,34 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                     {/* Ingredients grid */}
                     <section
                         aria-labelledby="products-heading"
-                        className="max-w-2xl mx-auto pt-4 pb-4 px-4 sm:pt-4 sm:pb-8 sm:px-6 lg:max-w-7xl lg:px-8"
+                        className="pt-4"
                     >
                         <div
-                            className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                            className="grid grid-cols-1">
                             <div className="space-y-2">
                                 <label
                                     htmlFor="add-ingredients"
-                                    className="block text-sm font-medium text-gray-700 py-2"
+                                    className="block text-sm font-medium text-gray-700"
                                 >
                                     Add Ingredients
                                 </label>
-                                <div className="flex">
+                                <div className="flex w-full">
                                     <div className="flex-grow md:flex md:gap-x-3">
                                         <input
                                             type="text"
                                             name="add-ingredients-name"
                                             id="add-ingredients-name"
-                                            className="block shadow-sm p-2 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md"
-                                            placeholder="Enter ingredient name"
+                                            className={`input-secondary block p-2.5 mb-1 w-full ${isValid || selectedIngredients.length != 0 ? '' : 'input-secondary-invalid'}`}
+                                            placeholder="Enter ingredient name and amount"
                                             aria-describedby="add-ingredients-name"
-                                            value={inputNameValue}
-                                            onChange={(e) => setInputNameValue(e.target.value)}
-                                        />
-                                        <input
-                                            type="text"
-                                            name="add-ingredients-amount"
-                                            id="add-ingredients-amount"
-                                            className="block shadow-sm p-2 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md"
-                                            placeholder="Enter amount"
-                                            aria-describedby="add-ingredients-amount"
-                                            value={inputAmountValue}
-                                            onChange={(e) => setInputAmountValue(e.target.value)}
+                                            value={inputTextValue}
+                                            onChange={(e) => setInputTextValue(e.target.value)}
                                         />
                                         <input
                                             type="text"
                                             name="add-ingredients-url"
                                             id="add-ingredients-url"
-                                            className="block shadow-sm p-2 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md"
+                                            className={`input-secondary block p-2.5 mb-1 w-full ${isValid || selectedIngredients.length != 0 ? '' : 'input-secondary-invalid'}`}
                                             placeholder="Enter img url (optional)"
                                             aria-describedby="add-ingredients"
                                             value={inputImgValue}
@@ -148,7 +136,7 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                                     <span className="ml-3 ">
                                         <button
                                             type="button"
-                                            className="bg-white inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                                            className="btn-tertiary inline-flex items-center px-4 py-2 text-sm"
                                             onClick={() => handleAddIngredient()}
                                         >
                                             <PlusIcon
@@ -162,6 +150,7 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                             </div>
                         </div>
                     </section>
+                    <p className={`pb-4 sm:pb-8 text-sm italic text-red-400 ${isValid || selectedIngredients.length != 0 ? 'opacity-0' : 'opacity-100'}`}>Please add at least 1 ingredient</p>
                 </main>
             </div>
         </div>

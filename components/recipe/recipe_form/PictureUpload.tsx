@@ -1,31 +1,50 @@
 'use client'
 import {useState, useEffect, Dispatch, SetStateAction} from "react";
+import {checkImage} from "../../../lib/utils/urlUtils";
 
 type Props = {
     selectedPicture: string
     setSelectedPicture: Dispatch<SetStateAction<string>>
+
+    isValid: boolean
 }
 
-export default function PictureUpload({ selectedPicture, setSelectedPicture }: Props) {
+export default function PictureUpload({ selectedPicture, setSelectedPicture, isValid }: Props) {
+    const [isvalidOnpress, setIsvalidOnpress] = useState(true)            // checks on every key-press from user
+
+    useEffect(() => {
+
+        const checkImageHandler = async () => {
+            setIsvalidOnpress(
+                await checkImage(selectedPicture)
+            )
+        }
+        if (selectedPicture != '')
+            checkImageHandler()
+        else
+            setIsvalidOnpress(true)
+
+    }, [selectedPicture])
 
     return (
         <div>
-            <h1 className="text-lg leading-6 font-medium text-gray-900 mt-5">Picture</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className={`text-lg leading-6 font-medium mt-5 ${!isvalidOnpress || !isValid ? 'text-red-700 dark:text-red-500' : 'text-gray-900' }`}>Picture</h1>
+            <p className={`mt-1 text-sm inline-flex ${!isvalidOnpress || !isValid ? 'text-red-500 dark:text-red-400' : 'text-gray-500' }`}>
                 Enter URL of a picture of the food after it's complete.
             </p>
-            <div className="mt-4 flex justify-center pb-6">
+            <div className="mt-4 flex justify-center">
                 <input
                     type="text"
                     name="add-method-title"
                     id="add-method-title"
-                    className="block shadow-sm p-4 mb-1 md:mb-0 focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md w-full"
+                    className={`block input-secondary p-4 mb-1 md:mb-0 w-full ${!isvalidOnpress || !isValid ? 'input-secondary-invalid' : '' }`}
                     placeholder="Enter food image URL"
                     aria-describedby="add-method-title"
                     value={selectedPicture}
                     onChange={(e) => setSelectedPicture(e.target.value)}
                 />
             </div>
+            <p className={`pb-6 pt-0.5 text-sm italic text-red-400 ${!isvalidOnpress || !isValid ? 'opacity-100' : 'opacity-0'}`}>This URL is invalid</p>
         </div>
     );
 

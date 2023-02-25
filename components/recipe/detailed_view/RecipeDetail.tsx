@@ -72,12 +72,10 @@ export default function RecipeDetail({ recipe, user }: Props) {
 
                                 <div className="mt-6">
                                     <h3 className="sr-only">Description</h3>
-                                    <div className="text-base text-gray-700 space-y-6" >
-                                        <ReactMarkdown>{recipe.description}</ReactMarkdown>
-                                    </div>
+                                    <ReactMarkdown className="text-base text-gray-700 space-y-6">{recipe.description}</ReactMarkdown>
                                 </div>
 
-                                <BookmarkAndLikes recipe={recipe} user={user}/>
+                                <BookmarkAndLikes recipe={recipe} user={user} showText={true} />
 
                                 <section aria-labelledby="details-heading" className="mt-8">
                                     <div className="border-t divide-gray-200 py-5">
@@ -87,7 +85,7 @@ export default function RecipeDetail({ recipe, user }: Props) {
                                                 <li key={idx}>
                                                     <span className='flex py-0.5 font-normal text-gray-500'>
                                                         <Image src={ingredient.img} alt={'img'} width={20} height={20} className='mr-3'/>
-                                                        {`${ingredient.amount} of ${ingredient.name}`}
+                                                        { ingredient.text }
                                                     </span>
                                                 </li>
                                             ))}
@@ -106,9 +104,7 @@ export default function RecipeDetail({ recipe, user }: Props) {
                                             <p className='bg-teal-300 w-9 h-9 py-1.5 rounded-full text-center text-white font-semibold'>{idx+1}</p>
                                             <p className='text-lg py-1 tracking-wide'> {methodItem.title} </p>
                                         </div>
-                                        <span className='ml-16 flex py-0.5 font-normal text-gray-500'>
-                                            <ReactMarkdown>{methodItem.description}</ReactMarkdown>
-                                        </span>
+                                            <ReactMarkdown className='ml-16 flex py-0.5 font-normal text-gray-500'>{methodItem.description}</ReactMarkdown>
                                         <div className='ml-16 md:flex relative gap-x-5 pt-3 pb-6'>
                                             { methodItem.imgs.map( (imgItem, imgIdx) => (
                                                 <Image key={imgItem} src={imgItem} alt={''} width={250} height={250} className='py-1 md:py-0 aspect-video display-img' />

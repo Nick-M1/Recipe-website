@@ -32,5 +32,5 @@ export default async function handler(
         }
     )
 
-    res.status(200).json({body: 'success'})
+    res.status(200).json({ body: newId })
 }

@@ -1,12 +1,22 @@
 'use client'
-import {useState, useEffect, SetStateAction, Dispatch} from "react";
+import {useState, useEffect, SetStateAction, Dispatch, ChangeEvent} from "react";
 
 type Props = {
     selectedCookTime: number
     setSelectedCookTime: Dispatch<SetStateAction<number>>
 }
 
+
+const MIN_RANGE = 1
+const MAX_RANGE = 360
+
 export default function TimePicker({selectedCookTime, setSelectedCookTime}: Props) {
+
+    const setSelectedCookTimeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const eNum = Number(e.target.value)
+        if (MIN_RANGE <= eNum && eNum <= MAX_RANGE)
+            setSelectedCookTime( eNum )
+    }
 
     return (
         <div>
@@ -17,13 +27,14 @@ export default function TimePicker({selectedCookTime, setSelectedCookTime}: Prop
             <div className="mt-1 block p-1 w-40 border-none">
                 <input
                     type="number"
+                    min={MIN_RANGE} max={MAX_RANGE}
                     name="add-method-title"
                     id="add-method-title"
-                    className="block shadow-sm p-3 mb-1 md:mb-0 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 text-sm border border-gray-300 rounded-md w-full"
+                    className="input-secondary block p-3 mb-1 md:mb-0 w-full"
                     placeholder="Enter method title"
                     aria-describedby="add-method-title"
                     value={selectedCookTime}
-                    onChange={(e) => setSelectedCookTime( Number(e.target.value) )}
+                    onChange={(e) => setSelectedCookTimeHandler(e)}
                 />
             </div>
         </div>

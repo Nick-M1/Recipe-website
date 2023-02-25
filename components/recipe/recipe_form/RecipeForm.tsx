@@ -6,10 +6,11 @@ import TimePicker from "./TimePicker";
 import PictureUpload from "./PictureUpload";
 import {FormEvent, useEffect, useState} from "react";
 import {Session} from "next-auth";
-import {signIn} from "next-auth/react";
 import {checkImage} from "../../../lib/utils/urlUtils";
 import {any, instanceOf} from "prop-types";
 import {useRouter} from "next/navigation";
+import FormMissingitems from "./FormMissingitems";
+import SigninRedirecting from "../../accounts/SigninRedirecting";
 
 type Props = {
     sessionAuth: Session | null
@@ -20,17 +21,16 @@ type Props = {
 }
 
 export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCategories, recipe }: Props) {
-    const router = useRouter();
 
     // Incorrect params - Coding error
     if (editMode && recipe == null)
         throw new Error("Incorrect params for 'RecipeForm'")
 
     // If user not signed in
-    if (sessionAuth == null) {          //todo: Make nice
-        signIn()
-        return <div className='text-center p-20'>Redirecting to sign in</div>
-    }
+    if (sessionAuth == null)
+        return <SigninRedirecting/>
+
+    const router = useRouter();
 
     // If in editMode, but user is not author of this recipe
     if ( (editMode && sessionAuth.user?.email != recipe?.author) ) {
@@ -48,6 +48,7 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
     const [selectedCookTime, setSelectedCookTime] = useState(editMode ? recipe!.cookTime : 30)
     const [selectedPicture, setSelectedPicture] = useState(editMode ? recipe!.imgSrc : '')
 
+    const allFieldNames = [ 'Title', 'Description', 'Category', 'Ingredients', 'Method', 'Cook time', 'Picture url' ]
     const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
     const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true])
 
@@ -186,6 +187,12 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
                                                    isValid={incorrectFields[6]}
                                     />
                                 </div>
+                                { incorrectFields.some(field => !field) && (
+                                    <div className='px-4'>
+                                        <FormMissingitems incorrectFields={incorrectFields} allFieldNames={allFieldNames}/>
+                                    </div>
+                                )}
+
                                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                     <button
                                         type="submit"

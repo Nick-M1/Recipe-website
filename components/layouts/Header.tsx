@@ -8,6 +8,7 @@ import Searchbar from "../interactive_components/Searchbar";
 import Image from "next/image";
 import {signIn, signOut} from "next-auth/react";
 import {Session} from "next-auth";
+import LogoutPopup from "../accounts/LogoutPopup";
 
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 const userNavigation = [{name: "Dashboard", to: "/dashboard"}, {name: "Create recipes", to: "/create"}];
 
 export default function Header({sessionAuth, userDB}: Props) {
+    const [logoutPopup , setLogoutPopup] = useState(false)
 
     return (
         <>
@@ -113,7 +115,7 @@ export default function Header({sessionAuth, userDB}: Props) {
                                                                 {({active}) => (
                                                                     <Link
                                                                         href="#"
-                                                                        onClick={() => signOut()}
+                                                                        onClick={() => setLogoutPopup(true)}
                                                                         className={classNames(
                                                                             active ? "bg-gray-100" : "",
                                                                             "block py-2 px-4 text-sm text-gray-700 smooth-transition"
@@ -168,6 +170,7 @@ export default function Header({sessionAuth, userDB}: Props) {
                     </>
                 )}
             </Popover>
+            { logoutPopup && <LogoutPopup modal={logoutPopup} setModal={setLogoutPopup}/> }
         </>
     );
 }

@@ -3,34 +3,34 @@
 import React, {Fragment, useState, useEffect} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {
-    WrenchIcon,
+    Bars3Icon,
     BookmarkIcon,
     XMarkIcon,
     ArrowRightOnRectangleIcon,
-    HomeIcon,
+    PencilSquareIcon,
     UserIcon,
+    Cog6ToothIcon,
+    HeartIcon
 } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
 import {classNames} from "../../lib/utils/textUtils";
 import {EnvelopeIcon} from "@heroicons/react/24/solid";
 import SigninRedirecting from "../accounts/SigninRedirecting";
-import {signIn} from "next-auth/react";
-import {useRouter} from "next/navigation";
+import {useSelectedLayoutSegment} from "next/navigation";
+import PopupCustom from "../interactive_components/Popups/PopupCustom";
+import {signOut} from "next-auth/react";
 
 
 const navigation = [
-    {name: "Profile", icon: UserIcon, to: "profile", current: true},
-    {name: "My Recipes", icon: HomeIcon, to: "myRecipes", current: false},
-    {
-        name: "Saved Recipes",
-        icon: BookmarkIcon,
-        to: "savedRecipes",
-        current: false,
-    },
+    {name: "Profile",           icon: UserIcon,         to: "dashboard"},
+    {name: "Update Profile",    icon: Cog6ToothIcon,    to: "updateprofile"},
+    {name: "My Recipes",        icon: PencilSquareIcon, to: "myrecipes"},
+    {name: "Saved Recipes",     icon: BookmarkIcon,     to: "bookmarkedrecipes"},
+    // {name: "Liked Recipes",     icon: HeartIcon,     to: "likedrecipes"},
 ];
 
-const secondaryNavigation = [{name: "Logout", icon: ArrowRightOnRectangleIcon}];
+
 
 type Props = {
     user: UserDB | null
@@ -41,7 +41,13 @@ export default function DashboardLayout({ user }: Props) {
     if (user == null)
         return <SigninRedirecting/>
 
+    const segmentCurrent = useSelectedLayoutSegment();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [logoutPopup, setLogoutPopup] = useState(false);
+
+    const secondaryNavigation = [
+        { name: "Logout", icon: ArrowRightOnRectangleIcon, func: () => { setSidebarOpen(false); setLogoutPopup(true) } }
+    ];
 
     return (
         <>
@@ -111,12 +117,12 @@ export default function DashboardLayout({ user }: Props) {
                                                 key={item.name}
                                                 href={item.to}
                                                 className={classNames(
-                                                    item.current
-                                                        ? "bg-teal-800 text-white"
+                                                    item.to === segmentCurrent
+                                                        ? "bg-teal-800 hover:bg-teal-900 text-white"
                                                         : "text-teal-100 hover:text-white hover:bg-teal-600",
-                                                    "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md"
+                                                    "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md smooth-transition"
                                                 )}
-                                                aria-current={item.current ? "page" : undefined}
+                                                aria-current={item.to === segmentCurrent ? "page" : undefined}
                                             >
                                                 <item.icon
                                                     className="mr-4 flex-shrink-0 h-6 w-6 text-teal-200"
@@ -131,7 +137,8 @@ export default function DashboardLayout({ user }: Props) {
                                             {secondaryNavigation.map((item) => (
                                                 <button
                                                     key={item.name}
-                                                    className="group flex items-center w-full px-2 py-2 text-base font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600"
+                                                    className="group flex items-center w-full px-2 py-2 text-sm font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 smooth-transition"
+                                                    onClick={item.func}
                                                 >
                                                     <item.icon
                                                         className="mr-4 h-6 w-6 text-teal-200"
@@ -169,13 +176,14 @@ export default function DashboardLayout({ user }: Props) {
                                     <Link
                                         key={item.name}
                                         href={item.to}
-                                        className={classNames(
-                                            item.current
-                                                ? "bg-teal-800 text-white"
-                                                : "text-teal-100 hover:text-white hover:bg-teal-600",
-                                            "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md"
+                                        className={
+                                            classNames(
+                                                item.to === segmentCurrent
+                                                    ? "bg-teal-800 hover:bg-teal-900 text-white"
+                                                    : "text-teal-100 hover:text-white hover:bg-teal-600",
+                                                "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md smooth-transition"
                                         )}
-                                        aria-current={item.current ? "page" : undefined}
+                                        aria-current={item.to === segmentCurrent ? "page" : undefined}
                                     >
                                         <item.icon
                                             className="mr-4 flex-shrink-0 h-6 w-6 text-teal-200"
@@ -190,7 +198,8 @@ export default function DashboardLayout({ user }: Props) {
                                     {secondaryNavigation.map((item) => (
                                         <button
                                             key={item.name}
-                                            className="group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600"
+                                            className="group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 smooth-transition"
+                                            onClick={item.func}
                                         >
                                             <item.icon
                                                 className="mr-4 h-6 w-6 text-teal-200"
@@ -213,7 +222,10 @@ export default function DashboardLayout({ user }: Props) {
                             onClick={() => setSidebarOpen(true)}
                         >
                             <span className="sr-only">Open sidebar</span>
-                            <WrenchIcon className="h-6 w-6" aria-hidden="true"/>
+                            <Bars3Icon
+                                className="h-6 w-6 transform active:rotate-180 transition duration-500 ease-in-out"
+                                aria-hidden="true"
+                            />
                         </button>
                         <div className="flex items-center py-4 px-4 sm:px-6 lg:px-8">
                             <img
@@ -250,6 +262,19 @@ export default function DashboardLayout({ user }: Props) {
                     {/*    xsjijxsx*/}
                     {/*</main>*/}
                 </div>
+                { logoutPopup &&
+                    <PopupCustom
+                        modal={logoutPopup}
+                        setModal={setLogoutPopup}
+                        confirmHandler={() => signOut()}
+
+                        titleText={'Logging out'}
+                        descriptionText={'Are you sure you want to log out ?'}
+                        buttonText={'Logout'}
+
+                        IconImg={ArrowRightOnRectangleIcon}
+                    />
+                }
             </div>
         </>
     );

@@ -2,7 +2,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLikes/BookmarkAndLikesHander";
-import RecipeDelete from "../../interactive_components/RecipeDelete";
+import RecipeDelete from "../../interactive_components/Popups/RecipeDelete";
 
 type Props = {
     recipe: Recipe

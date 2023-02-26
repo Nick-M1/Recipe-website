@@ -3,12 +3,18 @@ import {Fragment, useState, useEffect} from "react";
 import {Menu, Popover, Transition} from "@headlessui/react";
 import {classNames} from "../../lib/utils/textUtils";
 import Link from "next/link";
-import {BellIcon, MagnifyingGlassIcon, MinusIcon, XMarkIcon} from "@heroicons/react/24/outline";
+import {
+    ArrowRightOnRectangleIcon,
+    BellIcon,
+    MagnifyingGlassIcon,
+    MinusIcon,
+    XMarkIcon
+} from "@heroicons/react/24/outline";
 import Searchbar from "../interactive_components/Searchbar";
 import Image from "next/image";
 import {signIn, signOut} from "next-auth/react";
 import {Session} from "next-auth";
-import LogoutPopup from "../accounts/LogoutPopup";
+import PopupCustom from "../interactive_components/Popups/PopupCustom";
 
 
 type Props = {
@@ -77,7 +83,8 @@ export default function Header({sessionAuth, userDB}: Props) {
                                                 <Menu.Button
                                                     className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 focus:ring-offset-teal-400 hover:ring-1 hover:ring-offset-1 hover:ring-offset-teal-300 smooth-transition">
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img
+                                                    <Image
+                                                        width={30} height={30}
                                                         className="h-8 w-8 rounded-full"
                                                         src={ userDB == null ? "https://res.cloudinary.com/dmtc1wlgq/image/upload/v1641911896/media/avatar/default_zrdbiq.png" : userDB.pic}
                                                         alt=""
@@ -113,16 +120,16 @@ export default function Header({sessionAuth, userDB}: Props) {
                                                             ))}
                                                             <Menu.Item>
                                                                 {({active}) => (
-                                                                    <Link
-                                                                        href="#"
+                                                                    <button
+                                                                        type='button'
                                                                         onClick={() => setLogoutPopup(true)}
                                                                         className={classNames(
                                                                             active ? "bg-gray-100" : "",
-                                                                            "block py-2 px-4 text-sm text-gray-700 smooth-transition"
+                                                                            "block py-2 px-4 text-sm text-gray-700 w-full text-left smooth-transition"
                                                                         )}
                                                                     >
                                                                         Logout
-                                                                    </Link>
+                                                                    </button>
                                                                 )}
                                                             </Menu.Item>
                                                         </Menu.Items>
@@ -132,16 +139,16 @@ export default function Header({sessionAuth, userDB}: Props) {
                                                         <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
                                                             <Menu.Item>
                                                                 {({active}) => (
-                                                                    <Link
-                                                                        href="#"
+                                                                    <button
+                                                                        type='button'
                                                                         onClick={() => signIn()}
                                                                         className={classNames(
                                                                             active ? "bg-gray-100" : "",
-                                                                            "block py-2 px-4 text-sm text-gray-700 smooth-transition"
+                                                                            "block py-2 px-4 text-sm text-gray-700 w-full text-left smooth-transition"
                                                                         )}
                                                                     >
                                                                         Sign in
-                                                                    </Link>
+                                                                    </button>
                                                                 )}
                                                             </Menu.Item>
                                                             <Menu.Item>
@@ -170,7 +177,20 @@ export default function Header({sessionAuth, userDB}: Props) {
                     </>
                 )}
             </Popover>
-            { logoutPopup && <LogoutPopup modal={logoutPopup} setModal={setLogoutPopup}/> }
+
+            { logoutPopup &&
+                <PopupCustom
+                    modal={logoutPopup}
+                    setModal={setLogoutPopup}
+                    confirmHandler={() => signOut()}
+
+                    titleText={'Logging out'}
+                    descriptionText={'Are you sure you want to log out ?'}
+                    buttonText={'Logout'}
+
+                    IconImg={ArrowRightOnRectangleIcon}
+                />
+            }
         </>
     );
 }

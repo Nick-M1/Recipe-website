@@ -3,6 +3,11 @@ import getCategories from "../../../lib/DB/server/getCategories";
 import RecipeCreate from "../../../components/recipe/recipe_form/RecipeCreate";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'Create Recipe'
+}
 
 export default async function Page() {
     const sessionAuth = await getServerSession(authOptions)

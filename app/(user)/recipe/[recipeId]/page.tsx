@@ -3,6 +3,13 @@ import getRecipeAuthorById from "../../../../lib/DB/server/getRecipeAuthorById";
 import getUserByEmail from "../../../../lib/DB/server/getUserByEmail";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../../pages/api/auth/[...nextauth]";
+import getRecipeById from "../../../../lib/DB/server/getRecipeById";
+import {Metadata} from "next";
+
+export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
+    const product = await getRecipeById(recipeId);
+    return { title: product == null ? 'Product' : product.title }
+}
 
 export const dynamic = 'force-dynamic'
 

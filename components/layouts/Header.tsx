@@ -45,10 +45,11 @@ export default function Header({sessionAuth, userDB}: Props) {
                             <div className="relative flex justify-between xl:grid xl:grid-cols-12 md:gap-8">
                                 <div className="flex  lg:static xl:col-span-2">
                                     <div className="flex-shrink-0 flex items-center">
-                                        <Link href="/"
-                                              className="font-semibold tracking-wider text-xl text-teal-700 flex">
-                                            <Image src={'/brand-logo.png'} alt={''} width={50} height={50}/>
-                                            <span className='hidden md:block ml-2'>Recipe <br/> Website</span>
+                                        <Link href="/" className="flex">
+                                            <Image src={'/brand-logo.png'} alt={''} width={50} height={50} className='w-14 h-14' />
+                                            <h1 className='hidden md:block ml-2 green-blue-dark-gradient text-gradient font-extrabold tracking-wider text-2xl '>
+                                                Recipe <br/> Website
+                                            </h1>
 
                                         </Link>
                                     </div>
@@ -62,7 +63,7 @@ export default function Header({sessionAuth, userDB}: Props) {
                                         <div>
                                             <Link
                                                 href="/create"
-                                                className="hidden md:block btn-primary ml-6 inline-flex items-center px-4 py-2"
+                                                className="hidden md:block btn-primary green-blue-dark-gradient ml-6 inline-flex items-center px-4 py-2"
                                             >
                                                 Create Recipes
                                             </Link>

@@ -4,6 +4,11 @@ import getAllRecipesAndAuthors from "../../../../lib/DB/server/getAllRecipesAndA
 import getUserByEmail from "../../../../lib/DB/server/getUserByEmail";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../../pages/api/auth/[...nextauth]";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'Search'
+}
 
 export const dynamic = 'force-dynamic'
 

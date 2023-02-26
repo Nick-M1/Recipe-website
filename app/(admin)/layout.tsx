@@ -5,6 +5,11 @@ import {authOptions} from "../../pages/api/auth/[...nextauth]";
 import getUserByEmail from "../../lib/DB/server/getUserByEmail";
 import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import Footer from "../../components/layouts/Footer";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'Dashboard'
+}
 
 export default async function Layout({children}: { children: React.ReactNode }) {
     const sessionAuth = await getServerSession(authOptions)
@@ -14,7 +19,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
         <div>
             <Header sessionAuth={sessionAuth} userDB={userDB} />
             <DashboardLayout user={userDB} />
-            <div className='lg:pl-64 py-3 h-screen'>
+            <div className='lg:pl-64 py-3 min-h-screen'>
                 {children}
             </div>
             <div className='lg:pl-64 pt-10'><Footer/></div>

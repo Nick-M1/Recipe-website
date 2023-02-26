@@ -78,7 +78,7 @@ export default function DashboardLayout({ user }: Props) {
                             leaveFrom="translate-x-0"
                             leaveTo="-translate-x-full"
                         >
-                            <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-teal-700">
+                            <div className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 green-blue-dark-gradient">
                                 <Transition.Child
                                     as={Fragment}
                                     enter="ease-in-out duration-300"
@@ -159,9 +159,9 @@ export default function DashboardLayout({ user }: Props) {
                 </Transition.Root>
 
                 {/* Static sidebar for desktop */}
-                <div className="hidden lg:flex lg:w-64 lg:flex-col lg:absolute lg:h-full">
+                <div className="hidden lg:flex lg:w-64 lg:flex-col lg:absolute lg:h-[140%] ">
 
-                    <div className="flex flex-col flex-grow bg-teal-700 pt-5 pb-4">
+                    <div className="flex flex-col flex-grow  pt-5 pb-4 green-blue-dark-gradient">
                         <div className="px-4">
                             <Link href="/" className="font-normal text-xl  text-teal-200">
                                 Recipe Website

@@ -58,7 +58,7 @@ export default function RecipeDelete({ recipe, user }: Props) {
                 setModal={setModal}
                 confirmHandler={handleRecipeDelete}
                 titleText={'Delete this recipe'}
-                descriptionText={'Are you sure you want to delete this recipe ?'}
+                descriptionText={'Are you sure you want to delete this recipe? 😥'}
                 buttonText={'Delete'}
                 IconImg={ExclamationTriangleIcon}
             />

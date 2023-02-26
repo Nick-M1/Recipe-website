@@ -3,12 +3,24 @@ import {Montserrat} from "next/font/google"
 import {getServerSession} from "next-auth";
 import {authOptions} from "../pages/api/auth/[...nextauth]";
 import {SessionProvider} from "../components/accounts/SessionProvider";
+import {Metadata} from "next";
 
 const montserrat = Montserrat({
     weight: ['400', '700'],
     subsets: ['latin'],
     variable: '--font-montserrat'
 })
+
+export const metadata: Metadata = {
+    title: {
+        default: 'Recipe Website',
+        template: '%s | Recipe Website',
+    },
+    description: 'Recipe Website, for users to post their recipes to share online',
+    keywords: ['Next.js', 'React', 'JavaScript', 'Food', 'Recipes', 'Cooking', 'Social media'],
+    authors: [{name: 'Nick'}],
+    icons: '/brand-logo.png'
+}
 
 export default async function RootLayout({
   children,

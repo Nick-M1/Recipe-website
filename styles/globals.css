@@ -23,6 +23,19 @@
         @apply transition duration-300 ease-out
     }
 
+    .text-gradient {
+        @apply text-transparent bg-clip-text
+    }
+    .green-blue-dark-gradient {
+        @apply bg-gradient-to-br from-teal-700 via-teal-600 to-cyan-500
+    }
+    .green-blue-light-gradient {
+        @apply bg-gradient-to-br from-emerald-400 via-emerald-400 to-cyan-500
+    }
+    .purple-pink-gradient {
+        @apply bg-gradient-to-r from-purple-400 to-pink-600
+    }
+
     .input-primary {
         @apply rounded-lg border border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm hover:ring-1 hover:ring-cyan-500/[.55] focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 hover:ring-1 hover:ring-cyan-500/[.55] smooth-transition
     }

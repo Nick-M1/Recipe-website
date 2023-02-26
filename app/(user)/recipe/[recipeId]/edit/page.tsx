@@ -3,6 +3,11 @@ import {authOptions} from "../../../../../pages/api/auth/[...nextauth]";
 import getCategories from "../../../../../lib/DB/server/getCategories";
 import RecipeForm from "../../../../../components/recipe/recipe_form/RecipeForm";
 import getRecipeById from "../../../../../lib/DB/server/getRecipeById";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'Edit'
+}
 
 type PageProps = {
     params: {

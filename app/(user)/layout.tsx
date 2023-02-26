@@ -4,6 +4,11 @@ import Footer from "../../components/layouts/Footer";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../pages/api/auth/[...nextauth]";
 import getUserByEmail from "../../lib/DB/server/getUserByEmail";
+import {Metadata} from "next";
+
+// export const metadata: Metadata = {
+//     title: 'Home'
+// }
 
 export default async function Layout({children}: { children: React.ReactNode }) {
     const sessionAuth = await getServerSession(authOptions)

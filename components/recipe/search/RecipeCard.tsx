@@ -70,7 +70,7 @@ export default function RecipeCard({recipesAndAuthors, quickview, user}: Props) 
                                         href={`/recipe/${ recipeAndAuthor.recipe.id}`}
                                         className="font-medium text-teal-700 hover:text-teal-900"
                                     >
-                                        View detail
+                                        View details
                                     </Link>
                                 )}
                             </div>

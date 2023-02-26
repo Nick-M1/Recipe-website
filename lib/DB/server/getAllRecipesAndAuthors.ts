@@ -3,15 +3,38 @@ import {db} from "../../../firebase";
 import {collection, doc, getDoc, getDocs} from "@firebase/firestore";
 
 // Only works on server
-export default async function getAllRecipes(): Promise<Recipe[]> {
+// export default async function getAllRecipes(): Promise<Recipe[]> {
+//     const recipes = [] as Recipe[]
+//
+//     const querySnapshot = await getDocs(collection(db, "recipes"));
+//     querySnapshot.forEach((doc) => recipes.push(<Recipe> doc.data()));
+//
+//     return recipes
+// }
+
+
+
+export default async function getAllRecipesAndAuthors(): Promise<RecipeAndAuthor[]> {
     const recipes = [] as Recipe[]
+    const recipesAndAuthors = [] as RecipeAndAuthor[]
 
-    const querySnapshot = await getDocs(collection(db, "recipes"));
-    querySnapshot.forEach((doc) => recipes.push(<Recipe> doc.data()));
+    // Get all recipes
+    const recipesSnapshot = await getDocs(collection(db, "recipes"));
+    recipesSnapshot.forEach((doc) => recipes.push(<Recipe> doc.data()));
 
-    return recipes
+    // Foreach recipe, get its author
+    for (const recipe of recipes) {
+        const userSnap = await getDoc(
+            doc(db, "users", recipe.author)
+        );
+        recipesAndAuthors.push({
+            recipe: recipe,
+            author: userSnap.data() as UserDB
+        })
+    }
+
+    return recipesAndAuthors
 }
-
 
 // function getAllRecipes_Mock(): Recipe[] {
 //     return [

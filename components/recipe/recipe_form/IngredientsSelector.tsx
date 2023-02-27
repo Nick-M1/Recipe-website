@@ -136,11 +136,11 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                                     <span className="ml-3 ">
                                         <button
                                             type="button"
-                                            className="btn-tertiary inline-flex items-center px-4 py-2 text-sm"
+                                            className="btn-tertiary group inline-flex items-center px-4 py-2 text-sm"
                                             onClick={() => handleAddIngredient()}
                                         >
                                             <PlusIcon
-                                                className="-ml-2 mr-1 h-5 w-5 text-gray-400"
+                                                className="-ml-2 mr-1 h-5 w-5 text-gray-400 group-hover:fill-blue-600"
                                                 aria-hidden="true"
                                             />
                                             <span>Add</span>

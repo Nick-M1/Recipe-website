@@ -1,10 +1,14 @@
 'use client'
 import {useEffect, useState} from "react";
-import {PencilIcon} from "@heroicons/react/24/solid";
+import {PencilIcon, CameraIcon} from "@heroicons/react/24/solid";
 import {doc, updateDoc} from "@firebase/firestore";
-import {db} from "../../firebase";
+import {db, storage} from "../../firebase";
 import {useRouter} from "next/navigation";
 import {checkImage} from "../../lib/utils/urlUtils";
+import Image from "next/image";
+import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
+import {v4 as uuidv4} from "uuid";
+import SpinnerComponent from "../interactive_components/SpinnerComponent";
 
 type Prop = {
     user: UserDB
@@ -16,23 +20,12 @@ export default function UpdateProfile({ user }: Prop) {
 
     // Input text
     const [displayname, setDisplayname] = useState( user.name );
-    const [profilepic, setProfilepic]   = useState( user.pic );
+    const [profilepic, setProfilepic]   = useState<File | string>( user.pic );
 
-    // Boolean id input text is valid
-    const [checkerstarted, setCheckerstarted]     = useState( false );
-    const [displaynameValid, setDisplaynameValid] = useState( true );
-    const [profilepicValid, setProfilepicValid]   = useState( true );
+    // When waiting for spinner
+    const [displaynameIsloading, setDisplaynameIsloading] = useState( false );
+    const [profilepicIsloading, setProfilepicIsloading] = useState( false );
 
-    // Checking profile pic when text entered
-    useEffect(() => {
-        const checkImageHandler = async () => {
-            setProfilepicValid(
-                await checkImage(profilepic)
-            )
-            console.log(profilepicValid)
-        }
-        checkImageHandler()
-    }, [profilepic])
 
     // Extras
     const router = useRouter();
@@ -40,70 +33,78 @@ export default function UpdateProfile({ user }: Prop) {
 
     // Change display name button
     const handleDisplaynameChange = () => {
-        if (displayname == '' || displayname.length < 3) {
-            setDisplaynameValid(false)
+        if (displayname == '' || displayname.length < 3)
             return
-        }
+
+        setDisplaynameIsloading(true)
 
         updateDoc(
             userRef,
             { name: displayname }
 
-        ).finally(() => router.refresh())
+        ).finally(() => {
+            router.refresh()
+
+            setTimeout(() => setDisplaynameIsloading(false), 2000)
+        })
     }
 
     // Change profile pic url button
     const handleProfilepicChange = async () => {
-        setCheckerstarted(true)
-
-        if (!(await checkImage(profilepic)))
+        if (typeof profilepic == 'string')
             return
 
-        updateDoc(
-            userRef,
-            { pic: profilepic }
 
-        ).finally(() => router.refresh())
+        setProfilepicIsloading(true)
+
+        // Upload picture to Firebase Storage
+        const storageRef = ref(storage, `users/profilepic/${user.email}`)
+        const uploadTask = uploadBytesResumable(storageRef, profilepic);
+
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (err) => {
+                console.log(err)
+                setProfilepicIsloading(false)
+            },
+
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    uploadToFirebase(url)
+                });
+            }
+        );
+
+        // Upload recipe to Firebase Cloud
+        const uploadToFirebase = async (mainpicUrl: string) => {
+            updateDoc(
+                userRef,
+                {pic: mainpicUrl}
+            ).finally(() => {
+                router.refresh()
+
+                setTimeout(() => setProfilepicIsloading(false), 3000)
+            })
+        }
     }
 
     return (
-        <div className='mt-8 px-4 md:px-9'>
+        <div className='px-4 md:px-9'>
+
+            <h1 className="py-4 text-xl leading-6 font-medium text-gray-900">
+                Update Profile
+            </h1>
+
+            {/* DISPLAY NAME */}
             <div className="">
                 <div className="max-w-6xl">
-                    <h2 className="text-lg leading-6 font-medium text-gray-900">
-                        Update Profile
+                    <h2 className="text-md leading-6 font-medium text-gray-900">
+                        Update Profile Display-name
                     </h2>
                     <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div className="">
-
-                            {/* todo: Upload profile pics to DB Firebase Store - use 'PictureUpload' component */}
-                            {/*<div className="flex items-center">*/}
-                            {/*    <label htmlFor="picture" className="relative cursor-pointer">*/}
-                            {/*        <img*/}
-                            {/*            className="h-16 w-16 rounded-full block"*/}
-                            {/*            src={user.pic}*/}
-                            {/*            alt=""*/}
-                            {/*        />*/}
-                            {/*        <input*/}
-                            {/*            id="picture"*/}
-                            {/*            name="picture"*/}
-                            {/*            type="file"*/}
-                            {/*            className="sr-only"*/}
-                            {/*            // onChange={(e) => {*/}
-                            {/*            //     setPicture(e.target.files[0]);*/}
-                            {/*            // }}*/}
-                            {/*        />*/}
-                            {/*    </label>*/}
-                            {/*    <div>*/}
-                            {/*        <button*/}
-                            {/*            type="button"*/}
-                            {/*            className="ml-2 bg-white py-2 px-2 border border-gray-300 rounded-md text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"*/}
-                            {/*            // onClick={handleAvatarChange}*/}
-                            {/*        >*/}
-                            {/*            Change*/}
-                            {/*        </button>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
 
                             <div className="sm:flex">
                                 <label htmlFor="displayname" className="sr-only">
@@ -124,59 +125,78 @@ export default function UpdateProfile({ user }: Prop) {
 
                                 <button
                                     type="button"
-                                    className="btn-tertiary text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
+                                    className="btn-tertiary group text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
                                     onClick={() => handleDisplaynameChange()}
                                 >
-                                    <PencilIcon
-                                        className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
-                                    />
+                                    { displaynameIsloading
+                                        ? <div className="-ml-1" ><SpinnerComponent size={5}/></div>
+                                        : (
+                                            <PencilIcon
+                                                className="-ml-1 mr-2 h-5 w-5 text-gray-400 group-hover:fill-gray-500"
+                                                aria-hidden="true"
+                                            />
+                                        )
+                                    }
                                     <span>Update</span>
                                 </button>
                             </div>
                             <p className={`hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'sm:block' : 'sm:hidden'}`}>Display name must be longer than 3 characters</p>
                         </div>
                     </div>
-
                 </div>
             </div>
 
+
+            {/* PROFILE PIC */}
             <div className="mt-8">
                 <div className="max-w-6xl">
-                    <h2 className="text-lg leading-6 font-medium text-gray-900">
+                    <h2 className="text-md leading-6 font-medium text-gray-900">
                         Change Profile Picture
                     </h2>
                     <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div className="">
                             <div className="sm:flex">
-                                <label htmlFor="opassword" className="sr-only">
-                                    Profile pic url
-                                </label>
-                                <input
-                                    id="profilepic"
-                                    name="profilepic"
-                                    type="text"
-                                    required
-                                    className={`appearance-none p-2.5 relative block w-full input-secondary md:mr-3 ${profilepicValid || !checkerstarted ? '' : 'input-secondary-invalid' }`}
-                                    placeholder="New profile-pic url"
-                                    defaultValue={profilepic}
-                                    onChange={(e) => setProfilepic(e.target.value)}
-                                />
-                                <p className={`sm:hidden text-sm italic text-red-400 ${profilepicValid || !checkerstarted ? 'hidden opacity-0' : 'block opacity-100'}`}>Please enter a valid URL</p>
 
-                                <button
-                                    type="button"
-                                    className="btn-tertiary text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
-                                    onClick={() => handleProfilepicChange()}
-                                >
-                                    <PencilIcon
-                                        className="-ml-1 mr-2 h-5 w-5 text-gray-400"
-                                        aria-hidden="true"
+                                 <label htmlFor="picture" className="relative cursor-pointer">
+                                    <Image
+                                        className="h-20 w-20 rounded-full block"
+                                        height={300} width={300}
+                                        src={
+                                            typeof profilepic == 'string' ? profilepic : URL.createObjectURL(profilepic)
+                                        }
+                                        alt=""
                                     />
-                                    <span>Update</span>
-                                </button>
+                                    <input
+                                        id="picture"
+                                        name="picture"
+                                        type="file"
+                                        className="sr-only"
+                                        onChange={(e) => {
+                                            if (e.target.files != null)
+                                                setProfilepic(e.target.files[0])
+                                        }}
+                                    />
+                                </label>
+                                <div className='mt-4'>
+                                    <button
+                                        type="button"
+                                        className="group ml-4 btn-tertiary text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
+                                        onClick={() => handleProfilepicChange()}
+                                    >
+                                        { profilepicIsloading
+                                            ? <div className="-ml-1" ><SpinnerComponent size={5}/></div>
+                                            : (
+                                                <CameraIcon
+                                                    className="-ml-1 mr-2 h-5 w-5 text-gray-400 group-hover:fill-gray-500"
+                                                    aria-hidden="true"
+                                                />
+                                            )
+                                        }
+                                        <span>Update</span>
+                                    </button>
+                                </div>
+
                             </div>
-                            <p className={`hidden text-sm italic text-red-400 ${profilepicValid || !checkerstarted ? 'sm:hidden' : 'sm:block'}`}>Please enter a valid URL</p>
                         </div>
                     </div>
                 </div>

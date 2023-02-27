@@ -14,7 +14,8 @@ module.exports = {
             'lh3.googleusercontent.com',
             'www.foodandwine.com',
             'scontent-iad3-2.xx.fbcdn.net',
-            'res.cloudinary.com'
+            'res.cloudinary.com',
+            'firebasestorage.googleapis.com'
         ]
     },
 

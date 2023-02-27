@@ -11,6 +11,10 @@ import {any, instanceOf} from "prop-types";
 import {useRouter} from "next/navigation";
 import FormMissingitems from "./FormMissingitems";
 import SigninRedirecting from "../../accounts/SigninRedirecting";
+import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
+import {storage} from "../../../firebase";
+import { v4 as uuidv4 } from "uuid";
+import SpinnerComponent from "../../interactive_components/SpinnerComponent";
 
 type Props = {
     sessionAuth: Session | null
@@ -19,6 +23,8 @@ type Props = {
     allCategories: Category[]
     recipe?: Recipe
 }
+
+const allFieldNames = [ 'Title', 'Description', 'Category', 'Ingredients', 'Method', 'Cook time', 'Picture of the food' ]
 
 export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCategories, recipe }: Props) {
 
@@ -46,11 +52,12 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
     const [selectedMethod, setSelectedMethod] = useState<MethodItem[]>(editMode ? recipe!.method : [])
 
     const [selectedCookTime, setSelectedCookTime] = useState(editMode ? recipe!.cookTime : 30)
-    const [selectedPicture, setSelectedPicture] = useState(editMode ? recipe!.imgSrc : '')
+    const [selectedPicture, setSelectedPicture] = useState<File | null>(null)
 
-    const allFieldNames = [ 'Title', 'Description', 'Category', 'Ingredients', 'Method', 'Cook time', 'Picture url' ]
     const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
     const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true])
+
+    const [isProgressing, setIsProgressing] = useState(false)
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -63,36 +70,61 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             if ( Array.isArray(elem) )
                 return elem.length != 0
 
-            return true                        //todo make category into list
+            return elem != null                        //todo make category into list
         })
 
         setIncorrectFields( checkedFields )
 
-        if (!(await checkImage(selectedPicture)) || checkedFields.some(field => !field))          //todo: check all & popup
+        if (checkedFields.some(field => !field))          //todo: check all & popup
             return
 
-        const newRecipe = {
-            id: editMode ? recipe?.id : '0',
-            author: sessionAuth.user?.email,
-            categories: [selectedCategory],       //todo: select multiple categories
+        // Checks done, start uploads
+        setIsProgressing(true)
 
-            title: selectedTitle,
-            cookTime: selectedCookTime,
-            description: selectedDescription,
+        // Upload picture to Firebase Storage
+        const storageRef = ref(storage, `recipes/mainpic/${uuidv4()}`)
+        const uploadTask = uploadBytesResumable(storageRef, selectedPicture!);
 
-            ingredients: selectedIngredients,
-            method: selectedMethod,
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (err) => {
+                console.log(err)
+                setIsProgressing(false)
+            },
 
-            imgSrc: selectedPicture,
-            imgAlt: 'img of food',
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                   uploadToFirebase(url)
+                });
+            }
+        );
 
-            numberOfLikes: editMode ? recipe?.numberOfLikes : 0,
-            numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
-        } as Recipe
+        // Upload recipe to Firebase Cloud
+        const uploadToFirebase = async (mainpicUrl: string) => {
+            const newRecipe = {
+                id: editMode ? recipe?.id : '0',
+                author: sessionAuth.user?.email,
+                categories: [selectedCategory],       //todo: select multiple categories
 
-        const res = await fetch(
-            editMode ? '/api/updateRecipe' : '/api/addRecipe',
-            {
+                title: selectedTitle,
+                cookTime: selectedCookTime,
+                description: selectedDescription,
+
+                ingredients: selectedIngredients,
+                method: selectedMethod,
+
+                imgSrc: mainpicUrl,
+                imgAlt: 'img of food',
+
+                numberOfLikes: editMode ? recipe?.numberOfLikes : 0,
+                numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
+            } as Recipe
+
+            const res = await fetch(
+                editMode ? '/api/updateRecipe' : '/api/addRecipe',
+                {
                     method: editMode ? 'PUT' : 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -100,14 +132,17 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
                     body: JSON.stringify({
                         newRecipe
                     })
+                }
+            )
+            const resData = await res.json()
+
+            if (resData.body == 'method not allowed') {
+                setIsProgressing(false)
+                return          //todo tell user there is an error
             }
-        )
-        const resData = await res.json()
 
-        if (resData.body == 'method not allowed')
-            return          //todo tell user there is an error
-
-        router.push(`/recipe/${resData.body}`)
+            router.push(`/recipe/${resData.body}`)
+        }
     };
 
     return (
@@ -198,7 +233,10 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
                                         type="submit"
                                         className={`w-full btn-secondary py-3 px-8 flex items-center justify-center text-base font-medium ${sessionAuth == null ? 'cursor-not-allowed' : ''}`}
                                     >
-                                        {buttonLabel}
+                                        { isProgressing
+                                            ? <SpinnerComponent size={6}/>
+                                            : buttonLabel
+                                        }
                                     </button>
                                 </div>
                             </div>

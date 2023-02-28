@@ -49,3 +49,9 @@ type RecipeAndAuthor = {
     recipe: Recipe
     author: UserDB
 }
+
+type SortOptionsRecipeAndAuthor = {
+    name: string
+    query: string
+    order: 'asc' | 'desc'
+}

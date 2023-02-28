@@ -116,6 +116,7 @@ export default function DashboardLayout({ user }: Props) {
                                             <Link
                                                 key={item.name}
                                                 href={item.to}
+                                                onClick={() => setSidebarOpen(false)}
                                                 className={classNames(
                                                     item.to === segmentCurrent
                                                         ? "bg-teal-800 hover:bg-teal-900 text-white"

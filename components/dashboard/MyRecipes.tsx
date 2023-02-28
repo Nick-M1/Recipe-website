@@ -23,7 +23,7 @@ export default function MyRecipes({ recipesAndAuthors, user }: Props) {
             <div className="mt-8">
                 <div className="px-4 md:px-6">
 
-                    <div className="flex items-center mb-5 md:mb-6 group lg:max-w-xl">
+                    <div className="flex items-center mb-7 md:mb-8 group lg:max-w-xl">
                         <div aria-label="Item" className="mr-3">
                             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-teal-50">
                                 <Image src={'/recipes-mine.png'} alt={''} width={35} height={35} className='ml-0.5'/>

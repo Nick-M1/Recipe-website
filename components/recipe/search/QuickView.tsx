@@ -105,7 +105,7 @@ export default function QuickView({open, setOpen, recipeAndAuthor, user}: Props)
 
                                                 <div className="mt-6">
                                                     <h4 className="sr-only">Description</h4>
-                                                    <ReactMarkdown className="text-sm text-gray-700 opacity-95">{recipeAndAuthor.recipe.description}</ReactMarkdown>
+                                                    <ReactMarkdown className="text-sm text-gray-700 opacity-95 line-clamp-5">{recipeAndAuthor.recipe.description}</ReactMarkdown>
                                                 </div>
                                             </section>
 

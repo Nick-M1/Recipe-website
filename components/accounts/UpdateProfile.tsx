@@ -14,17 +14,17 @@ type Prop = {
     user: UserDB
 }
 
-export default function UpdateProfile({ user }: Prop) {
+export default function UpdateProfile({user}: Prop) {
 
     // todo: When email auth setup, let user change their password...
 
     // Input text
-    const [displayname, setDisplayname] = useState( user.name );
-    const [profilepic, setProfilepic]   = useState<File | string>( user.pic );
+    const [displayname, setDisplayname] = useState(user.name);
+    const [profilepic, setProfilepic] = useState<File | string>(user.pic);
 
     // When waiting for spinner
-    const [displaynameIsloading, setDisplaynameIsloading] = useState( false );
-    const [profilepicIsloading, setProfilepicIsloading] = useState( false );
+    const [displaynameIsloading, setDisplaynameIsloading] = useState(false);
+    const [profilepicIsloading, setProfilepicIsloading] = useState(false);
 
 
     // Extras
@@ -40,12 +40,11 @@ export default function UpdateProfile({ user }: Prop) {
 
         updateDoc(
             userRef,
-            { name: displayname }
-
+            {name: displayname}
         ).finally(() => {
             router.refresh()
 
-            setTimeout(() => setDisplaynameIsloading(false), 2000)
+            setTimeout(() => setDisplaynameIsloading(false), 700)
         })
     }
 
@@ -63,7 +62,8 @@ export default function UpdateProfile({ user }: Prop) {
 
         uploadTask.on(
             "state_changed",
-            (snapshot) => {},
+            (snapshot) => {
+            },
             (err) => {
                 console.log(err)
                 setProfilepicIsloading(false)
@@ -85,7 +85,7 @@ export default function UpdateProfile({ user }: Prop) {
             ).finally(() => {
                 router.refresh()
 
-                setTimeout(() => setProfilepicIsloading(false), 3000)
+                setTimeout(() => setProfilepicIsloading(false), 1000)
             })
         }
     }
@@ -116,20 +116,21 @@ export default function UpdateProfile({ user }: Prop) {
                                     type="text"
                                     autoComplete="displayname"
                                     required
-                                    className={`appearance-none p-2.5 relative block w-full input-secondary md:mr-3 ${displayname.length > 3 ? '' : 'input-secondary-invalid' }`}
+                                    className={`appearance-none p-2.5 relative block w-full input-secondary md:mr-3 ${displayname.length > 3 ? '' : 'input-secondary-invalid'}`}
                                     placeholder="New display name"
                                     defaultValue={displayname}
                                     onChange={(e) => setDisplayname(e.target.value)}
                                 />
-                                <p className={`sm:hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'block opacity-100' : 'hidden opacity-0'}`}>Display name must be longer than 4 characters</p>
+                                <p className={`sm:hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'block opacity-100' : 'hidden opacity-0'}`}>Display
+                                    name must be longer than 4 characters</p>
 
                                 <button
                                     type="button"
                                     className="btn-tertiary group text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
                                     onClick={() => handleDisplaynameChange()}
                                 >
-                                    { displaynameIsloading
-                                        ? <div className="-ml-1" ><SpinnerComponent size={5}/></div>
+                                    {displaynameIsloading
+                                        ? <div className="-ml-1"><SpinnerComponent size={5}/></div>
                                         : (
                                             <PencilIcon
                                                 className="-ml-1 mr-2 h-5 w-5 text-gray-400 group-hover:fill-gray-500"
@@ -140,7 +141,8 @@ export default function UpdateProfile({ user }: Prop) {
                                     <span>Update</span>
                                 </button>
                             </div>
-                            <p className={`hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'sm:block' : 'sm:hidden'}`}>Display name must be longer than 3 characters</p>
+                            <p className={`hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'sm:block' : 'sm:hidden'}`}>Display
+                                name must be longer than 3 characters</p>
                         </div>
                     </div>
                 </div>
@@ -153,11 +155,11 @@ export default function UpdateProfile({ user }: Prop) {
                     <h2 className="text-md leading-6 font-medium text-gray-900">
                         Change Profile Picture
                     </h2>
-                    <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    <div className="mt-2 grid grid-cols-2 gap-5">
                         <div className="">
-                            <div className="sm:flex">
+                            <div className="flex">
 
-                                 <label htmlFor="picture" className="relative cursor-pointer">
+                                <label htmlFor="picture" className="relative cursor-pointer">
                                     <Image
                                         className="h-20 w-20 rounded-full block"
                                         height={300} width={300}
@@ -166,6 +168,7 @@ export default function UpdateProfile({ user }: Prop) {
                                         }
                                         alt=""
                                     />
+                                    <div className='absolute -top-1 -right-1 bg-teal-400 border border-black h-5 w-5 rounded-full text-white text-lg font-semibold flex justify-center items-center'>+</div>
                                     <input
                                         id="picture"
                                         name="picture"
@@ -183,8 +186,8 @@ export default function UpdateProfile({ user }: Prop) {
                                         className="group ml-4 btn-tertiary text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5"
                                         onClick={() => handleProfilepicChange()}
                                     >
-                                        { profilepicIsloading
-                                            ? <div className="-ml-1" ><SpinnerComponent size={5}/></div>
+                                        {profilepicIsloading
+                                            ? <div className="-ml-1"><SpinnerComponent size={5}/></div>
                                             : (
                                                 <CameraIcon
                                                     className="-ml-1 mr-2 h-5 w-5 text-gray-400 group-hover:fill-gray-500"

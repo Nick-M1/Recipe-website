@@ -18,7 +18,7 @@ export default function RecipeCard({recipesAndAuthors, quickview, user}: Props) 
 
     return (
         <>
-            <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {recipesAndAuthors.map(( recipeAndAuthor, index) => (
                     <div
                         key={index}
@@ -47,7 +47,7 @@ export default function RecipeCard({recipesAndAuthors, quickview, user}: Props) 
                                             </dt>
                                         </div>
                                         <dd>
-                                            <ReactMarkdown className="text-sm text-gray-900 opacity-70">{ recipeAndAuthor.recipe.description}</ReactMarkdown>
+                                            <ReactMarkdown className="text-sm text-gray-900 opacity-70 truncate ">{ recipeAndAuthor.recipe.description != '' ? recipeAndAuthor.recipe.description : '...'}</ReactMarkdown>
                                         </dd>
                                     </dl>
                                 </div>

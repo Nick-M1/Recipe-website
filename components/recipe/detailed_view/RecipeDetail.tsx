@@ -21,17 +21,19 @@ export default function RecipeDetail({ recipe, author, user }: Props) {
                     <div className="max-w-2xl mx-auto lg:max-w-none">
                         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                             <div className="flex flex-col-reverse">
-                                <div className="px-2 md:px-0 w-full aspect-w-1 aspect-h-1">
-                                    <div>
+                                <div className="px-2 lg:px-0 ">
+
+                                    <div className=''>
                                         <Image
                                             src={recipe.imgSrc}
                                             alt={recipe.imgAlt}
                                             width={1000}
                                             height={1000}
                                             priority
-                                            className="w-full h-full object-center object-cover display-img"
+                                            className="object-cover display-img lg:max-h-[23rem]"
                                         />
                                     </div>
+
                                 </div>
                             </div>
 

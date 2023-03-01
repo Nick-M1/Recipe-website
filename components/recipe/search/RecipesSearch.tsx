@@ -6,7 +6,7 @@ import RecipeCard from "./RecipeCard";
 import Image from "next/image";
 import DropdownComponent from "../../interactive_components/DropdownComponent";
 import {allSortOptions} from "../../../lib/utils/allRecipeSortOptions";
-import Pagination from "../../interactive_components/Pagination";
+import Pagination from "../../interactive_components/Pagination/Pagination";
 
 type Props = {
     pagenumber: number
@@ -47,17 +47,16 @@ export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, 
                                 className="h-1 ml-auto duration-300 origin-left transform bg-teal-600 scale-x-30 group-hover:scale-x-100"/>
                         </h2>
                     </div>
-                    <div className='flex-none'>
-                        <p className="w-full text-gray-600 lg:text-sm lg:max-w-md mb-5">
-                            "Cooking is not difficult. Everyone has a taste, even if they don’t
-                            realize it. Even if you’re not a great chef, there’s nothing to stop
-                            you from understanding the difference between what tastes good and
-                            what doesn’t."
-                        </p>
-                        <div className='float-right mr-1'>
-                            <DropdownComponent optionNames={allSortOptions} currentSort={currentSort}/>
-                        </div>
-                    </div>
+                    <p className="w-full text-gray-600 lg:text-sm lg:max-w-md mb-5">
+                        "Cooking is not difficult. Everyone has a taste, even if they don’t
+                        realize it. Even if you’re not a great chef, there’s nothing to stop
+                        you from understanding the difference between what tastes good and
+                        what doesn’t."
+                    </p>
+                </div>
+                <div className='flex flex-col w-full mb-2 lg:justify-between lg:flex-row'>
+                    <div>hhhhhhhhh</div>
+                    <DropdownComponent optionNames={allSortOptions} currentSort={currentSort}/>
                 </div>
 
                 <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user}/>

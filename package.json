@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.11",
+    "@headlessui/tailwindcss": "^0.1.2",
     "@heroicons/react": "^2.0.16",
     "@types/lodash": "^4.14.191",
     "@types/marked": "^4.0.8",

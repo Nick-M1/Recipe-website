@@ -20,11 +20,13 @@ import PopupCustom from "../interactive_components/Popups/PopupCustom";
 type Props = {
     sessionAuth: Session | null
     userDB: UserDB | null
+
+    allRecipes: Recipe[]
 }
 
 const userNavigation = [{name: "Dashboard", to: "/dashboard"}, {name: "Create recipes", to: "/create"}];
 
-export default function Header({sessionAuth, userDB}: Props) {
+export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
     const [logoutPopup , setLogoutPopup] = useState(false)
 
     return (
@@ -55,7 +57,7 @@ export default function Header({sessionAuth, userDB}: Props) {
                                     </div>
                                 </div>
                                 <div className="min-w-0 flex-1 xl:col-span-6 flex items-center py-4 pl-3 md:px-0">
-                                    <Searchbar/>
+                                    <Searchbar allRecipes={allRecipes} />
                                 </div>
 
                                 <div className="flex items-center justify-end col-span-4">

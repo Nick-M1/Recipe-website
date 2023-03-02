@@ -52,12 +52,58 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
     const [selectedMethod, setSelectedMethod] = useState<MethodItem[]>(editMode ? recipe!.method : [])
 
     const [selectedCookTime, setSelectedCookTime] = useState(editMode ? recipe!.cookTime : 30)
-    const [selectedPicture, setSelectedPicture] = useState<File | null>(null)
+    const [selectedPicture, setSelectedPicture] = useState<File | string | null>(editMode ? recipe!.imgSrc : null)
 
     const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
     const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true])
 
     const [isProgressing, setIsProgressing] = useState(false)
+
+    // Upload recipe to Firebase Cloud
+    const uploadToFirebase = async (mainpicUrl: string) => {
+        const newRecipe = {
+            id: editMode ? recipe?.id : '0',
+            author: sessionAuth.user?.email,
+            categories: [selectedCategory],
+
+            title: selectedTitle,
+            cookTime: selectedCookTime,
+            description: selectedDescription,
+
+            ingredients: selectedIngredients,
+            method: selectedMethod,
+
+            imgSrc: mainpicUrl,
+            imgAlt: 'img of food',
+
+            numberOfLikes: editMode ? recipe?.numberOfLikes : 0,
+            numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
+
+            created_at: editMode ? recipe?.created_at : 0,
+            edited_at: 0
+        } as Recipe
+
+        const res = await fetch(
+            editMode ? '/api/updateRecipe' : '/api/addRecipe',
+            {
+                method: editMode ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    newRecipe
+                })
+            }
+        )
+        const resData = await res.json()
+
+        if (resData.body == 'method not allowed') {
+            setIsProgressing(false)
+            return          //todo tell user there is an error
+        }
+
+        router.push(`/recipe/${resData.body}`)
+    }
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -82,67 +128,30 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
         setIsProgressing(true)
 
         // Upload picture to Firebase Storage
-        const storageRef = ref(storage, `recipes/mainpic/${uuidv4()}`)
-        const uploadTask = uploadBytesResumable(storageRef, selectedPicture!);
+        if (typeof selectedPicture != 'string') {
+            const storageRef = ref(storage, `recipes/mainpic/${uuidv4()}`)
+            const uploadTask = uploadBytesResumable(storageRef, selectedPicture!);
 
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {},
-            (err) => {
-                console.log(err)
-                setIsProgressing(false)
-            },
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                },
+                (err) => {
+                    console.log(err)
+                    setIsProgressing(false)
+                },
 
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                   uploadToFirebase(url)
-                });
-            }
-        );
-
-        // Upload recipe to Firebase Cloud
-        const uploadToFirebase = async (mainpicUrl: string) => {
-            const newRecipe = {
-                id: editMode ? recipe?.id : '0',
-                author: sessionAuth.user?.email,
-                categories: [selectedCategory],       //todo: select multiple categories
-
-                title: selectedTitle,
-                cookTime: selectedCookTime,
-                description: selectedDescription,
-
-                ingredients: selectedIngredients,
-                method: selectedMethod,
-
-                imgSrc: mainpicUrl,
-                imgAlt: 'img of food',
-
-                numberOfLikes: editMode ? recipe?.numberOfLikes : 0,
-                numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
-            } as Recipe
-
-            const res = await fetch(
-                editMode ? '/api/updateRecipe' : '/api/addRecipe',
-                {
-                    method: editMode ? 'PUT' : 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        newRecipe
-                    })
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                        uploadToFirebase(url)
+                    });
                 }
-            )
-            const resData = await res.json()
+            );
 
-            if (resData.body == 'method not allowed') {
-                setIsProgressing(false)
-                return          //todo tell user there is an error
-            }
+        } else
+            await uploadToFirebase(selectedPicture)
 
-            router.push(`/recipe/${resData.body}`)
-        }
     };
 
     return (

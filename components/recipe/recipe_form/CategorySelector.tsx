@@ -1,7 +1,7 @@
 import {useState, useEffect, SetStateAction, Dispatch} from "react";
 import {RadioGroup} from "@headlessui/react";
 import {CheckCircleIcon} from "@heroicons/react/24/solid";
-import getCategories from "../../../lib/DB/server/getCategories";
+import getCategories from "../../../lib/DB/both/getCategories";
 import {classNames} from "../../../lib/utils/textUtils";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function CategorySelector({allCategories, selectedCategory, setSe
                 Select a food category
             </RadioGroup.Label>
 
-            <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-4">
+            <div className="mt-4 grid grid-cols-1 gap-y-2 sm:grid-cols-3 sm:gap-x-4">
                 {allCategories.map((category) => (
                     <RadioGroup.Option
                         key={category.id}

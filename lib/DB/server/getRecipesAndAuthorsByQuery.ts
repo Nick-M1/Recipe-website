@@ -1,8 +1,10 @@
 import {db} from "../../../firebase";
-import {collection, doc, getDoc, getDocs, limit, orderBy, query, startAt} from "@firebase/firestore";
+import {collection, doc, getDoc, getDocs, limit, orderBy, query, startAt, where} from "@firebase/firestore";
+import {allSortOptions} from "../../utils/allRecipeSortOptions";
 
 // Only works on server
 export default async function getAllRecipesAndAuthorsByQuery(
+    categoryQuery: Category | undefined,
     sortQuery: SortOptionsRecipeAndAuthor,
     paginationStart: number,
     paginationEnd: number
@@ -17,15 +19,17 @@ export default async function getAllRecipesAndAuthorsByQuery(
         query(
             collection(db, "recipes"),
             orderBy(sortQuery.query, sortQuery.order),
-
-            limit(paginationEnd)
+            limit(paginationEnd),
         )
     );
 
+    const categoryFilterCheck = typeof categoryQuery == 'undefined'
     let counter = 0
     recipesSnapshot.forEach((doc) => {
-        if (counter >= paginationStart)
-            recipes.push(<Recipe>doc.data())
+        const docData = doc.data() as Recipe
+
+        if (counter >= paginationStart && (categoryFilterCheck || docData.categories.findIndex(c => c.id == categoryQuery.id) != -1))
+            recipes.push(docData)
 
         counter += 1
     });

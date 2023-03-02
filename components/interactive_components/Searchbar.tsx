@@ -40,9 +40,9 @@ export default function Searchbar({ allRecipes }: Props) {
                 <Combobox value={selectedPerson} onChange={setSelectedPerson}>
                     <div className="group relative flex items-center w-full h-12 rounded-lg border border-gray-200 hover:border-gray-400 focus-within:ring-1 focus-within:ring-teal-400 overflow-hidden smooth-transition">
                         <div className="grid place-items-center h-full w-12 text-gray-300 border-none">
-                            <button type="submit" >
+                            <Link href={`/search?query=${query}`} type="submit" >
                                 <MagnifyingGlassIcon className="pointer-events-non pl-0 h-6 w-6 border-none group-hover:text-gray-500 smooth-transition" aria-hidden="true" />
-                            </button>
+                            </Link>
                         </div>
                         <Combobox.Input
                             value={query}

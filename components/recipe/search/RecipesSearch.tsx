@@ -7,6 +7,7 @@ import Image from "next/image";
 import DropdownComponent from "../../interactive_components/DropdownComponent";
 import {allSortOptions} from "../../../lib/utils/allRecipeSortOptions";
 import Pagination from "../../interactive_components/Pagination/Pagination";
+import RecipeFilterPopover from "./RecipeFilterPopover";
 
 type Props = {
     pagenumber: number
@@ -16,12 +17,14 @@ type Props = {
     currentSort: string
     recipesAndAuthors: RecipeAndAuthor[]
 
+    allCategories: Category[]
+
     user: UserDB | null
 }
 
 
-export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, currentSort, recipesAndAuthors, user }: Props) {
-
+export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, currentSort, recipesAndAuthors, user, allCategories }: Props) {
+    const currentCategory = 'dessert'
     // if (!recipes || recipes.length === 0)
     //   return (
     //     <div className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-15">
@@ -54,14 +57,15 @@ export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, 
                         what doesn’t."
                     </p>
                 </div>
-                <div className='flex flex-col w-full mb-2 lg:justify-between lg:flex-row'>
-                    <div>hhhhhhhhh</div>
-                    <DropdownComponent optionNames={allSortOptions} currentSort={currentSort}/>
+                <div className='flex flex-row w-full -ml-4 lg:ml-1 mb-2 justify-between'>
+                    <div><RecipeFilterPopover allCategories={allCategories} currentSort={currentSort} /></div>
+                    <div><DropdownComponent optionNames={allSortOptions} currentSort={currentSort} currentCategory={currentCategory} /></div>
                 </div>
 
                 <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user}/>
 
                 <div className='float-right pt-4'>
+                    {/* todo: FIX URL WITH FUNCTION UTILS */}
                     <Pagination urlpathTo={`${urlBasepath}ordering=${currentSort}&pagenumber=`} currentPage={pagenumber} lastPage={lastPageIndex}/>
                 </div>
 

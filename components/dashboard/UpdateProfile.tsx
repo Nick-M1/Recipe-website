@@ -9,6 +9,7 @@ import Image from "next/image";
 import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
 import {v4 as uuidv4} from "uuid";
 import SpinnerComponent from "../interactive_components/SpinnerComponent";
+import BottomToastPopup from "../interactive_components/PopupSmall/BottomToastPopup";
 
 type Prop = {
     user: UserDB
@@ -25,6 +26,8 @@ export default function UpdateProfile({user}: Prop) {
     // When waiting for spinner
     const [displaynameIsloading, setDisplaynameIsloading] = useState(false);
     const [profilepicIsloading, setProfilepicIsloading] = useState(false);
+
+    const [successMessageOpen, setSuccessMessageOpen] = useState(false);
 
 
     // Extras
@@ -44,7 +47,10 @@ export default function UpdateProfile({user}: Prop) {
         ).finally(() => {
             router.refresh()
 
-            setTimeout(() => setDisplaynameIsloading(false), 700)
+            setTimeout(() => {
+                setDisplaynameIsloading(false)
+                setSuccessMessageOpen(true)
+            }, 700)
         })
     }
 
@@ -85,7 +91,10 @@ export default function UpdateProfile({user}: Prop) {
             ).finally(() => {
                 router.refresh()
 
-                setTimeout(() => setProfilepicIsloading(false), 1000)
+                setTimeout(() => {
+                    setProfilepicIsloading(false)
+                    setSuccessMessageOpen(true)
+                }, 1000)
             })
         }
     }
@@ -204,6 +213,7 @@ export default function UpdateProfile({user}: Prop) {
                     </div>
                 </div>
             </div>
+            <BottomToastPopup open={successMessageOpen} setOpen={setSuccessMessageOpen} msgText={'Profile updated successfully'}/>
         </div>
     );
 }

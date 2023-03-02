@@ -24,6 +24,8 @@ export default async function Page({params: {recipeId}}: PageProps) {
     const user = sessionAuth != null && sessionAuth.user != null ? await getUserByEmail(sessionAuth.user.email!) : null
 
     const recipeSearchRes = await getRecipeAuthorById(recipeId)
+    const currentTime = Date.now()
+
 
     if (recipeSearchRes == null)
         return (
@@ -36,7 +38,7 @@ export default async function Page({params: {recipeId}}: PageProps) {
 
     return (
         <div>
-            <RecipeDetail recipe={recipeSearchRes.recipe} author={recipeSearchRes.author} user={user}/>
+            <RecipeDetail recipe={recipeSearchRes.recipe} author={recipeSearchRes.author} user={user} currentTime={currentTime}/>
         </div>
     );
 }

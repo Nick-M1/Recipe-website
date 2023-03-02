@@ -4,11 +4,14 @@ import {Menu, Popover, Transition} from "@headlessui/react";
 import {classNames} from "../../lib/utils/textUtils";
 import Link from "next/link";
 import {
-    ArrowRightOnRectangleIcon,
     BellIcon,
-    MagnifyingGlassIcon,
-    MinusIcon,
-    XMarkIcon
+    ArrowRightOnRectangleIcon,
+    PencilSquareIcon,
+    HomeIcon,
+    DocumentPlusIcon,
+    BookmarkIcon,
+    ArrowLeftOnRectangleIcon,
+    UserPlusIcon
 } from "@heroicons/react/24/outline";
 import Searchbar from "../interactive_components/Searchbar";
 import Image from "next/image";
@@ -17,17 +20,39 @@ import {Session} from "next-auth";
 import PopupCustom from "../interactive_components/Popups/PopupCustom";
 
 
+
 type Props = {
     sessionAuth: Session | null
     userDB: UserDB | null
-
     allRecipes: Recipe[]
 }
 
-const userNavigation = [{name: "Dashboard", to: "/dashboard"}, {name: "Create recipes", to: "/create"}];
+function menuitemClassname( divideTop: boolean, { active, disabled }: { active: boolean, disabled: boolean }) {
+    return classNames(
+        divideTop ? 'mt-1 border-t border-gray-100' : '',
+        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+        disabled ? 'cursor-not-allowed opacity-50' : '',
+        "block w-full text-left py-2 px-4 text-sm smooth-transition"
+    )
+}
+
+
+
 
 export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
     const [logoutPopup , setLogoutPopup] = useState(false)
+
+    const userNavigation_signedin = [
+        { isButton: false, name: "Dashboard",       to: "/dashboard",                          icon: HomeIcon,      divideTop: false },
+        { isButton: false, name: "My recipes",      to: "/myrecipes",                          icon: PencilSquareIcon,      divideTop: false },
+        { isButton: false, name: "Create recipes",  to: "/create",                             icon: DocumentPlusIcon,      divideTop: false },
+        { isButton: false, name: "Saved recipes",   to: "/bookmarkedrecipes",                  icon: BookmarkIcon,      divideTop: false },
+        { isButton: true,  name: "Logout",          func: () => setLogoutPopup(true),     icon: ArrowRightOnRectangleIcon,      divideTop: true },
+    ];
+    const userNavigation_notsignedin = [
+        { isButton: true,  name: "Sign in",         func: () => signIn(),                      icon: ArrowLeftOnRectangleIcon,      divideTop: false },
+        { isButton: false, name: "Create account",  to: "/createaccount",                      icon: UserPlusIcon,      divideTop: false },
+    ];
 
     return (
         <>
@@ -61,15 +86,20 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
                                 </div>
 
                                 <div className="flex items-center justify-end col-span-4">
-                                    {sessionAuth != null &&
-                                        <div>
+                                    { sessionAuth == null
+                                        ? (
+                                            <button onClick={() => signIn()} className="hidden md:block btn-primary green-blue-dark-gradient ml-6 inline-flex items-center px-4 py-2">
+                                                Sign in
+                                            </button>
+                                        )
+                                        : (
                                             <Link
                                                 href="/create"
                                                 className="hidden md:block btn-primary green-blue-dark-gradient ml-6 inline-flex items-center px-4 py-2"
                                             >
                                                 Create Recipes
                                             </Link>
-                                        </div>
+                                        )
                                     }
 
                                     <a
@@ -103,73 +133,49 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
                                                 leaveFrom="transform opacity-100 scale-100"
                                                 leaveTo="transform opacity-0 scale-95"
                                             >
-                                                { sessionAuth != null
-                                                    ? (
-                                                        <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                                                            { userNavigation.map((item) => (
-                                                                <Menu.Item key={item.name}>
-                                                                    {({active}) => (
-                                                                        <Link
-                                                                            href={item.to}
-                                                                            className={classNames(
-                                                                                active ? "bg-gray-100" : "",
-                                                                                "block py-2 px-4 text-sm text-gray-700 smooth-transition"
-                                                                            )}
-                                                                        >
-                                                                            {item.name}
-                                                                        </Link>
-                                                                    )}
-                                                                </Menu.Item>
-                                                            ))}
-                                                            <Menu.Item>
-                                                                {({active}) => (
-                                                                    <button
-                                                                        type='button'
-                                                                        onClick={() => setLogoutPopup(true)}
-                                                                        className={classNames(
-                                                                            active ? "bg-gray-100" : "",
-                                                                            "block py-2 px-4 text-sm text-gray-700 w-full text-left smooth-transition"
-                                                                        )}
-                                                                    >
-                                                                        Logout
-                                                                    </button>
-                                                                )}
-                                                            </Menu.Item>
-                                                        </Menu.Items>
-                                                    )
+                                                <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
 
-                                                    : (
-                                                        <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                                                            <Menu.Item>
-                                                                {({active}) => (
-                                                                    <button
-                                                                        type='button'
-                                                                        onClick={() => signIn()}
-                                                                        className={classNames(
-                                                                            active ? "bg-gray-100" : "",
-                                                                            "block py-2 px-4 text-sm text-gray-700 w-full text-left smooth-transition"
-                                                                        )}
-                                                                    >
-                                                                        Sign in
-                                                                    </button>
+                                                    <Menu.Item>
+                                                        <div className="px-4 py-3 border-b border-gray-100">
+                                                            <p className="text-sm leading-5">{ sessionAuth == null ? 'Not signed in' : 'Signed in as'}</p>
+                                                            <p className="truncate text-sm font-medium leading-5 text-gray-900 font-semibold">
+                                                                { sessionAuth != null && userDB?.email}
+                                                            </p>
+                                                        </div>
+                                                    </Menu.Item>
+
+
+
+
+                                                    { ( sessionAuth == null ? userNavigation_notsignedin : userNavigation_signedin )
+                                                        .map(item => (
+                                                            <Menu.Item key={item.name}>
+                                                                {( itemrenderPropArgs) => (
+
+                                                                    item.isButton
+                                                                        ? (
+                                                                            <button
+                                                                                type='button'
+                                                                                onClick={item.func}
+                                                                                className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
+                                                                            >
+                                                                                <item.icon className='h-5 w-5 mr-2.5'/>
+                                                                                <span>{item.name}</span>
+                                                                            </button>
+                                                                        )
+                                                                        : (
+                                                                            <Link
+                                                                                href={item.to!}
+                                                                                className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
+                                                                            >
+                                                                                <item.icon className='h-5 w-5 mr-2.5'/>
+                                                                                <span>{item.name}</span>
+                                                                            </Link>
+                                                                        )
                                                                 )}
                                                             </Menu.Item>
-                                                            <Menu.Item>
-                                                                {({active}) => (
-                                                                    <Link
-                                                                        href="/createaccount"
-                                                                        className={classNames(
-                                                                            active ? "bg-gray-100" : "",
-                                                                            "block py-2 px-4 text-sm text-gray-700 smooth-transition"
-                                                                        )}
-                                                                    >
-                                                                        Create account
-                                                                    </Link>
-                                                                )}
-                                                            </Menu.Item>
-                                                        </Menu.Items>
-                                                    )
-                                                }
+                                                    ))}
+                                                </Menu.Items>
                                             </Transition>
                                         </Menu>
 

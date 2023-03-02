@@ -1,5 +1,5 @@
 import React from 'react';
-import getCategories from "../../../lib/DB/server/getCategories";
+import getCategories from "../../../lib/DB/both/getCategories";
 import RecipeCreate from "../../../components/recipe/recipe_form/RecipeCreate";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";

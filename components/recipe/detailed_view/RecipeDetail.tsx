@@ -3,16 +3,33 @@ import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLikes/BookmarkAndLikesHander";
 import RecipeDelete from "../../interactive_components/Popups/RecipeDelete";
+import searchUrlBuilder from "../../../lib/utils/searchUrlBuilder";
+import {dateFormatter} from "../../../lib/utils/time-formatter";
+import BottomToastPopupServerWrapper from "../../interactive_components/PopupSmall/BottomToastPopupServerWrapper";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 type Props = {
     recipe: Recipe
     author: UserDB
 
     user: UserDB | null
+    currentTime: number
 }
 
-export default function RecipeDetail({ recipe, author, user }: Props) {
+const ONE_WEEK_UNIX = 604_800_000
+export default function RecipeDetail({ recipe, author, user, currentTime }: Props) {
+    dayjs.extend(relativeTime)
+
     const isEditor = user != null && recipe.author == user.email
+    const recentlyCreated = isEditor && recipe.created_at > (currentTime - 50_000)           // for success pop-up
+
+    const timeDisplayer: () => string = () => {
+        const isEdited = recipe.created_at != recipe.edited_at
+        const useRelativeTime = recipe.edited_at > (currentTime - ONE_WEEK_UNIX)
+
+        return `${isEdited ? 'Edited:' : 'Created:'} ${useRelativeTime ? dayjs(recipe.edited_at).from(dayjs(currentTime)) : dateFormatter.format(recipe.edited_at)}`
+    }
 
     return (
         <>
@@ -58,12 +75,14 @@ export default function RecipeDetail({ recipe, author, user }: Props) {
                                             </button>
                                         </Link>
                                     )}
-
                                     { isEditor && (
                                         <RecipeDelete recipe={recipe} user={user} />
                                     )}
-
                                 </div>
+
+                                <p className='text-gray-400 text-sm tracking-wide pb-2'>
+                                    {timeDisplayer()}
+                                </p>
 
                                 <div className='flex pt-1'>
                                     <Image src={author.pic} alt='profile-pic' width={70} height={70} className='rounded-full h-8 w-8' />
@@ -73,19 +92,19 @@ export default function RecipeDetail({ recipe, author, user }: Props) {
                                 </div>
 
                                 <div className="mt-3">
-                                    <h2 className="sr-only">Recipe information</h2>
-                                    <span
-                                        className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 ">
-                                        {recipe.categories[0].title}
-                                    </span>
+                                    { recipe.categories.map(category => (
+                                        <Link key={category.id} href={searchUrlBuilder('', category.href)}
+                                              className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 ">
+                                            {category.title}
+                                        </Link>
+                                    ))}
+
                                 </div>
 
                                 <div className="mt-6">
                                     <h3 className="sr-only">Description</h3>
                                     <ReactMarkdown className="text-base text-gray-700 space-y-6">{recipe.description}</ReactMarkdown>
                                 </div>
-
-
 
                                 <BookmarkAndLikesHander recipe={recipe} user={user} showText={true} />
 
@@ -140,8 +159,8 @@ export default function RecipeDetail({ recipe, author, user }: Props) {
                         {/*</section>*/}
                     </div>
                 </main>
+                <BottomToastPopupServerWrapper isOpen={recentlyCreated} msgText={'Recipe has been created'}/>
             </div>
-            {/*{ isEditor && <RecipeDelete recipe={recipe}/> }*/}
         </>
     );
 }

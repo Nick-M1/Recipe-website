@@ -15,15 +15,18 @@ type Recipe = {
 
     numberOfLikes: number
     numberOfBookmarks: number
+
+    created_at: number
+    edited_at: number
 }
 
 
 type Category = {
     id: number
+    href: string
     title: string
     description: string
-    numOfRecipes: number
-    // img: string
+    img: string
 }
 
 type Ingredient = {
@@ -55,3 +58,4 @@ type SortOptionsRecipeAndAuthor = {
     query: string
     order: 'asc' | 'desc'
 }
+

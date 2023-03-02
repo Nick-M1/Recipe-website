@@ -1,6 +1,6 @@
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../../../pages/api/auth/[...nextauth]";
-import getCategories from "../../../../../lib/DB/server/getCategories";
+import getCategories from "../../../../../lib/DB/both/getCategories";
 import RecipeForm from "../../../../../components/recipe/recipe_form/RecipeForm";
 import getRecipeById from "../../../../../lib/DB/server/getRecipeById";
 import {Metadata} from "next";

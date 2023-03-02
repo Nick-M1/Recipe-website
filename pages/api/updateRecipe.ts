@@ -26,7 +26,7 @@ export default async function handler(
 
     await setDoc(
         doc(db, 'recipes', recipe.id),
-        recipe
+        { ...recipe, edited_at: Date.now()}
 
     ).finally(() =>
         res.status(200).json({ body: recipe.id }))

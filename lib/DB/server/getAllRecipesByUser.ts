@@ -1,4 +1,4 @@
-import getCategories from "./getCategories";
+import getCategories from "../both/getCategories";
 import {db} from "../../../firebase";
 import {collection, doc, getDoc, getDocs, query, where} from "@firebase/firestore";
 

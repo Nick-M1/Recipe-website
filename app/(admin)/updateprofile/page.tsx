@@ -1,4 +1,4 @@
-import UpdateProfile from "../../../components/accounts/UpdateProfile";
+import UpdateProfile from "../../../components/dashboard/UpdateProfile";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 import getUserByEmail from "../../../lib/DB/server/getUserByEmail";

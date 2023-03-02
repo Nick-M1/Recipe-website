@@ -1,13 +1,13 @@
-import DemoComponent from "./DemoComponent";
-import getAllRecipes from "../../../lib/DB/server/getAllRecipes";
-// import SearchbarTEST from "../../../components/UNUSED/SearchbarTEST.tsx.txt";
+import SuccessAlert from "../../../components/UNUSED/SuccessAlert";
+import Tester from "../../../components/UNUSED/TESTER";
+
 
 export default async function Page() {
-    const allRecipes = await getAllRecipes()
 
     return (
         <div className='p-10'>
-            {/*<SearchbarTEST allRecipes={allRecipes}/>*/}
+            {/*<SuccessAlert/>*/}
+            <Tester/>
         </div>
     );
 }

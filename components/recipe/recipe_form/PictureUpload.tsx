@@ -7,8 +7,8 @@ import PictureUploadDropzoneLayout from "./dropzone_custom/PictureUploadDropzone
 import PictureUploadDropzoneInput from "./dropzone_custom/PictureUploadDropzoneInput";
 
 type Props = {
-    selectedPicture: File | null
-    setSelectedPicture: Dispatch<SetStateAction<File | null>>
+    selectedPicture: File | string | null
+    setSelectedPicture: Dispatch<SetStateAction<File | string | null>>
 
     isValid: boolean
 }
@@ -67,7 +67,15 @@ export default function PictureUpload({ selectedPicture, setSelectedPicture, isV
                     )
                     : (
                         <div className='relative h-48 w-full md:w-[40rem] flex justify-center my-1 my:py-0'>
-                            <Image src={URL.createObjectURL(selectedPicture)} alt={''} height={200} width={200} className='object-cover'/>
+                            <Image
+                                src={
+                                    typeof selectedPicture == 'string' ? selectedPicture : URL.createObjectURL(selectedPicture)
+                                }
+                                alt={''}
+                                height={200}
+                                width={200}
+                                className='object-cover'
+                            />
                         </div>
                     )
                 }

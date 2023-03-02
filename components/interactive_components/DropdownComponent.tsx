@@ -5,6 +5,7 @@ import {ChevronDownIcon} from "@heroicons/react/24/solid";
 import {Fragment} from "react";
 import Link from "next/link";
 import {classNames} from "../../lib/utils/textUtils";
+import searchUrlBuilder from "../../lib/utils/searchUrlBuilder";
 
 //todo: Refactor to be more versatile & create wrapper for sort options
 
@@ -13,7 +14,7 @@ import {classNames} from "../../lib/utils/textUtils";
 // }
 
 // export default function DropdownComponent({ optionNames }: Props) {
-export default function DropdownComponent({ optionNames, currentSort }: { optionNames: SortOptionsRecipeAndAuthor[], currentSort: string }) {
+export default function DropdownComponent({ optionNames, currentSort, currentCategory }: { optionNames: SortOptionsRecipeAndAuthor[], currentSort: string, currentCategory: string }) {
     return (
         <Menu as="div" className="relative inline-block text-left px-3 py-1">
             <div>
@@ -44,7 +45,7 @@ export default function DropdownComponent({ optionNames, currentSort }: { option
                             <Menu.Item key={optionItem.name}>
                                 {({active}) => (
                                     <Link
-                                        href={`search?ordering=${optionItem.query}`}
+                                        href={searchUrlBuilder(optionItem.query, currentCategory)}
                                         className={
                                             classNames(
                                                 currentSort == optionItem.query ? 'font-semibold text-gray-800' : 'text-gray-500',
@@ -55,17 +56,6 @@ export default function DropdownComponent({ optionNames, currentSort }: { option
                                         {optionItem.name}
                                     </Link>
 
-                                    // <a
-                                    //     onClick={() => setSelectedSort(index)}
-                                    //     className={
-                                    //         classNames(
-                                    //             index == selectedSort ? 'font-semibold text-gray-800' : 'text-gray-500',
-                                    //             active ? 'bg-gray-100' : '',
-                                    //             'block px-4 py-2 text-sm smooth-transition'
-                                    //         )}
-                                    // >
-                                    //     {option.name}
-                                    // </a>
                                 )}
                             </Menu.Item>
                         ))}

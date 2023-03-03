@@ -43,9 +43,9 @@ export default function RecipeCard({recipesAndAuthors, flexGrid, quickview, user
                                             <dt className="text-lg font-medium text-gray-500 truncate">
                                                 { recipeAndAuthor.recipe.title}
                                             </dt>
-                                            <dt className="text-xs font-light border border-gray-200 p-1 rounded-lg text-gray-500 truncate">
+                                            <Link href={`profile/${recipeAndAuthor.author.id}`} className="text-xs font-light border border-gray-200 p-1 rounded-lg text-gray-500 truncate shadow-teal-400 smooth-transition hover:drop-shadow-md hover:shadow-sm hover:text-teal-600">
                                                 by { recipeAndAuthor.author.name}
-                                            </dt>
+                                            </Link>
                                         </div>
                                         <dd>
                                             <ReactMarkdown className="text-sm text-gray-900 opacity-70 truncate ">{ recipeAndAuthor.recipe.description != '' ? recipeAndAuthor.recipe.description : '...'}</ReactMarkdown>

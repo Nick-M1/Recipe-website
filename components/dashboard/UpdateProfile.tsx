@@ -110,7 +110,7 @@ export default function UpdateProfile({user}: Prop) {
             <div className="">
                 <div className="max-w-6xl">
                     <h2 className="text-md leading-6 font-medium text-gray-900">
-                        Update Profile Display-name
+                        Update Profile Display Name
                     </h2>
                     <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div className="">
@@ -164,7 +164,7 @@ export default function UpdateProfile({user}: Prop) {
                     <h2 className="text-md leading-6 font-medium text-gray-900">
                         Change Profile Picture
                     </h2>
-                    <div className="mt-2 grid grid-cols-2 gap-5">
+                    <div className="mt-2 grid md:grid-cols-2 gap-5">
                         <div className="">
                             <div className="flex">
 

@@ -21,6 +21,7 @@ export default function RecipeDelete({ recipe, user }: Props) {
 
         const res = await fetch(
             '/api/deleteRecipe',
+            // '/api/recipe',
             {
                 method: 'DELETE',
                 headers: {
@@ -32,6 +33,7 @@ export default function RecipeDelete({ recipe, user }: Props) {
             }
         )
         const resData = await res.json()
+        console.log(resData)
 
         if (resData.body == 'method not allowed')
             return          //todo tell user there is an error

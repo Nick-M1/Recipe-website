@@ -35,7 +35,7 @@ export default function MyRecipes({ recipesAndAuthors, user }: Props) {
                         </h2>
                     </div>
 
-                    <RecipeCard recipesAndAuthors={recipesAndAuthors} user={user} quickview={false}/>
+                    <RecipeCard recipesAndAuthors={recipesAndAuthors} user={user} quickview={false} flexGrid={true}/>
                 </div>
             </div>
         </>

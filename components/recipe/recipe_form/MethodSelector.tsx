@@ -45,14 +45,14 @@ export default function MethodSelector({ selectedMethod, setSelectedMethod, isVa
 
     return (
         <>
-            <main className='pb-10'>
-                <div className="space-y-6">
+            <main >
+                <div>
                     <div>
                         <h1 className={`text-lg leading-6 font-medium ${ isValid || selectedMethod.length != 0 ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
                             Method
                         </h1>
-                        <p className={`mt-1 text-sm ${ isValid || selectedMethod.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
-                            Fill in the method to create your new recipe.
+                        <p className={`mt-1 mb-1.5 text-sm ${ isValid || selectedMethod.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
+                            Fill in the method to create your new recipe
                         </p>
                     </div>
 
@@ -111,7 +111,7 @@ export default function MethodSelector({ selectedMethod, setSelectedMethod, isVa
                                 </div>
                             </div>
                         </div>
-                        <div className="border-b border-gray-200">
+                        <div >
                             <ul className="divide-y divide-gray-200">
                                 {selectedMethod.map((method, idx) => (
                                     <li key={idx} className="py-4 flex">
@@ -125,9 +125,7 @@ export default function MethodSelector({ selectedMethod, setSelectedMethod, isVa
                                                 </span>
 
                                                 <br/>
-                                                {/*<p className=''>*/}
-                                                    <ReactMarkdown className='ml-4 text-sm text-gray-500 max-w-full'>{method.description}</ReactMarkdown>
-                                                {/*</p>*/}
+                                                <ReactMarkdown className='ml-4 text-sm text-gray-500 max-w-full'>{method.description}</ReactMarkdown>
                                                 <p className='ml-4 mt-4 text-sm text-gray-500'>
                                                     Image urls:
 
@@ -153,7 +151,7 @@ export default function MethodSelector({ selectedMethod, setSelectedMethod, isVa
                                     </li>
                                 ))}
                             </ul>
-                            <p className={`text-sm italic text-red-400 ${isValid || selectedMethod.length != 0 ? 'opacity-0' : 'opacity-100 pb-2'}`}>Please add at least 1 method</p>
+                            <p className={`text-sm italic text-red-400 ${isValid || selectedMethod.length != 0 ? 'hidden' : 'block'}`}>Please add at least 1 method</p>
                         </div>
                     </div>
                 </div>

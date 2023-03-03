@@ -8,17 +8,18 @@ import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLike
 
 type Props = {
     recipesAndAuthors: RecipeAndAuthor[]
+    flexGrid: boolean
     quickview: boolean
     user: UserDB | null
 }
 
-export default function RecipeCard({recipesAndAuthors, quickview, user}: Props) {
+export default function RecipeCard({recipesAndAuthors, flexGrid, quickview, user}: Props) {
     const [open, setOpen] = useState(false);
     const [selectedRecipe, setSelectedRecipe] = useState<RecipeAndAuthor | null>(null);
 
     return (
         <>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`grid grid-cols-1 gap-5 ${flexGrid ? 'sm:grid-cols-2 lg:grid-cols-3' : ''}`}>
                 {recipesAndAuthors.map(( recipeAndAuthor, index) => (
                     <div
                         key={index}

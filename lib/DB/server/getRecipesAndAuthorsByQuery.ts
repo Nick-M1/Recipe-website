@@ -1,6 +1,6 @@
 import {db} from "../../../firebase";
 import {collection, doc, getDoc, getDocs, limit, orderBy, query, startAt, where} from "@firebase/firestore";
-import {allSortOptions} from "../../utils/allRecipeSortOptions";
+import {allSortOptions} from "../both/allRecipeSortOptions";
 
 // Only works on server
 export default async function getAllRecipesAndAuthorsByQuery(

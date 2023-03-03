@@ -4,11 +4,11 @@
 
 @layer components {
     .btn-primary {
-        @apply rounded-md border border-transparent drop-shadow-md bg-teal-600 py-3 px-8 text-center font-medium text-white tracking-wide shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-700 focus:ring-offset-2 transition duration-300 ease-out
+        @apply rounded-md border border-transparent drop-shadow-md shadow-sm bg-teal-600 py-3 px-8 text-center font-medium text-white tracking-wide hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-700 focus:ring-offset-2 transition duration-300 ease-out
     }
 
     .btn-secondary {
-        @apply rounded-md border border-transparent drop-shadow-md bg-teal-400 py-3 px-8 text-center font-medium text-white tracking-wide shadow-sm hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-gray-50 focus:ring-cyan-500 focus:ring-offset-2 transition duration-300 ease-out
+        @apply rounded-md border border-transparent drop-shadow-md shadow-sm bg-teal-400 py-3 px-8 text-center font-medium text-white tracking-wide hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-gray-50 focus:ring-cyan-500 focus:ring-offset-2 transition duration-300 ease-out
     }
 
     .btn-tertiary {
@@ -20,7 +20,7 @@
     }
 
     .smooth-transition {
-        @apply transition duration-300 ease-out
+        @apply transition duration-300 ease-in-out
     }
 
     .text-gradient {
@@ -48,5 +48,28 @@
 
     .display-img {
         @apply rounded-lg drop-shadow-md smooth-transition
+    }
+}
+
+
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 30vh;
+        background: #4f536e2b;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #b9bacd9b;
+        border-radius: 100vh;
+        border: 3px solid #f6f7edc3;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #27222c3e;
     }
 }

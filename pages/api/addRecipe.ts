@@ -35,6 +35,7 @@ export default async function handler(
             numberOfBookmarks: 0,
             created_at: currentTime,
             edited_at: currentTime,
+            comments: []
         }
 
     ).finally(() => res.status(200).json({ body: newId }))

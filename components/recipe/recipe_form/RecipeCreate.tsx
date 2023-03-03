@@ -4,11 +4,12 @@ import {Session} from "next-auth";
 
 type Props = {
     sessionAuth: Session | null
-    categories: Category[]
+    allCategories: Category[]
+    allLabels: string[]
 }
 
 
-export default function RecipeCreate({ sessionAuth, categories }: Props) {
+export default function RecipeCreate({ sessionAuth, allCategories, allLabels }: Props) {
 
     return (
         <div className='py-3'>
@@ -16,7 +17,8 @@ export default function RecipeCreate({ sessionAuth, categories }: Props) {
                 sessionAuth={sessionAuth}
                 buttonLabel="Create"
                 editMode={false}
-                allCategories={categories}
+                allCategories={allCategories}
+                allLabels={allLabels}
             />
         </div>
     );

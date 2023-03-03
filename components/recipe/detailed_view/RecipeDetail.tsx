@@ -8,9 +8,12 @@ import {dateFormatter} from "../../../lib/utils/time-formatter";
 import BottomToastPopupServerWrapper from "../../interactive_components/PopupSmall/BottomToastPopupServerWrapper";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
+import CommentSection from "./comment_section/CommentSection";
+import RecipeCard from "../search/RecipeCard";
 
 type Props = {
     recipe: Recipe
+    recommendedRecipes: RecipeAndAuthor[]
     author: UserDB
 
     user: UserDB | null
@@ -18,11 +21,13 @@ type Props = {
 }
 
 const ONE_WEEK_UNIX = 604_800_000
-export default function RecipeDetail({ recipe, author, user, currentTime }: Props) {
+export default function RecipeDetail({ recipe, recommendedRecipes, author, user, currentTime }: Props) {
     dayjs.extend(relativeTime)
 
     const isEditor = user != null && recipe.author == user.email
-    const recentlyCreated = isEditor && recipe.created_at > (currentTime - 50_000)           // for success pop-up
+
+    const recentlyCreated = isEditor && recipe.edited_at > (currentTime - 50_000)           // for success pop-up
+    const successMsg = recipe.created_at == recipe.edited_at ? 'Recipe has been created successfully' : 'Recipe has been updated successfully'
 
     const timeDisplayer: () => string = () => {
         const isEdited = recipe.created_at != recipe.edited_at
@@ -94,8 +99,14 @@ export default function RecipeDetail({ recipe, author, user, currentTime }: Prop
                                 <div className="mt-3">
                                     { recipe.categories.map(category => (
                                         <Link key={category.id} href={searchUrlBuilder('', category.href)}
-                                              className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 ">
+                                              className="inline-flex items-center px-3 py-0.5 mr-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 capitalize">
                                             {category.title}
+                                        </Link>
+                                    ))}
+                                    { recipe.labels.map(labels => (
+                                        <Link key={labels} href={'#'}
+                                              className="inline-flex items-center px-3 py-0.5 mr-0.5 rounded-full text-sm font-medium bg-gray-100 text-teal-600 capitalize">
+                                            {labels}
                                         </Link>
                                     ))}
 
@@ -126,7 +137,7 @@ export default function RecipeDetail({ recipe, author, user, currentTime }: Prop
                             </div>
                         </div>
 
-                        <section aria-labelledby="related-heading" className="mt-10 border-t border-gray-200 py-7 px-4 sm:px-0" >
+                        <section aria-labelledby="related-heading" className="mt-10 border-t border-gray-200 pt-7 pb-14 px-4 sm:px-0" >
                             <h2 className="text-gray-600 font-semibold tracking-wide text-xl" > Directions 🗒️: </h2>
                             <ol className="">
                                 {recipe.method.map( (methodItem, idx) => (
@@ -146,20 +157,30 @@ export default function RecipeDetail({ recipe, author, user, currentTime }: Prop
                             </ol>
                         </section>
 
-                        {/*<section*/}
-                        {/*    aria-labelledby="related-heading"*/}
-                        {/*    className="mt-10 border-t border-gray-200 py-16 px-4 sm:px-0"*/}
-                        {/*>*/}
-                        {/*    <h2*/}
-                        {/*        id="related-heading"*/}
-                        {/*        className="text-xl font-bold text-gray-900"*/}
-                        {/*      >*/}
-                        {/*        Other popular recipes*/}
-                        {/*      </h2>*/}
-                        {/*</section>*/}
+
+                        <section
+                            aria-labelledby="related-heading"
+                            className="mt-10 border-t border-gray-200 py-8 px-4 sm:px-0 md:grid md:grid-cols-3 md:gap-5"
+                        >
+                            <div className='md:col-span-2'>
+                                <h2 className="text-gray-600 font-semibold tracking-wide text-xl flex pb-2">
+                                    Comments
+                                    <Image src={'/comment-section.png'} alt='' width={50} height={50} className='h-7 w-7 mx-2'/> :
+                                </h2>
+                                <CommentSection recipeId={recipe.id} comments={recipe.comments} user={user}/>
+                            </div>
+                            <div className='mt-16 pt-7 border-t border-gray-200 md:mt-0 md:pt-0 md:border-t-0 md:pl-4'>
+                                <h2 className="text-gray-600 font-semibold tracking-wide text-xl flex pb-2">
+                                    Other popular recipes
+                                <Image src={'/recommended-recipes.png'} alt='' width={50} height={50} className='h-7 w-7 mx-2'/> :
+                            </h2>
+                                <RecipeCard recipesAndAuthors={recommendedRecipes} quickview={true} user={user} flexGrid={false}/>
+                            </div>
+
+                        </section>
                     </div>
                 </main>
-                <BottomToastPopupServerWrapper isOpen={recentlyCreated} msgText={'Recipe has been created'}/>
+                <BottomToastPopupServerWrapper isOpen={recentlyCreated} msgText={successMsg}/>
             </div>
         </>
     );

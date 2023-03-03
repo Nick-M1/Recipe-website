@@ -36,12 +36,12 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
     };
 
     return (
-        <div className='pt-3'>
+        <div>
             <div>
-                <h1 className={`text-lg leading-6 font-medium ${ isValid || selectedIngredients.length != 0 ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
+                <h1 className={`text-lg leading-6 font-medium ${ isValid || (selectedIngredients.length != 0) ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
                     Ingredients
                 </h1>
-                <p className={`mt-1 text-sm ${ isValid || selectedIngredients.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
+                <p className={`my-1 text-sm ${ isValid || selectedIngredients.length != 0 ? 'text-gray-500' : 'text-red-400 dark:text-red-500' }`}>
                     Add the necessary ingredients for your recipe.
                 </p>
             </div>
@@ -150,7 +150,7 @@ export default function IngredientsSelector({ selectedIngredients, setSelectedIn
                             </div>
                         </div>
                     </section>
-                    <p className={`pb-4 sm:pb-8 text-sm italic text-red-400 ${isValid || selectedIngredients.length != 0 ? 'opacity-0' : 'opacity-100'}`}>Please add at least 1 ingredient</p>
+                    <p className={`text-sm italic text-red-400 ${isValid || selectedIngredients.length != 0 ? 'hidden' : 'block'}`}>Please add at least 1 ingredient</p>
                 </main>
             </div>
         </div>

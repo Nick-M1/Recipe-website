@@ -5,15 +5,15 @@ import getUserByEmail from "../../../lib/DB/server/getUserByEmail";
 import {getServerSession} from "next-auth";
 import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 import {Metadata} from "next";
-import {allSortOptions} from "../../../lib/utils/allRecipeSortOptions";
+import {allSortOptions} from "../../../lib/DB/both/allRecipeSortOptions";
 import getAllRecipesAndAuthorsByQuery from "../../../lib/DB/server/getRecipesAndAuthorsByQuery";
 import getCategories from "../../../lib/DB/both/getCategories";
+import getAllRecipes from "../../../lib/DB/server/getAllRecipes";
 
+export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
     title: 'Search'
 }
-
-export const dynamic = 'force-dynamic'
 
 type PageProp = {
     searchParams: {

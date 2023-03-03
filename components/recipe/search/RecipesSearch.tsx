@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import RecipeCard from "./RecipeCard";
 import Image from "next/image";
 import DropdownComponent from "../../interactive_components/DropdownComponent";
-import {allSortOptions} from "../../../lib/utils/allRecipeSortOptions";
+import {allSortOptions} from "../../../lib/DB/both/allRecipeSortOptions";
 import Pagination from "../../interactive_components/Pagination/Pagination";
 import RecipeFilterPopover from "./RecipeFilterPopover";
 
@@ -62,7 +62,7 @@ export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, 
                     <div><DropdownComponent optionNames={allSortOptions} currentSort={currentSort} currentCategory={currentCategory} /></div>
                 </div>
 
-                <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user}/>
+                <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user} flexGrid={true}/>
 
                 <div className='float-right pt-4'>
                     {/* todo: FIX URL WITH FUNCTION UTILS */}

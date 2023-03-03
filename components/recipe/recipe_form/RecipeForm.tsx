@@ -15,18 +15,22 @@ import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
 import {storage} from "../../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import SpinnerComponent from "../../interactive_components/SpinnerComponent";
+import LabelSelector from "./LabelSelector";
+import {Transition} from "@headlessui/react";
+import smoothScroll from "../../../lib/utils/smooth-scroll";
 
 type Props = {
     sessionAuth: Session | null
     buttonLabel: string
     editMode: boolean
     allCategories: Category[]
+    allLabels: string[]
     recipe?: Recipe
 }
 
-const allFieldNames = [ 'Title', 'Description', 'Category', 'Ingredients', 'Method', 'Cook time', 'Picture of the food' ]
+const allFieldNames = [ 'Title', 'Description', 'Category', 'Labels', 'Ingredients', 'Method', 'Cook time', 'Picture of the food' ]
 
-export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCategories, recipe }: Props) {
+export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCategories, allLabels, recipe }: Props) {
 
     // Incorrect params - Coding error
     if (editMode && recipe == null)
@@ -48,14 +52,16 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
     const [selectedDescription, setSelectedDescription] = useState(editMode ? recipe!.description : '')
 
     const [selectedCategory, setSelectedCategory] = useState<Category>(editMode ? allCategories[recipe!.categories[0].id-1] : allCategories[0])
+    const [selectedlabels, setSelectedlabels] = useState<string[]>(editMode ? recipe!.labels : [])
+
     const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(editMode ? recipe!.ingredients : [])
     const [selectedMethod, setSelectedMethod] = useState<MethodItem[]>(editMode ? recipe!.method : [])
 
     const [selectedCookTime, setSelectedCookTime] = useState(editMode ? recipe!.cookTime : 30)
     const [selectedPicture, setSelectedPicture] = useState<File | string | null>(editMode ? recipe!.imgSrc : null)
 
-    const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
-    const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true])
+    const allFields = [ selectedTitle, selectedDescription, selectedCategory, selectedlabels, selectedIngredients, selectedMethod, selectedCookTime, selectedPicture ]
+    const [incorrectFields, setIncorrectFields] = useState<boolean[]>([true, true, true, true, true, true, true, true])
 
     const [isProgressing, setIsProgressing] = useState(false)
 
@@ -64,7 +70,9 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
         const newRecipe = {
             id: editMode ? recipe?.id : '0',
             author: sessionAuth.user?.email,
+
             categories: [selectedCategory],
+            labels: selectedlabels,
 
             title: selectedTitle,
             cookTime: selectedCookTime,
@@ -80,11 +88,13 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             numberOfBookmarks: editMode ? recipe?.numberOfBookmarks : 0,
 
             created_at: editMode ? recipe?.created_at : 0,
-            edited_at: 0
+            edited_at: 0,
+            comments: editMode ? recipe?.comments : [],
         } as Recipe
 
         const res = await fetch(
             editMode ? '/api/updateRecipe' : '/api/addRecipe',
+            // '/api/recipe',
             {
                 method: editMode ? 'PUT' : 'POST',
                 headers: {
@@ -102,7 +112,8 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             return          //todo tell user there is an error
         }
 
-        router.push(`/recipe/${resData.body}`)
+        setTimeout(() => router.push(`/recipe/${resData.body}`), 500)
+
     }
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -121,8 +132,10 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
 
         setIncorrectFields( checkedFields )
 
-        if (checkedFields.some(field => !field))          //todo: check all & popup
+        if (checkedFields.some(field => !field)) {
+            setTimeout(() => smoothScroll('form-submit-button', 'end'), 200)
             return
+        }
 
         // Checks done, start uploads
         setIsProgressing(true)
@@ -173,73 +186,92 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
                     <div className="mt-5 md:mt-0 md:col-span-2">
                         <form onSubmit={handleFormSubmit}>
                             <div className="shadow sm:rounded-md sm:overflow-hidden">
-                                <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-                                    <div>
-                                        <h1 className={`text-lg leading-6 font-medium ${incorrectFields[0] || selectedTitle != '' ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
-                                            Title
-                                        </h1>
-                                        <input
-                                            type="text"
-                                            name="title"
-                                            id="title"
-                                            className={`p-2.5 mt-1 block w-full input-secondary ${incorrectFields[0] || selectedTitle != '' ? '' : 'input-secondary-invalid' }`}
-                                            placeholder="Write a title for your recipe..."
-                                            defaultValue={
-                                                editMode && recipe != null ? recipe.title : undefined
-                                            }
-                                            onChange={(e) => setSelectedTitle(e.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <h1 className={`text-lg leading-6 font-medium ${incorrectFields[1] || selectedDescription != '' ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
-                                            Description
-                                        </h1>
-                                        <div className="mt-1">
-                                            <textarea
-                                                id="desc"
-                                                name="desc"
-                                                rows={3}
-                                                className={`p-2.5 mt-1 block w-full input-secondary ${incorrectFields[1] || selectedDescription != '' ? '' : 'input-secondary-invalid' }`}
-                                                placeholder="Write a short description..."
+                                <div className="px-4 py-5 bg-white space-y-6 sm:p-6 [&>*]:border-b [&>*]:pb-6">
+                                    <div className='space-y-6'>
+                                        <div>
+                                            <h1 className={`text-lg leading-6 font-medium ${incorrectFields[0] || selectedTitle != '' ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
+                                                Title
+                                            </h1>
+                                            <input
+                                                type="text"
+                                                name="title"
+                                                id="title"
+                                                className={`p-2.5 mt-1 block w-full input-secondary ${incorrectFields[0] || selectedTitle != '' ? '' : 'input-secondary-invalid' }`}
+                                                placeholder="Write a title for your recipe..."
                                                 defaultValue={
-                                                    editMode && recipe != null ? recipe.description : undefined
+                                                    editMode && recipe != null ? recipe.title : undefined
                                                 }
-                                                onChange={(e) => setSelectedDescription(e.target.value)}
+                                                onChange={(e) => setSelectedTitle(e.target.value)}
                                             />
                                         </div>
-                                        <p className="mt-2 text-sm text-gray-500">
-                                            Write a short and precise description about your recipe.
-                                        </p>
+                                        <div>
+                                            <h1 className={`text-lg leading-6 font-medium ${incorrectFields[1] || selectedDescription != '' ? 'text-gray-900' : 'text-red-700 dark:text-red-500' }`}>
+                                                Description
+                                            </h1>
+                                            <div className="mt-1">
+                                                <textarea
+                                                    id="desc"
+                                                    name="desc"
+                                                    rows={3}
+                                                    className={`p-2.5 mt-1 block w-full input-secondary ${incorrectFields[1] || selectedDescription != '' ? '' : 'input-secondary-invalid' }`}
+                                                    placeholder="Write a short description..."
+                                                    defaultValue={
+                                                        editMode && recipe != null ? recipe.description : undefined
+                                                    }
+                                                    onChange={(e) => setSelectedDescription(e.target.value)}
+                                                />
+                                            </div>
+                                            <p className="mt-2 text-sm text-gray-500">
+                                                Write a short and precise description about your recipe.
+                                            </p>
+                                        </div>
                                     </div>
                                     <CategorySelector allCategories={allCategories} selectedCategory={selectedCategory}
                                                       setSelectedCategory={setSelectedCategory}
                                                       isValid={incorrectFields[2]}
                                     />
+                                    <LabelSelector allLabels={allLabels}
+                                                   selectedlabels={selectedlabels}
+                                                   setSelectedlabels={setSelectedlabels}
+                                                   isValid={incorrectFields[3]}
+                                    />
                                     <IngredientsSelector selectedIngredients={selectedIngredients}
                                                          setSelectedIngredients={setSelectedIngredients}
-                                                         isValid={incorrectFields[3]}
+                                                         isValid={incorrectFields[4]}
                                     />
                                     <MethodSelector selectedMethod={selectedMethod}
                                                     setSelectedMethod={setSelectedMethod}
-                                                    isValid={incorrectFields[4]}
+                                                    isValid={incorrectFields[5]}
                                     />
                                     <TimePicker selectedCookTime={selectedCookTime}
                                                 setSelectedCookTime={setSelectedCookTime}
                                     />
                                     <PictureUpload selectedPicture={selectedPicture}
                                                    setSelectedPicture={setSelectedPicture}
-                                                   isValid={incorrectFields[6]}
+                                                   isValid={incorrectFields[7]}
                                     />
                                 </div>
-                                { incorrectFields.some(field => !field) && (
-                                    <div className='px-4'>
-                                        <FormMissingitems incorrectFields={incorrectFields} allFieldNames={allFieldNames}/>
-                                    </div>
-                                )}
+
+                                {/*<Transition*/}
+                                {/*    show={incorrectFields.some(field => !field)}*/}
+                                {/*    enter="transition-opacity duration-200"*/}
+                                {/*    enterFrom="opacity-0"*/}
+                                {/*    enterTo="opacity-100"*/}
+                                {/*    leave="transition-opacity duration-200"*/}
+                                {/*    leaveFrom="opacity-100"*/}
+                                {/*    leaveTo="opacity-0"*/}
+                                {/*>*/}
+                                    { incorrectFields.some(field => !field) && (
+                                        <div className='px-4'>
+                                            <FormMissingitems incorrectFields={incorrectFields} allFieldNames={allFieldNames}/>
+                                        </div>
+                                    )}
+                                {/*</Transition>*/}
 
                                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                                     <button
                                         type="submit"
+                                        id='form-submit-button'
                                         className={`w-full btn-secondary py-3 px-8 flex items-center justify-center text-base font-medium ${sessionAuth == null ? 'cursor-not-allowed' : ''}`}
                                     >
                                         { isProgressing

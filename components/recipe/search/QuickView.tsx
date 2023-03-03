@@ -114,7 +114,7 @@ export default function QuickView({open, setOpen, recipeAndAuthor, user}: Props)
                                                 className="mt-2"
                                             >
                                                 <div className="flex justify-between">
-                                                    <BookmarkAndLikesHander recipe={recipeAndAuthor.recipe} user={user} showText={true}/>
+                                                    <BookmarkAndLikesHander recipe={recipeAndAuthor.recipe} user={user} showText={false}/>
 
                                                     <p className="mt-8 text-sm font-weight text-gray-500 truncate">
                                                         by {recipeAndAuthor.author.name}

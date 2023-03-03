@@ -1,0 +1,87 @@
+import {NextRequest, NextResponse} from "next/server";
+import getAllRecipes from "../../../lib/DB/server/getAllRecipes";
+import {RequestCookies} from "next/dist/compiled/@edge-runtime/cookies";
+import {deleteDoc, doc, setDoc} from "@firebase/firestore";
+import {db} from "../../../firebase";
+import {randomUUID} from "crypto";
+
+export const dynamic = 'force-dynamic'
+
+function isAutheticated(cookies: RequestCookies) {
+    return cookies.has('next-auth.session-token')
+}
+
+
+
+// // GETs all recipe data, but also returns sensitive info that needs to be removed...
+// export async function GET(request: NextRequest) {
+//     if (!isAutheticated(request.cookies))
+//         return NextResponse.json({response: 'Account not authenticated'})
+//
+//     const allRecipes = await getAllRecipes()
+//     return NextResponse.json({ allRecipes: allRecipes })
+// }
+
+// PUT - Updating an already existing recipe
+export async function PUT(request: NextRequest) {
+    if (!isAutheticated(request.cookies))
+        return NextResponse.redirect('/signin')
+
+    let response: NextResponse | null = null
+
+    const requestJson = await request.json()
+    const recipe = requestJson.newRecipe as Recipe
+
+    await setDoc(
+        doc(db, 'recipes', recipe.id),
+        { ...recipe, edited_at: Date.now()}
+
+    ).finally(() => response = NextResponse.json({ body: recipe.id }) )
+
+    if (response != null)
+        return response
+}
+
+// POST - Uploading a new recipe
+export async function POST(request: NextRequest) {
+    if (!isAutheticated(request.cookies))
+        return NextResponse.redirect('/signin')
+
+    let response: NextResponse | null = null
+    const requestJson = await request.json()
+
+    const recipe = requestJson.newRecipe as Recipe
+    const newId = randomUUID()
+    const currentTime = Date.now()
+
+    await setDoc(
+        doc(db, 'recipes', newId),
+        {
+            ...recipe,
+            id: newId,
+            numberOfLikes: 0,
+            numberOfBookmarks: 0,
+            created_at: currentTime,
+            edited_at: currentTime,
+        }
+
+    ).finally(() => response = NextResponse.json({ body: newId }) )
+
+    if (response != null)
+        return response
+}
+
+// DELETE - Delete an already existing recipe
+export async function DELETE(request: NextRequest) {
+    if (!isAutheticated(request.cookies))
+        return NextResponse.redirect('/signin')
+
+    const requestJson = await request.json()
+    const recipeId = requestJson.recipeId as string
+
+    deleteDoc(
+        doc(db, 'recipes', recipeId),
+    )
+
+    return NextResponse.json({ body: 'success' })
+}

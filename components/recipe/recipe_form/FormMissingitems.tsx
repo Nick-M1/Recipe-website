@@ -7,6 +7,7 @@ type Props = {
 }
 
 export default function FormMissingitems({ incorrectFields, allFieldNames }: Props) {
+
     return (
         <div className="flex justify-center mb-4">
             <div className="w-full rounded-md bg-red-50 p-4 mt-4">

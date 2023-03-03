@@ -81,7 +81,7 @@ export default function BookmarkAndLikesSignedin({ recipe, user, showText }: Pro
                 <Image src={'/animations/bookmark.png'} alt={''} width={30} height={30} className={`hidden md:block md:group-hover:hidden ${isBookmarked ? 'md:hidden' : 'grayscale'}`}/>
                 <Image src={'/animations/bookmark.gif'} alt={''} width={30} height={30} className={`group-hover:block group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isBookmarked ? 'md:block' : 'md:hidden grayscale'}`}/>
 
-                <p className={`hidden ml-1 ${showText ? 'group-hover:block' : ''}`}> Save </p>
+                <p className={`hidden ml-1 ${showText ? 'md:group-hover:block' : ''}`}> Save </p>
                 <span className="ml-2 tabular-nums">
                   {isBookmarked ? recipe.numberOfBookmarks + 1 : recipe.numberOfBookmarks}
                 </span>
@@ -93,7 +93,7 @@ export default function BookmarkAndLikesSignedin({ recipe, user, showText }: Pro
             >
                 <Image src={'/animations/heart-like.png'} alt={''} width={30} height={30} className={`hidden md:block md:group-hover:hidden ${isLiked ? 'md:hidden' : 'grayscale'}`}/>
                 <Image src={'/animations/heart-like.gif'} alt={''} width={30} height={30} className={`group-hover:block group-active:scale-150 group-active:-translate-y-3 smooth-transition ${isLiked ? 'md:block' : 'md:hidden grayscale'}`}/>
-                <p className={`hidden ml-1 ${showText ? 'group-hover:block' : ''}`}> Like </p>
+                <p className={`hidden ml-1 ${showText ? 'md:group-hover:block' : ''}`}> Like </p>
                 <span className="ml-2 tabular-nums">
                     { isLiked ? recipe.numberOfLikes + 1 : recipe.numberOfLikes }
                 </span>

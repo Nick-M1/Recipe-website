@@ -2,6 +2,7 @@ type Recipe = {
     id: string
     author: string
     categories: Category[]
+    labels: string[]
 
     title: string
     cookTime: number        // in mins
@@ -18,6 +19,7 @@ type Recipe = {
 
     created_at: number
     edited_at: number
+    comments: CommentItem[]
 }
 
 
@@ -57,5 +59,14 @@ type SortOptionsRecipeAndAuthor = {
     name: string
     query: string
     order: 'asc' | 'desc'
+}
+
+type CommentItem = {
+    authorEmail: string
+    authorName: string
+    authorPic: string
+    rating: number
+    comment: string,
+    created_at: number,
 }
 

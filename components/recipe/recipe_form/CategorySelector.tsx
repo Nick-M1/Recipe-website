@@ -3,6 +3,7 @@ import {RadioGroup} from "@headlessui/react";
 import {CheckCircleIcon} from "@heroicons/react/24/solid";
 import getCategories from "../../../lib/DB/both/getCategories";
 import {classNames} from "../../../lib/utils/textUtils";
+import Image from "next/image";
 
 type Props = {
     allCategories: Category[]
@@ -45,14 +46,12 @@ export default function CategorySelector({allCategories, selectedCategory, setSe
                                             as="span"
                                             className="mt-1 flex items-center text-sm text-gray-500"
                                         >
+                                            <div
+                                                className="flex h-10 w-10 shrink-0 sm:h-12 sm:w-12 mr-4">
+                                                <Image src={category.img} alt={category.title} width={100} height={100} aria-hidden="true"/>
+                                            </div>
                                             {category.description}
                                         </RadioGroup.Description>
-                                        {/*<RadioGroup.Description*/}
-                                        {/*  as="span"*/}
-                                        {/*  className="mt-6 text-sm font-medium text-gray-900"*/}
-                                        {/*>*/}
-                                        {/*  {category.numOfRecipes}*/}
-                                        {/*</RadioGroup.Description>*/}
                                     </div>
                                 </div>
                                 <CheckCircleIcon

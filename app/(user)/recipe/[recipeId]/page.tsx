@@ -5,7 +5,6 @@ import {getServerSession} from "next-auth";
 import {authOptions} from "../../../../pages/api/auth/[...nextauth]";
 import getRecipeById from "../../../../lib/DB/server/getRecipeById";
 import {Metadata} from "next";
-import getAllRecipes from "../../../../lib/DB/server/getAllRecipes";
 import getAllRecipesAndAuthorsByQuery from "../../../../lib/DB/server/getRecipesAndAuthorsByQuery";
 import {allSortOptions} from "../../../../lib/DB/both/allRecipeSortOptions";
 

@@ -43,9 +43,11 @@ type MethodItem = {
 }
 
 type UserDB = {
+    id: string
     email: string
     name: string
     pic: string
+    biography: string
     likedRecipes: string[]
     bookmarkedRecipes: string[]
 }

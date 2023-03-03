@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import CommentSection from "./comment_section/CommentSection";
 import RecipeCard from "../search/RecipeCard";
+import ProfilePopup from "../../profileview/ProfilePopup";
 
 type Props = {
     recipe: Recipe
@@ -89,12 +90,15 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                                     {timeDisplayer()}
                                 </p>
 
-                                <div className='flex pt-1'>
+                                <Link href={`profile/${author.id}`} className='flex pt-1 group max-w-screen-sm'>
                                     <Image src={author.pic} alt='profile-pic' width={70} height={70} className='rounded-full h-8 w-8' />
-                                    <p className=" text-sm font-weight text-gray-500 truncate ml-2 my-auto">
+                                    <p className=" text-sm font-weight text-gray-500 truncate ml-2 my-auto group-hover:text-teal-500 smooth-transition">
                                         By {author.name}
                                     </p>
-                                </div>
+                                    <div className='invisible opacity-0 group-hover:visible hover:visible group-hover:opacity-100 hover:opacity-100 z-20 translate-y-6 -translate-x-40 transition-opacity duration-300 ease-in-out'>
+                                        <ProfilePopup author={author}/>
+                                    </div>
+                                </Link>
 
                                 <div className="mt-3">
                                     { recipe.categories.map(category => (

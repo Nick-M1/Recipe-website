@@ -48,12 +48,13 @@ export default function CommentNew({ recipeId, user }: Props) {
             setTimeout(() => {
                 setCommentState('')
                 setIsLoading(false)
+                smoothScroll('post-comment-button', 'start')
             }, 1000)
         })
     }
 
     return (
-        <div className='px-1'>
+        <div id='post-comment-button' className='px-1'>
             <h1 className="text-gray-500 review-title my-5 text-2xl">Your Review</h1>
 
             <h3>Rating</h3>
@@ -85,15 +86,15 @@ export default function CommentNew({ recipeId, user }: Props) {
                 ></textarea>
             </div>
 
-            <div id='post-comment-button' className='flex'>
+            <div className='flex'>
                 <button onClick={handleSendComment}
-                        className={`mb-5 px-6 py-2 text-center inline-block flex justify-center btn-secondary w-1/2 md:w-1/3 ${user == null ? 'cursor-not-allowed' : ''}`}
+                        className={`mb-5 px-6 py-2 text-center inline-block flex justify-center btn-secondary w-1/2 ${user == null ? 'cursor-not-allowed' : ''}`}
                 >
                     <span className={isLoading ? 'block' : 'hidden'}><SpinnerComponent size={5}/></span>
                     Post Review
                 </button>
                 { user == null && (
-                    <p className='mt-3 mb-5 px-10 py-2'>
+                    <p className='mx-auto md:px-10 py-2'>
                         <button onClick={() => signIn()} className='text-indigo-600 hover:text-indigo-800 smooth-transition'>Sign in</button>
                         {' '} to comment
                     </p>

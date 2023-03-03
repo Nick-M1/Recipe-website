@@ -133,7 +133,7 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
         setIncorrectFields( checkedFields )
 
         if (checkedFields.some(field => !field)) {
-            setTimeout(() => smoothScroll('form-submit-button', 'end'), 200)
+            setTimeout(() => smoothScroll('form-submit-button', 'center'), 200)
             return
         }
 

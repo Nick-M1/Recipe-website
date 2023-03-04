@@ -1,27 +1,61 @@
-# Next.js + Tailwind CSS Example
+## 🌭 Next.js Recipe Website 🍕
+[![Project Status: Active.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+### [🌐 Demo - hosted on vercel](https://recipe-webapp.vercel.app) 
+https://recipe-webapp.vercel.app
 
-## Deploy your own
+[//]: # (#### &#40;NOTE: Demo video at bottom&#41;)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+#### 🍔 Social Media website where users can post their own recipes online and others can view, like, bookmark and comment on the recipe.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
 
-## How to use
+## ⚡ Features
+1. Landing page (using a mobile first approach)
+2. Search page, where users can search for other recipes (can search using text, by category and can order by popularity, quickest cooking time and newest uploaded recipes)
+3. Page for each created recipe, where users can comment, like and bookmark your recipe
+4. Users can post their own recipes using the Create Recipe page (and can also update/change previously posted recipes), which uploads the changes/new recipe to FirebaseDB
+5. Dashboard Page, where users can change their display-name, biography, profile-picture
+6. Individual profile page for each user, where others can see the user's recipe posts as well as their likes and bookmarks
+7. Next Auth authentication required for posting new recipes, comments and likes/bookmarks
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+## 🏗️ Built With:
+1. Next JS 13 _(with app directory)_ + Typescript
+2. React
+3. Tailwindcss
+4. Zustand State Management
+5. Next Auth _(for authentication)_
+6. Firebase database _(using firestore and image DBs)_
+
+
+## 🌳 Environmental Variables:
+```
+    FIREBASE_CONFIG_APIKEY=
+    FIREBASE_CONFIG_STORAGEBUCKET=
+    
+    GOOGLE_ID=
+    GOOGLE_SECRET=
+    
+    FACEBOOK_ID=
+    FACEBOOK_SECRET=
+    
+    NEXTAUTH_URL=
+    NEXTAUTH_SECRET=
 ```
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+- Firebase keys are to access Firebase firestoreDB and storageDB
+- Google & Facebook keys are for Next Auth
+- NextAuth keys are for authentication
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+[//]: # (## 🎬 Demo Videos:)
+
+[//]: # (![DemoGif1.gif]&#40;public%2FDemoVids%2FDemoGif1.gif&#41;)
+
+[//]: # (![DemoGif2.gif]&#40;public%2FDemoVids%2FDemoGif2.gif&#41;)
+
+[//]: # (![DemoGif3.gif]&#40;public%2FDemoVids%2FDemoGif3.gif&#41;)
+
+[//]: # (![DemoGif4.gif]&#40;public%2FDemoVids%2FDemoGif4.gif&#41;)
+
+[//]: # (![DemoGif5.gif]&#40;public%2FDemoVids%2FDemoGif5.gif&#41;)

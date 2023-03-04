@@ -63,7 +63,7 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                             {/* Recipe info */}
                             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                                 <div className="flex sm:flex-col1">
-                                    <h1 className="flex text-3xl font-extrabold tracking-tight text-gray-900">
+                                    <h1 className="flex text-3xl font-extrabold text-gray-900">
                                         {recipe.title}
                                     </h1>
 
@@ -90,15 +90,17 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                                     {timeDisplayer()}
                                 </p>
 
-                                <Link href={`profile/${author.id}`} className='flex pt-1 group max-w-screen-sm'>
-                                    <Image src={author.pic} alt='profile-pic' width={70} height={70} className='rounded-full h-8 w-8' />
-                                    <p className=" text-sm font-weight text-gray-500 truncate ml-2 my-auto group-hover:text-teal-500 smooth-transition">
-                                        By {author.name}
-                                    </p>
-                                    <div className='invisible opacity-0 group-hover:visible hover:visible group-hover:opacity-100 hover:opacity-100 z-20 translate-y-6 -translate-x-40 transition-opacity duration-300 ease-in-out'>
+                                <div className='pt-1 group max-w-screen-sm'>
+                                    <Link href={`profile/${author.id}`} className='flex'>
+                                        <Image src={author.pic} alt='profile-pic' width={70} height={70} className='rounded-full h-8 w-8' />
+                                        <p className=" text-sm font-weight text-gray-500 truncate ml-2 my-auto group-hover:text-teal-500 smooth-transition">
+                                            By {author.name}
+                                        </p>
+                                    </Link>
+                                    <div className='hidden md:block md:opacity-0 md:hover:visible md:group-hover:opacity-100 md:hover:opacity-100 z-10 -translate-y-24 -translate-x-72 transition-opacity duration-300 ease-in-out'>
                                         <ProfilePopup author={author}/>
                                     </div>
-                                </Link>
+                                </div>
 
                                 <div className="mt-3">
                                     { recipe.categories.map(category => (

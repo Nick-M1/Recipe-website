@@ -102,13 +102,10 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
                                         )
                                     }
 
-                                    <a
-                                        href="#"
-                                        className="smooth-transition ml-5 flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-                                    >
-                                        <span className="sr-only">View notifications</span>
-                                        <BellIcon className="h-6 w-6" aria-hidden="true"/>
-                                    </a>
+                                    <Link href="/dashboard" className="smooth-transition group ml-5 flex-shrink-0 relative bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" >
+                                        <BellIcon className="h-7 w-7" aria-hidden="true"/>
+                                        <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-300 border-2 border-white rounded-full -top-1 -right-1 group-hover:bg-red-500 smooth-transition"> 4 </div>
+                                    </Link>
 
                                     {/* Profile dropdown */}
                                         <Menu as="div" className="flex-shrink-0 relative ml-5">

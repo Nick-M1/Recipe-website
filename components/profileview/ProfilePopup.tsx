@@ -24,7 +24,7 @@ export default function ProfilePopup({ author }: Props) {
                         </button>
                     </div>
                 </div>
-                <p className="text-base font-semibold leading-none text-gray-900 dark:text-white">
+                <p className="text-base font-semibold leading-none tracking-wide text-gray-900">
                     <Link href={`profile/${author.id}`}>{ author.name }</Link>
                 </p>
                 <p className="mb-3 text-sm font-normal">
@@ -35,11 +35,11 @@ export default function ProfilePopup({ author }: Props) {
                 </p>
                 <div className="flex justify-between text-sm font-light">
                     <a href="#" className="hover:underline">
-                        <span className="font-semibold text-gray-900 dark:text-white mr-1">799</span>
+                        <span className="font-semibold text-gray-900 mr-1">799</span>
                         <span>Following</span>
                     </a>
                     <a href="#" className="hover:underline mr-1">
-                        <span className="font-semibold text-gray-900 dark:text-white mr-1">3,758</span>
+                        <span className="font-semibold text-gray-900 mr-1">3,758</span>
                         <span>Followers</span>
                     </a>
                 </div>

@@ -20,7 +20,7 @@ export default function CreateAccount() {
                             alt="Shopping logo"
                         />
                     </Link>
-                    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+                    <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
                         Create account
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
@@ -110,11 +110,11 @@ export default function CreateAccount() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4">
-                        <button onClick={() => signIn('google')} className="btn-primary px-0 btn-bouncy flex justify-center bg-blue-500 hover:bg-blue-700">
+                        <button onClick={() => signIn('google')} className="btn-primary px-0 btn-bouncy flex justify-center bg-blue-500 hover:bg-blue-700 hover:ring-blue-700">
                             <BsGoogle size={18} className="mr-2 mt-0.5" />
                             <span className="sr-only">Continue with</span> Google
                         </button>
-                        <button onClick={() => signIn('facebook')} className="bg-black hover:bg-gray-800 flex justify-center btn-bouncy btn-primary px-0">
+                        <button onClick={() => signIn('facebook')} className="bg-black hover:bg-gray-800 flex justify-center btn-bouncy btn-primary px-0 hover:ring-slate-700">
                             <BsFacebook size={23} className="mr-2" />
                             <span className="sr-only">Continue with</span> Facebook
                         </button>

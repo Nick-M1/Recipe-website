@@ -5,8 +5,8 @@ import {getServerSession} from "next-auth";
 import {authOptions} from "../../../../pages/api/auth/[...nextauth]";
 import getRecipeById from "../../../../lib/DB/server/getRecipeById";
 import {Metadata} from "next";
-import getAllRecipesAndAuthorsByQuery from "../../../../lib/DB/server/getRecipesAndAuthorsByQuery";
 import {allSortOptions} from "../../../../lib/DB/both/allRecipeSortOptions";
+import getAllRecipesAndAuthorsByCategory from "../../../../lib/DB/server/getRecipesAndAuthorsByCategory";
 
 export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
     const product = await getRecipeById(recipeId);
@@ -50,7 +50,7 @@ export default async function Page({params: {recipeId}}: PageProps) {
     const user = sessionAuth != null && sessionAuth.user != null ? await getUserByEmail(sessionAuth.user.email!) : null
 
     const recipeSearchRes = await getRecipeAuthorById(recipeId)
-    const recommendedRecipes = await getAllRecipesAndAuthorsByQuery(undefined, allSortOptions[1], 0, 3 )
+    const recommendedRecipes = await getAllRecipesAndAuthorsByCategory(undefined, allSortOptions[1], 0, 3 )
     const currentTime = Date.now()
 
 

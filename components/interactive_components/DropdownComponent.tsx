@@ -14,7 +14,7 @@ import searchUrlBuilder from "../../lib/utils/searchUrlBuilder";
 // }
 
 // export default function DropdownComponent({ optionNames }: Props) {
-export default function DropdownComponent({ optionNames, currentSort, currentCategory }: { optionNames: SortOptionsRecipeAndAuthor[], currentSort: string, currentCategory: string }) {
+export default function DropdownComponent({ optionNames, currentSort, currentUrlWithoutSort }: { optionNames: SortOptionsRecipeAndAuthor[], currentSort: string, currentUrlWithoutSort: string }) {
     return (
         <Menu as="div" className="relative inline-block text-left px-3 py-1">
             <div>
@@ -45,7 +45,8 @@ export default function DropdownComponent({ optionNames, currentSort, currentCat
                             <Menu.Item key={optionItem.name}>
                                 {({active}) => (
                                     <Link
-                                        href={searchUrlBuilder(optionItem.query, currentCategory)}
+                                        // href={searchUrlBuilder(optionItem.query, currentCategory)}
+                                        href={`${currentUrlWithoutSort}${optionItem.query}`}
                                         className={
                                             classNames(
                                                 currentSort == optionItem.query ? 'font-semibold text-gray-800' : 'text-gray-500',

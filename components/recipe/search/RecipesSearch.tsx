@@ -15,6 +15,7 @@ type Props = {
     lastPageIndex: number
 
     urlBasepath: string
+    currentUrlWithoutSort: string
     currentSort: string
     recipesAndAuthors: RecipeAndAuthor[]
 
@@ -24,9 +25,7 @@ type Props = {
 }
 
 
-export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, currentSort, recipesAndAuthors, user, allCategories }: Props) {
-    const currentCategory = 'dessert'
-
+export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, currentUrlWithoutSort, currentSort, recipesAndAuthors, user, allCategories }: Props) {
     if (recipesAndAuthors.length === 0)
         return (
             <div className="px-4 py-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-15">
@@ -42,7 +41,7 @@ export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, 
                 <TitleSection titleText='Recipes' titleImg={'/ingredients.png'} small={false} withSideparagraph={true}/>
                 <div className='flex flex-row w-full -ml-4 lg:ml-1 mb-2 justify-between'>
                     <div><RecipeFilterPopover allCategories={allCategories} currentSort={currentSort} /></div>
-                    <div><DropdownComponent optionNames={allSortOptions} currentSort={currentSort} currentCategory={currentCategory} /></div>
+                    <div><DropdownComponent optionNames={allSortOptions} currentSort={currentSort} currentUrlWithoutSort={currentUrlWithoutSort} /></div>
                 </div>
 
                 <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user} flexGrid={true}/>

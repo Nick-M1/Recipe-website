@@ -1,7 +1,6 @@
-import {useState, useEffect, SetStateAction, Dispatch} from "react";
+import { SetStateAction, Dispatch} from "react";
 import {RadioGroup} from "@headlessui/react";
 import {CheckCircleIcon} from "@heroicons/react/24/solid";
-import getCategories from "../../../lib/DB/both/getCategories";
 import {classNames} from "../../../lib/utils/textUtils";
 import Image from "next/image";
 

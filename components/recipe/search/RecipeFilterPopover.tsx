@@ -19,7 +19,7 @@ export default function RecipeFilterPopover({ allCategories, currentSort }: Prop
                 {({ close }) => (
                     <>
                         <Popover.Button
-                            className='group inline-flex items-center btn-primary green-blue-dark-gradient px-5 py-2'
+                            className='group inline-flex items-center btn-primary green-blue-dark-transition-gradient px-5 py-2'
                         >
                             <p className='tracking-wide'>Filter</p>
                             <ChevronDownIcon

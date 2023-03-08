@@ -1,5 +1,4 @@
 import RecipeForm from "./RecipeForm";
-import getCategories from "../../../lib/DB/both/getCategories";
 import {Session} from "next-auth";
 
 type Props = {

@@ -1,9 +1,4 @@
-
-import React, {useEffect, useState} from "react";
-// import { useDispatch, useSelector } from "react-redux";
-
 import RecipeCard from "./RecipeCard";
-import Image from "next/image";
 import DropdownComponent from "../../interactive_components/DropdownComponent";
 import {allSortOptions} from "../../../lib/DB/both/allRecipeSortOptions";
 import Pagination from "../../interactive_components/Pagination/Pagination";

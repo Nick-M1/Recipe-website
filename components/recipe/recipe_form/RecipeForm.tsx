@@ -4,7 +4,7 @@ import IngredientsSelector from "./IngredientsSelector";
 import MethodSelector from "./MethodSelector";
 import TimePicker from "./TimePicker";
 import PictureUpload from "./PictureUpload";
-import {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {Session} from "next-auth";
 import {checkImage} from "../../../lib/utils/urlUtils";
 import {any, instanceOf} from "prop-types";
@@ -18,6 +18,8 @@ import SpinnerComponent from "../../interactive_components/SpinnerComponent";
 import LabelSelector from "./LabelSelector";
 import {Transition} from "@headlessui/react";
 import smoothScroll from "../../../lib/utils/smooth-scroll";
+import toast from "react-hot-toast";
+import {toastOptionsCustom} from "../../../lib/utils/toast-options-custom";
 
 type Props = {
     sessionAuth: Session | null
@@ -112,12 +114,18 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
             return          //todo tell user there is an error
         }
 
-        setTimeout(() => router.push(`/recipe/${resData.body}`), 500)
+        setTimeout(() => {
+            router.push(`/recipe/${resData.body}`)
+            toast.success(editMode ? 'Recipe has been edited successfully' : 'Recipe has been created successfully', { id: 'recipe', duration: 10_000 })
+        }, 500)
 
     }
 
     const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        toast.loading('Checking form entries...', { ...toastOptionsCustom, id: 'recipe' } )
+
 
         const checkedFields = allFields.map(elem => {
             if ( typeof elem == 'number')
@@ -134,11 +142,13 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
 
         if (checkedFields.some(field => !field)) {
             setTimeout(() => smoothScroll('form-submit-button', 'center'), 200)
+            toast.error('Some fields are incorrect', { id: 'recipe' })
             return
         }
 
         // Checks done, start uploads
         setIsProgressing(true)
+        toast.loading('Uploading to database...', { id: 'recipe' })
 
         // Upload picture to Firebase Storage
         if (typeof selectedPicture != 'string') {
@@ -152,6 +162,7 @@ export default function RecipeForm({ sessionAuth, buttonLabel, editMode, allCate
                 (err) => {
                     console.log(err)
                     setIsProgressing(false)
+                    toast.error('Network error', { id: 'recipe' })
                 },
 
                 () => {

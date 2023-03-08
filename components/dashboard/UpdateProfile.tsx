@@ -4,12 +4,11 @@ import {PencilIcon, CameraIcon} from "@heroicons/react/24/solid";
 import {doc, updateDoc} from "@firebase/firestore";
 import {db, storage} from "../../firebase";
 import {useRouter} from "next/navigation";
-import {checkImage} from "../../lib/utils/urlUtils";
 import Image from "next/image";
 import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
-import {v4 as uuidv4} from "uuid";
 import SpinnerComponent from "../interactive_components/SpinnerComponent";
-import BottomToastPopup from "../interactive_components/PopupSmall/BottomToastPopup";
+import toast from "react-hot-toast";
+import {toastOptionsCustom} from "../../lib/utils/toast-options-custom";
 
 type Prop = {
     user: UserDB
@@ -27,8 +26,6 @@ export default function UpdateProfile({user}: Prop) {
     const [displaynameIsloading, setDisplaynameIsloading] = useState(false);
     const [profilepicIsloading, setProfilepicIsloading] = useState(false);
 
-    const [successMessageOpen, setSuccessMessageOpen] = useState(false);
-
 
     // Extras
     const router = useRouter();
@@ -36,10 +33,15 @@ export default function UpdateProfile({user}: Prop) {
 
     // Change display name button
     const handleDisplaynameChange = () => {
-        if (displayname == '' || displayname.length < 3)
-            return
+        toast.loading('Updating display name...', { ...toastOptionsCustom, id: 'displayname' } )
 
+        if (displayname == '' || displayname.length < 3) {
+            toast.error('Display name too short', { id: 'displayname' })
+            return
+        }
         setDisplaynameIsloading(true)
+
+
 
         updateDoc(
             userRef,
@@ -49,15 +51,19 @@ export default function UpdateProfile({user}: Prop) {
 
             setTimeout(() => {
                 setDisplaynameIsloading(false)
-                setSuccessMessageOpen(true)
+                toast.success('Display name updated successfully', { id: 'displayname' })
             }, 700)
         })
     }
 
     // Change profile pic url button
     const handleProfilepicChange = async () => {
-        if (typeof profilepic == 'string')
+        toast.loading('Updating profile pic...', { ...toastOptionsCustom, id: 'profilepic' } )
+
+        if (typeof profilepic == 'string') {
+            toast.error('No profile pic selected', { id: 'profilepic' })
             return
+        }
 
 
         setProfilepicIsloading(true)
@@ -72,6 +78,7 @@ export default function UpdateProfile({user}: Prop) {
             },
             (err) => {
                 console.log(err)
+                toast.error('Profile pic upload failed', { id: 'profilepic' })
                 setProfilepicIsloading(false)
             },
 
@@ -93,7 +100,7 @@ export default function UpdateProfile({user}: Prop) {
 
                 setTimeout(() => {
                     setProfilepicIsloading(false)
-                    setSuccessMessageOpen(true)
+                    toast.success('Profile pic updated successfully', { id: 'profilepic' })
                 }, 1000)
             })
         }
@@ -184,7 +191,7 @@ export default function UpdateProfile({user}: Prop) {
                                         type="file"
                                         className="sr-only"
                                         onChange={(e) => {
-                                            if (e.target.files != null)
+                                            if (e.target.files != null && e.target.files[0].type.split('/')[0] == 'image')
                                                 setProfilepic(e.target.files[0])
                                         }}
                                     />
@@ -213,7 +220,6 @@ export default function UpdateProfile({user}: Prop) {
                     </div>
                 </div>
             </div>
-            <BottomToastPopup open={successMessageOpen} setOpen={setSuccessMessageOpen} msgText={'Profile updated successfully'}/>
         </div>
     );
 }

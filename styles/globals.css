@@ -29,6 +29,9 @@
     .green-blue-dark-gradient {
         @apply bg-gradient-to-br from-teal-700 via-teal-600 to-cyan-500
     }
+    .green-blue-dark-transition-gradient {
+        @apply transition-all duration-500 bg-gradient-to-tl to-cyan-500 via-teal-600 from-teal-700 bg-size-200 bg-pos-0 hover:bg-pos-100
+    }
     .green-blue-light-gradient {
         @apply bg-gradient-to-br from-emerald-400 via-emerald-400 to-cyan-500
     }

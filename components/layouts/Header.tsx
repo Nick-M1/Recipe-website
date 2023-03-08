@@ -88,14 +88,14 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
                                 <div className="flex items-center justify-end col-span-4">
                                     { sessionAuth == null
                                         ? (
-                                            <button onClick={() => signIn()} className="hidden md:block btn-primary green-blue-dark-gradient ml-6 inline-flex items-center px-4 py-2">
+                                            <button onClick={() => signIn()} className="hidden md:block btn-primary green-blue-dark-transition-gradient ml-6 inline-flex items-center px-4 py-2">
                                                 Sign in
                                             </button>
                                         )
                                         : (
                                             <Link
                                                 href="/create"
-                                                className="hidden md:block btn-primary green-blue-dark-gradient ml-6 inline-flex items-center px-4 py-2"
+                                                className="hidden md:block btn-primary green-blue-dark-transition-gradient ml-6 inline-flex items-center px-4 py-2"
                                             >
                                                 Create Recipes
                                             </Link>

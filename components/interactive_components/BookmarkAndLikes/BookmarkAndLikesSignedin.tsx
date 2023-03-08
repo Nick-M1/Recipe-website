@@ -17,6 +17,7 @@ function containsRecipe( recipeList: string[], recipeId: string ) {
 }
 
 export default function BookmarkAndLikesSignedin({ recipe, user, showText }: Props) {
+
     const [isBookmarked, setIsBookmarked] = useState( containsRecipe(user.bookmarkedRecipes, recipe.id) )
     const [isLiked, setIsLiked] = useState( containsRecipe(user.likedRecipes, recipe.id) )
 

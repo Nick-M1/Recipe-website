@@ -1,9 +1,11 @@
 import Landing from "../../components/layouts/Landing";
+import getCategories from "../../lib/DB/both/getCategories";
 
 export default function Home() {
-  return (
-    <div>
-      <Landing/>
-    </div>
-  )
+    const categories = getCategories()
+    return (
+        <div>
+            <Landing categories={categories}/>
+        </div>
+    )
 }

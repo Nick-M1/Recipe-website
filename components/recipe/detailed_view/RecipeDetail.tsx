@@ -5,7 +5,6 @@ import BookmarkAndLikesHander from "../../interactive_components/BookmarkAndLike
 import RecipeDelete from "../../interactive_components/Popups/RecipeDelete";
 import searchUrlBuilder from "../../../lib/utils/searchUrlBuilder";
 import {dateFormatter} from "../../../lib/utils/time-formatter";
-import BottomToastPopupServerWrapper from "../../interactive_components/PopupSmall/BottomToastPopupServerWrapper";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import CommentSection from "./comment_section/CommentSection";
@@ -26,9 +25,6 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
     dayjs.extend(relativeTime)
 
     const isEditor = user != null && recipe.author == user.email
-
-    const recentlyCreated = isEditor && recipe.edited_at > (currentTime - 50_000)           // for success pop-up
-    const successMsg = recipe.created_at == recipe.edited_at ? 'Recipe has been created successfully' : 'Recipe has been updated successfully'
 
     const timeDisplayer: () => string = () => {
         const isEdited = recipe.created_at != recipe.edited_at
@@ -186,7 +182,6 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                         </section>
                     </div>
                 </main>
-                <BottomToastPopupServerWrapper isOpen={recentlyCreated} msgText={successMsg}/>
             </div>
         </>
     );

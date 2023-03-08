@@ -20,10 +20,12 @@ export default function UpdateProfile({user}: Prop) {
 
     // Input text
     const [displayname, setDisplayname] = useState(user.name);
+    const [biography, setBiography] = useState(user.biography);
     const [profilepic, setProfilepic] = useState<File | string>(user.pic);
 
     // When waiting for spinner
     const [displaynameIsloading, setDisplaynameIsloading] = useState(false);
+    const [biographyIsloading, setBiographyIsloading] = useState(false);
     const [profilepicIsloading, setProfilepicIsloading] = useState(false);
 
 
@@ -52,6 +54,29 @@ export default function UpdateProfile({user}: Prop) {
             setTimeout(() => {
                 setDisplaynameIsloading(false)
                 toast.success('Display name updated successfully', { id: 'displayname' })
+            }, 700)
+        })
+    }
+
+    // Change display name button
+    const handleBiographyChange = () => {
+        toast.loading('Updating biography...', { ...toastOptionsCustom, id: 'biography' } )
+
+        if (biography == '' || biography.length < 3) {
+            toast.error('Display name too short', { id: 'biography' })
+            return
+        }
+        setBiographyIsloading(true)
+
+        updateDoc(
+            userRef,
+            {biography: biography}
+        ).finally(() => {
+            router.refresh()
+
+            setTimeout(() => {
+                setBiographyIsloading(false)
+                toast.success('Biography updated successfully', { id: 'biography' })
             }, 700)
         })
     }
@@ -119,13 +144,9 @@ export default function UpdateProfile({user}: Prop) {
                     <h2 className="text-md leading-6 font-medium text-gray-900">
                         Update Profile Display Name
                     </h2>
-                    <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <div className="">
-
+                    <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-5">
+                        <div className="col-span-4">
                             <div className="sm:flex">
-                                <label htmlFor="displayname" className="sr-only">
-                                    Displayname
-                                </label>
                                 <input
                                     id="displayname"
                                     name="displayname"
@@ -138,7 +159,7 @@ export default function UpdateProfile({user}: Prop) {
                                     onChange={(e) => setDisplayname(e.target.value)}
                                 />
                                 <p className={`sm:hidden text-sm italic text-red-400 ${displayname.length < 4 ? 'block opacity-100' : 'hidden opacity-0'}`}>Display
-                                    name must be longer than 4 characters</p>
+                                    name must be longer than 3 characters</p>
 
                                 <button
                                     type="button"
@@ -166,7 +187,7 @@ export default function UpdateProfile({user}: Prop) {
 
 
             {/* PROFILE PIC */}
-            <div className="mt-8">
+            <div className="my-8">
                 <div className="max-w-6xl">
                     <h2 className="text-md leading-6 font-medium text-gray-900">
                         Change Profile Picture
@@ -220,6 +241,57 @@ export default function UpdateProfile({user}: Prop) {
                     </div>
                 </div>
             </div>
+
+            {/* BIOGRAPHY */}
+            <div className="">
+                <div className="max-w-6xl">
+                    <h2 className="text-md leading-6 font-medium text-gray-900">
+                        Update Profile Biography
+                    </h2>
+                    <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-5">
+                        <div className="col-span-4">
+
+                            <div className="sm:flex">
+                                <textarea
+                                    id="biography"
+                                    name="biography"
+                                    autoComplete='biography'
+                                    rows={20}
+                                    required
+                                    className={`scrollbar appearance-none p-2.5 relative block w-full input-secondary md:mr-3 ${biography.length > 3 ? '' : 'input-secondary-invalid'}`}
+                                    placeholder="New display name"
+                                    defaultValue={biography}
+                                    onChange={(e) => setBiography(e.target.value)}
+                                />
+                                <p className={`sm:hidden text-sm italic text-red-400 ${biography.length < 4 ? 'block opacity-100' : 'hidden opacity-0'}`}>
+                                    Biography must be longer than 3 characters
+                                </p>
+
+                                <button
+                                    type="button"
+                                    className="btn-tertiary group text-sm inline-flex justify-center mt-2 md:mt-0 px-4 py-2.5 max-h-10"
+                                    onClick={() => handleBiographyChange()}
+                                >
+                                    {biographyIsloading
+                                        ? <div className="-ml-1"><SpinnerComponent size={5}/></div>
+                                        : (
+                                            <PencilIcon
+                                                className="-ml-1 mr-2 h-5 w-5 text-gray-400 group-hover:fill-gray-500"
+                                                aria-hidden="true"
+                                            />
+                                        )
+                                    }
+                                    <span>Update</span>
+                                </button>
+                            </div>
+                            <p className={`hidden text-sm italic text-red-400 ${biography.length < 4 ? 'sm:block' : 'sm:hidden'}`}>
+                                Display name must be longer than 3 characters
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }

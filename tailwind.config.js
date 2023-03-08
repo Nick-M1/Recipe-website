@@ -20,8 +20,17 @@ module.exports = {
                     '0%, 100%': {transform: 'rotate(0deg)'},
                     '25%': {transform: 'rotate(-20deg)'},
                     '75%': {transform: 'rotate(20deg)'},
+                },
+                bounceRight: {
+                    '0%, 100%': {transform: 'translateX(-25%)'},
+                    '50%': {transform: 'translateX(0%)'},
                 }
             },
+
+            animation: {
+                bounceRight: 'bounceRight 1s infinite'
+            }
+
         },
 
     },

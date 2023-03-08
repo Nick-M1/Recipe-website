@@ -159,14 +159,14 @@ export default function Landing({ categories }: Props) {
                 <section className='flex flex-col text-center justify-center overflow-x-clip pt-20'>
                     <h3 className='text-left md:text-center tracking-wide text-gray-800 text-3xl font-bold pb-6'> Categories </h3>
 
-                    <div className='grid grid-cols-2 md:grid-cols-5 gap-5 pl-1 md:pl-7'>
+                    <div className='grid grid-cols-2 md:grid-cols-5 gap-5 pl-1 pr-1 md:pl-3'>
                         { categories.map( category => (
                             <Link
                                 key={category.id}
                                 href={searchUrlBuilder('', category.href)}
-                                className='group flex flex-col justify-center items-center text-center cursor-pointer w-52 h-52 rounded-full border border-teal-400 bg-gray-50 hover:bg-gray-100 ring-2 ring-teal-500 hover:ring-4 shadow-md drop-shadow-md hover:drop-shadow-lg object-cover filter smooth-transition'
+                                className='group flex flex-col justify-between items-center text-center cursor-pointer w-44 h-44 md:w-52 md:h-52 rounded-full border border-teal-400 bg-gray-50 hover:bg-gray-100 ring-2 ring-teal-500 hover:ring-4 shadow-md drop-shadow-md hover:drop-shadow-lg object-cover filter smooth-transition'
                             >
-                                <Image src={category.img} alt={'category'} width={200} height={200} className='w-40 h-40 group-hover:animate-[wiggle_3s_ease-in-out_infinite]'/>
+                                <Image src={category.img} alt={'category'} width={200} height={200} className='w-36 h-36 md:w-40 md:h-40 group-hover:animate-[wiggle_3s_ease-in-out_infinite]'/>
                                 <p className='text-teal-700 font-semibold mb-2'>{ category.title }</p>
                             </Link>
                         ))}

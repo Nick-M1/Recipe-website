@@ -10,26 +10,17 @@ import {
     PencilSquareIcon,
     UserIcon,
     Cog6ToothIcon,
+    ClockIcon,
     HeartIcon
 } from "@heroicons/react/24/outline";
 
 import Link from "next/link";
 import {classNames} from "../../lib/utils/textUtils";
-import {EnvelopeIcon} from "@heroicons/react/24/solid";
+import {ArrowSmallRightIcon, EnvelopeIcon} from "@heroicons/react/24/solid";
 import SigninRedirecting from "../accounts/SigninRedirecting";
 import {useSelectedLayoutSegment} from "next/navigation";
 import PopupCustom from "../interactive_components/Popups/PopupCustom";
 import {signOut} from "next-auth/react";
-
-
-const navigation = [
-    {name: "Profile",           icon: UserIcon,         to: "dashboard"},
-    {name: "Update Profile",    icon: Cog6ToothIcon,    to: "updateprofile"},
-    {name: "My Recipes",        icon: PencilSquareIcon, to: "myrecipes"},
-    {name: "Saved Recipes",     icon: BookmarkIcon,     to: "bookmarkedrecipes"},
-    // {name: "Liked Recipes",     icon: HeartIcon,     to: "likedrecipes"},
-];
-
 
 
 type Props = {
@@ -40,6 +31,15 @@ export default function DashboardLayout({ user }: Props) {
     // If user not signed in
     if (user == null)
         return <SigninRedirecting/>
+
+    const navigation = [
+        { name: "Profile",           icon: UserIcon,         to: `profile/${user.id}` },
+        { name: "Dashboard",         icon: ClockIcon,        to: "dashboard" },
+        { name: "Update Profile",    icon: Cog6ToothIcon,    to: "updateprofile" },
+        { name: "My Recipes",        icon: PencilSquareIcon, to: "myrecipes" },
+        { name: "Saved Recipes",     icon: BookmarkIcon,     to: "bookmarkedrecipes" },
+        // {name: "Liked Recipes",     icon: HeartIcon,     to: "likedrecipes"},
+    ];
 
     const segmentCurrent = useSelectedLayoutSegment();
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -120,7 +120,7 @@ export default function DashboardLayout({ user }: Props) {
                                                 className={classNames(
                                                     item.to === segmentCurrent
                                                         ? "bg-teal-800 hover:bg-teal-900 text-white"
-                                                        : "text-teal-100 hover:text-white hover:bg-teal-600",
+                                                        : "text-teal-100 hover:text-white hover:bg-teal-600 active:bg-teal-700",
                                                     "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md smooth-transition"
                                                 )}
                                                 aria-current={item.to === segmentCurrent ? "page" : undefined}
@@ -130,6 +130,7 @@ export default function DashboardLayout({ user }: Props) {
                                                     aria-hidden="true"
                                                 />
                                                 {item.name}
+                                                <ArrowSmallRightIcon className='invisible group-hover:visible ml-3 w-5 h-5 animate-bounceRight smooth-transition'/>
                                             </Link>
                                         ))}
                                     </div>
@@ -138,7 +139,7 @@ export default function DashboardLayout({ user }: Props) {
                                             {secondaryNavigation.map((item) => (
                                                 <button
                                                     key={item.name}
-                                                    className="group flex items-center w-full px-2 py-2 text-sm font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 smooth-transition"
+                                                    className="group flex items-center w-full px-2 py-2 text-sm font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 active:bg-teal-700 smooth-transition"
                                                     onClick={item.func}
                                                 >
                                                     <item.icon
@@ -181,7 +182,7 @@ export default function DashboardLayout({ user }: Props) {
                                             classNames(
                                                 item.to === segmentCurrent
                                                     ? "bg-teal-800 hover:bg-teal-900 text-white"
-                                                    : "text-teal-100 hover:text-white hover:bg-teal-600",
+                                                    : "text-teal-100 hover:text-white hover:bg-teal-600 active:bg-teal-700",
                                                 "group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md smooth-transition"
                                         )}
                                         aria-current={item.to === segmentCurrent ? "page" : undefined}
@@ -191,6 +192,7 @@ export default function DashboardLayout({ user }: Props) {
                                             aria-hidden="true"
                                         />
                                         {item.name}
+                                        <ArrowSmallRightIcon className='invisible group-hover:visible ml-3 w-5 h-5 animate-bounceRight smooth-transition'/>
                                     </Link>
                                 ))}
                             </div>
@@ -199,7 +201,7 @@ export default function DashboardLayout({ user }: Props) {
                                     {secondaryNavigation.map((item) => (
                                         <button
                                             key={item.name}
-                                            className="group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 smooth-transition"
+                                            className="group flex items-center w-full px-2 py-2 text-sm leading-6 font-medium rounded-md text-teal-100 hover:text-white hover:bg-teal-600 active:bg-teal-700 smooth-transition"
                                             onClick={item.func}
                                         >
                                             <item.icon
@@ -257,11 +259,6 @@ export default function DashboardLayout({ user }: Props) {
                             </div>
                         </div>
                     </div>
-                    {/*<main className="flex-1 pb-8">*/}
-                    {/*    /!* Page header *!/*/}
-                    {/*    /!*<Outlet/>*!/*/}
-                    {/*    xsjijxsx*/}
-                    {/*</main>*/}
                 </div>
                 { logoutPopup &&
                     <PopupCustom

@@ -7,6 +7,7 @@ import DashboardLayout from "../../components/dashboard/DashboardLayout";
 import Footer from "../../components/layouts/Footer";
 import {Metadata} from "next";
 import getAllRecipes from "../../lib/DB/server/getAllRecipes";
+import SigninRedirecting from "../../components/accounts/SigninRedirecting";
 
 export const metadata: Metadata = {
     title: 'Dashboard'
@@ -17,6 +18,14 @@ export default async function Layout({children}: { children: React.ReactNode }) 
     const userDB = sessionAuth == null ? null : await getUserByEmail(sessionAuth!.user!.email!)
 
     const allRecipes = await getAllRecipes()
+
+    if (userDB == null)
+        return (
+            <div>
+                <Header sessionAuth={sessionAuth} userDB={userDB} allRecipes={allRecipes}/>
+                <SigninRedirecting/>
+            </div>
+        )
 
     return (
         <div>

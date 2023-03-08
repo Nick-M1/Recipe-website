@@ -8,6 +8,8 @@ import {useRouter} from "next/navigation";
 import SpinnerComponent from "../../../interactive_components/SpinnerComponent";
 import {signIn} from "next-auth/react";
 import smoothScroll from "../../../../lib/utils/smooth-scroll";
+import toast from "react-hot-toast";
+import {toastOptionsCustom} from "../../../../lib/utils/toast-options-custom";
 
 type Props = {
     recipeId: string
@@ -21,8 +23,17 @@ export default function CommentNew({ recipeId, user }: Props) {
     const router = useRouter();
 
     const handleSendComment = async () => {
-        if (user == null || commentState === '')
+        toast.loading('Uploading comment...', { ...toastOptionsCustom, id: 'comment' } )
+
+        // Error detection
+        if (user == null) {
+            toast.error( 'You need to sign in before commenting', { id: 'comment' })
             return
+        }
+        if (commentState === '') {
+            toast.error( 'Your comment should not be empty', { id: 'comment' })
+            return
+        }
 
         setIsLoading(true)
 
@@ -48,6 +59,7 @@ export default function CommentNew({ recipeId, user }: Props) {
             setTimeout(() => {
                 setCommentState('')
                 setIsLoading(false)
+                toast.success( 'Comment uploaded successfully', { id: 'comment' })
                 smoothScroll('post-comment-button', 'start')
             }, 1000)
         })

@@ -5,7 +5,6 @@ import {useEffect} from "react";
 import SpinnerComponent from "../interactive_components/SpinnerComponent";
 import Spinner from "react-spinkit";
 
-//todo: Make nice
 export default function SigninRedirecting() {
     useEffect(() => {
         signIn()

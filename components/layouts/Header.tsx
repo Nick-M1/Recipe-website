@@ -43,7 +43,7 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
     const [logoutPopup , setLogoutPopup] = useState(false)
 
     const userNavigation_signedin = [
-        { isButton: false, name: "My Profile",      to: `/profile${userDB?.id}`,               icon: UserIcon,                      divideTop: false },
+        { isButton: false, name: "My Profile",      to: `/profile/${userDB?.id}`,               icon: UserIcon,                      divideTop: false },
         { isButton: false, name: "Dashboard",       to: "/dashboard",                          icon: HomeIcon,                      divideTop: false },
         { isButton: false, name: "My recipes",      to: "/myrecipes",                          icon: PencilSquareIcon,              divideTop: false },
         { isButton: false, name: "Create recipes",  to: "/create",                             icon: DocumentPlusIcon,              divideTop: false },

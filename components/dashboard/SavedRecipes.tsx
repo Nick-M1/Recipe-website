@@ -1,4 +1,4 @@
-import RecipeCard from "../recipe/search/RecipeCard";
+import RecipeCardGrid from "../recipe/search/recipecard-layout/RecipeCardGrid";
 import Image from "next/image";
 import TitleSection from "./TitleSection";
 import React from "react";
@@ -25,7 +25,7 @@ export default function SavedRecipes({ recipesAndAuthors, user }: Props) {
             <div className="mt-8">
                 <div className="px-4 md:px-6">
                     <TitleSection titleText='Bookmarked Recipes' titleImg={'/recipes-bookmarked.png'} small={true} withSideparagraph={false}/>
-                    <RecipeCard recipesAndAuthors={recipesAndAuthors} user={user} quickview={false} flexGrid={true}/>
+                    <RecipeCardGrid recipesAndAuthors={recipesAndAuthors} user={user} quickview={false} flexGrid={true}/>
                 </div>
             </div>
         </>

@@ -8,7 +8,7 @@ import {dateFormatter} from "../../../lib/utils/time-formatter";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import CommentSection from "./comment_section/CommentSection";
-import RecipeCard from "../search/RecipeCard";
+import RecipeCardGrid from "../search/recipecard-layout/RecipeCardGrid";
 import ProfilePopup from "../../profileview/ProfilePopup";
 
 type Props = {
@@ -176,7 +176,7 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                                     Other popular recipes
                                 <Image src={'/recommended-recipes.png'} alt='' width={50} height={50} className='h-7 w-7 mx-2'/> :
                             </h2>
-                                <RecipeCard recipesAndAuthors={recommendedRecipes} quickview={true} user={user} flexGrid={false}/>
+                                <RecipeCardGrid recipesAndAuthors={recommendedRecipes} quickview={true} user={user} flexGrid={false}/>
                             </div>
 
                         </section>

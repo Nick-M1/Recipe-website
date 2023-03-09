@@ -1,0 +1,20 @@
+import RecipeCardGrid from "./RecipeCardGrid";
+import RecipeCard from "./RecipeCard";
+
+type Props = {
+    recipesAndAuthors: RecipeAndAuthor[]
+    quickview: boolean
+    user: UserDB | null
+}
+
+export default function RecipeCardCarousel({recipesAndAuthors, quickview, user}: Props) {
+    return (
+        <div className='overflow-x-scroll'>
+            <div>
+                <div className='flex grid grid-flow-col w-[2000px] flex-shrink-0'>
+                    <RecipeCard recipesAndAuthors={[recipesAndAuthors[0]]} flexGrid={false} quickview={quickview} user={user}/>
+                </div>
+            </div>
+        </div>
+    )
+}

@@ -1,4 +1,4 @@
-import RecipeCard from "./RecipeCard";
+import RecipeCardGrid from "./recipecard-layout/RecipeCardGrid";
 import DropdownComponent from "../../interactive_components/DropdownComponent";
 import {allSortOptions} from "../../../lib/DB/both/allRecipeSortOptions";
 import Pagination from "../../interactive_components/Pagination/Pagination";
@@ -39,7 +39,7 @@ export default function RecipesSearch({ pagenumber, lastPageIndex, urlBasepath, 
                     <div><DropdownComponent optionNames={allSortOptions} currentSort={currentSort} currentUrlWithoutSort={currentUrlWithoutSort} /></div>
                 </div>
 
-                <RecipeCard recipesAndAuthors={recipesAndAuthors} quickview={true} user={user} flexGrid={true}/>
+                <RecipeCardGrid recipesAndAuthors={recipesAndAuthors} quickview={true} user={user} flexGrid={true}/>
 
                 <div className='float-right pt-4'>
                     {/* todo: FIX URL WITH FUNCTION UTILS */}

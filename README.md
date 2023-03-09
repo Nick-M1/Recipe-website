@@ -4,7 +4,7 @@
 ### [🌐 Demo - hosted on vercel](https://recipe-webapp.vercel.app) 
 https://recipe-webapp.vercel.app
 
-[//]: # (#### &#40;NOTE: Demo video at bottom&#41;)
+#### (NOTE: Demo video at bottom)
 
 #### 🍔 Social Media website where users can post their own recipes online and others can view, like, bookmark and comment on the recipe.
 
@@ -48,14 +48,11 @@ https://recipe-webapp.vercel.app
 - NextAuth keys are for authentication
 
 
-[//]: # (## 🎬 Demo Videos:)
+## 🎬 Demo Videos:
+![demo1.gif](public%2Fdemos%2Fdemo1.gif)
 
-[//]: # (![DemoGif1.gif]&#40;public%2FDemoVids%2FDemoGif1.gif&#41;)
+![demo2.gif](public%2Fdemos%2Fdemo2.gif)
 
-[//]: # (![DemoGif2.gif]&#40;public%2FDemoVids%2FDemoGif2.gif&#41;)
+![demo3.gif](public%2Fdemos%2Fdemo3.gif)
 
-[//]: # (![DemoGif3.gif]&#40;public%2FDemoVids%2FDemoGif3.gif&#41;)
-
-[//]: # (![DemoGif4.gif]&#40;public%2FDemoVids%2FDemoGif4.gif&#41;)
-
-[//]: # (![DemoGif5.gif]&#40;public%2FDemoVids%2FDemoGif5.gif&#41;)
+![demo4.gif](public%2Fdemos%2Fdemo4.gif)

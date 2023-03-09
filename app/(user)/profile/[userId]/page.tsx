@@ -48,7 +48,7 @@ export default async function Page({params: { userId }}: PageProps) {
                     <TitleSection titleText={`${author.name}'s Created Recipes`} titleImg={'/ingredients.png'} small={true} withSideparagraph={false}/>
                     <RecipeCardGrid recipesAndAuthors={createdRecipesAndAuthors} quickview={true} user={user} flexGrid={true}/>
                     <div className='flex justify-end mt-2'>
-                        <Link href={`/profile/${author.id}/createdrecipes`} className='tracking-wider text-gray-400 hover:text-gray-600 smooth-transition italic'>View more...</Link>
+                        <Link href={`/profile/${author.id}/createdrecipes`} className='tracking-wider text-gray-400 hover:text-gray-600 smooth-transition italic'>Show more...</Link>
                     </div>
                 </div>
             </section>
@@ -58,7 +58,7 @@ export default async function Page({params: { userId }}: PageProps) {
                     <TitleSection titleText={`${author.name}'s Bookmarked Recipes`} titleImg={'/recipes-bookmarked.png'} small={true} withSideparagraph={false}/>
                     <RecipeCardGrid recipesAndAuthors={bookmarkedRecipesAndAuthors} quickview={true} user={user} flexGrid={true}/>
                     <div className='flex justify-end mt-2'>
-                        <Link href={`/profile/${author.id}/bookmarkedrecipes`} className='tracking-wider text-gray-400 hover:text-gray-600 smooth-transition italic'>View more...</Link>
+                        <Link href={`/profile/${author.id}/bookmarkedrecipes`} className='tracking-wider text-gray-400 hover:text-gray-600 smooth-transition italic'>Show more...</Link>
                     </div>
                 </div>
             </section>

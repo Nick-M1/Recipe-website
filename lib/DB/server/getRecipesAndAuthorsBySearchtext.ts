@@ -1,6 +1,7 @@
 import {db} from "../../../firebase";
 import {collection, doc, getDoc, getDocs, limit, orderBy, query, startAt, where} from "@firebase/firestore";
-import {allSortOptions} from "../both/allRecipeSortOptions";
+
+// NOTE: Firebase doesn't support 'OR' queries, so need to do all text queries in JS :(
 
 // Only works on server
 export default async function getAllRecipesAndAuthorsByQuery(

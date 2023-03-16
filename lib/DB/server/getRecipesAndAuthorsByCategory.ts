@@ -1,6 +1,26 @@
 import {db} from "../../../firebase";
 import {collection, doc, getDoc, getDocs, limit, orderBy, query, startAt, where} from "@firebase/firestore";
 
+async function getWithCategory(sortQuery: SortOptionsRecipeAndAuthor, paginationEnd: number, categoryQuery: Category) {
+    return await getDocs(
+        query(
+            collection(db, "recipes"),
+            where("categories", "array-contains", categoryQuery),
+            orderBy(sortQuery.query, sortQuery.order),
+            limit(paginationEnd),
+        )
+    )
+}
+async function getWithoutCategory(sortQuery: SortOptionsRecipeAndAuthor, paginationEnd: number) {
+    return await getDocs(
+        query(
+            collection(db, "recipes"),
+            orderBy(sortQuery.query, sortQuery.order),
+            limit(paginationEnd),
+        )
+    )
+}
+
 // Only works on server
 export default async function getAllRecipesAndAuthorsByCategory(
     categoryQuery: Category | undefined,
@@ -13,22 +33,14 @@ export default async function getAllRecipesAndAuthorsByCategory(
     const recipes = [] as Recipe[]
     const recipesAndAuthors = [] as RecipeAndAuthor[]
 
-    // Get all recipes
-    const recipesSnapshot = await getDocs(
-        query(
-            collection(db, "recipes"),
-            orderBy(sortQuery.query, sortQuery.order),
-            limit(paginationEnd),
-        )
-    );
+    const recipesSnapshot = typeof categoryQuery == 'undefined'
+        ? await getWithoutCategory(sortQuery, paginationEnd)
+        : await getWithCategory(sortQuery, paginationEnd, categoryQuery)
 
-    const categoryFilterCheck = typeof categoryQuery == 'undefined'
     let counter = 0
     recipesSnapshot.forEach((doc) => {
-        const docData = doc.data() as Recipe
-
-        if (counter >= paginationStart && (categoryFilterCheck || docData.categories.findIndex(c => c.id == categoryQuery.id) != -1))
-            recipes.push(docData)
+        if (counter >= paginationStart)
+            recipes.push(doc.data() as Recipe)
 
         counter += 1
     });

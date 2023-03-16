@@ -124,7 +124,7 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
 
                                 <div className='pt-4 pl-0.5'>
                                     <SocialShare
-                                        urlToShare={`${process.env.NEXTAUTH_URL}/recipe/3f817ce9-cbd9-4bda-879a-76e06e0b3404`}
+                                        urlToShare={`${process.env.NEXTAUTH_URL}/recipe/${recipe.id}`}
                                         mediaImg={recipe.imgSrc}
                                         quote={`Amazing ${recipe.title} Recipe!`}
                                         hashtag={'AmazingFood'}

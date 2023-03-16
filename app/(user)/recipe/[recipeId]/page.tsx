@@ -8,11 +8,6 @@ import {Metadata} from "next";
 import {allSortOptions} from "../../../../lib/DB/both/allRecipeSortOptions";
 import getAllRecipesAndAuthorsByCategory from "../../../../lib/DB/server/getRecipesAndAuthorsByCategory";
 
-// export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
-//     const product = await getRecipeById(recipeId);
-//     return { title: product == null ? 'Product' : product.title }
-// }
-
 export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
     const product = await getRecipeById(recipeId);
 
@@ -22,7 +17,7 @@ export async function generateMetadata({params: {recipeId}}: PageProps): Promise
     return {
         title: product.title,
         openGraph : {
-            title: product.title,
+            title: `${product.title} | Recipe Website`,
             description: product.description,
             siteName: "Recipe Website",
             images: [
@@ -32,7 +27,7 @@ export async function generateMetadata({params: {recipeId}}: PageProps): Promise
                     height: 1600
                 }
             ],
-            locale: 'en-US',
+            locale: 'en-GB',
             type: 'website',
         }
     }

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
         siteName: "Recipe Website",
         images: [
             {
-                url: '/brand-logo.png',
+                url: '/backgrounds/img1.png',
                 width: 1800,
                 height: 1600
             }

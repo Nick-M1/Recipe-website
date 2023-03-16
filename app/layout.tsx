@@ -19,7 +19,20 @@ export const metadata: Metadata = {
     description: 'Recipe Website, for users to post their recipes to share online',
     keywords: ['Next.js', 'React', 'JavaScript', 'Food', 'Recipes', 'Cooking', 'Social media'],
     authors: [{name: 'Nick'}],
-    icons: '/brand-logo.png'
+    icons: '/brand-logo.png',
+
+    openGraph : {
+        siteName: "Recipe Website",
+        images: [
+            {
+                url: '/brand-logo.png',
+                width: 1800,
+                height: 1600
+            }
+        ],
+        locale: 'en-GB',
+        type: 'website',
+    }
 }
 
 export default async function RootLayout({

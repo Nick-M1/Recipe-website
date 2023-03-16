@@ -31,6 +31,7 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
     "react-markdown": "^8.0.5",
+    "react-share": "^4.4.1",
     "react-spinkit": "^3.0.0",
     "react-time-ago": "^7.2.1",
     "remark": "^14.0.2",

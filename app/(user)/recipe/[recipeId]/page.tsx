@@ -8,9 +8,34 @@ import {Metadata} from "next";
 import {allSortOptions} from "../../../../lib/DB/both/allRecipeSortOptions";
 import getAllRecipesAndAuthorsByCategory from "../../../../lib/DB/server/getRecipesAndAuthorsByCategory";
 
+// export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
+//     const product = await getRecipeById(recipeId);
+//     return { title: product == null ? 'Product' : product.title }
+// }
+
 export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
     const product = await getRecipeById(recipeId);
-    return { title: product == null ? 'Product' : product.title }
+
+    if (product == null)
+        return { title: 'Product' }
+
+    return {
+        title: product.title,
+        openGraph : {
+            title: product.title,
+            description: product.description,
+            siteName: "Recipe Website",
+            images: [
+                {
+                    url: product.imgSrc,
+                    width: 1800,
+                    height: 1600
+                }
+            ],
+            locale: 'en-US',
+            type: 'website',
+        }
+    }
 }
 
 // FOR PRODUCTION:

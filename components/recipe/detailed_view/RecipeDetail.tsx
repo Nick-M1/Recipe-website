@@ -10,6 +10,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import CommentSection from "./comment_section/CommentSection";
 import RecipeCardGrid from "../search/recipecard-layout/RecipeCardGrid";
 import ProfilePopup from "../../profileview/ProfilePopup";
+import SocialShare from "./SocialShare";
 
 type Props = {
     recipe: Recipe
@@ -120,6 +121,15 @@ export default function RecipeDetail({ recipe, recommendedRecipes, author, user,
                                 </div>
 
                                 <BookmarkAndLikesHander recipe={recipe} user={user} showText={true} />
+
+                                <div className='pt-4 pl-0.5'>
+                                    <SocialShare
+                                        urlToShare={`${process.env.NEXTAUTH_URL}/recipe/3f817ce9-cbd9-4bda-879a-76e06e0b3404`}
+                                        mediaImg={recipe.imgSrc}
+                                        quote={`Amazing ${recipe.title} Recipe!`}
+                                        hashtag={'AmazingFood'}
+                                    />
+                                </div>
 
                                 <section aria-labelledby="details-heading" className="mt-8">
                                     <div className="border-t divide-gray-200 py-5">

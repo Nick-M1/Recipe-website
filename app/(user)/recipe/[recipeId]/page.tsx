@@ -8,6 +8,8 @@ import {Metadata} from "next";
 import {allSortOptions} from "../../../../lib/DB/both/allRecipeSortOptions";
 import getAllRecipesAndAuthorsByCategory from "../../../../lib/DB/server/getRecipesAndAuthorsByCategory";
 
+
+export const dynamic = 'force-dynamic';
 export async function generateMetadata({params: {recipeId}}: PageProps): Promise<Metadata> {
     const product = await getRecipeById(recipeId);
 
@@ -33,31 +35,6 @@ export async function generateMetadata({params: {recipeId}}: PageProps): Promise
     }
 }
 
-// FOR PRODUCTION:
-// export const revalidate = 120            // set very high, only revalidate when recipe is updated by API call
-//
-// // Server-side prebuilding pages
-// export async function generateStaticParams() {
-//     const recipes = await getAllRecipes()
-//     return recipes.map(recipe => ({
-//         recipeId: recipe.id
-//     }));
-// }
-//
-// FOR DEV:
-export const dynamic = 'force-dynamic'
-
-// export const generateStaticParams =
-//     process.env.NODE_ENV !== 'development'
-//         ? async () => {
-//             const recipes = await getAllRecipes()
-//             return recipes.map(recipe => ({
-//                 recipeId: recipe.id
-//             }));
-//         }
-//         : undefined
-//
-// export const dynamic = 'auto'
 
 type PageProps = {
     params: {
@@ -95,9 +72,3 @@ export default async function Page({params: {recipeId}}: PageProps) {
         </div>
     );
 }
-
-// import matter from 'gray-matter'
-// import ReactMarkdown from "react-markdown";
-
-// const content = await import('./demo.md')
-// const data = matter(content.default)

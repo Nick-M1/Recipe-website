@@ -31,7 +31,7 @@ export default function LabelSelector({ allLabels, selectedlabels, setSelectedla
                                 className={`relative w-full cursor-default py-2.5 pl-2 pr-10 text-left text-sm leading-5 smooth-transition input-secondary ${isValid || selectedlabels.length != 0 ? '' : 'input-secondary-invalid' }`}>
                                 <span className="block flex flex-wrap gap-2 ">
                                     { selectedlabels.length === 0
-                                        ? <span className={`px-0.5 pl-1 ${isValid || selectedlabels.length != 0 ? 'text-gray-400' : 'text-red-700/75'}`}>Empty</span>
+                                        ? <span className={`px-0.5 pl-1 py-0.5 ${isValid || selectedlabels.length != 0 ? 'text-gray-400' : 'text-red-700/75'}`}>Empty</span>
                                         : ( selectedlabels.map((label) => (
                                             <span
                                                 key={label}

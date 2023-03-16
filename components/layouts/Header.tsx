@@ -43,7 +43,7 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
     const [logoutPopup , setLogoutPopup] = useState(false)
 
     const userNavigation_signedin = [
-        { isButton: false, name: "My Profile",      to: `/profile/${userDB?.id}`,               icon: UserIcon,                      divideTop: false },
+        { isButton: false, name: "My Profile",      to: `/profile/${userDB?.id}`,              icon: UserIcon,                      divideTop: false },
         { isButton: false, name: "Dashboard",       to: "/dashboard",                          icon: HomeIcon,                      divideTop: false },
         { isButton: false, name: "My recipes",      to: "/myrecipes",                          icon: PencilSquareIcon,              divideTop: false },
         { isButton: false, name: "Create recipes",  to: "/create",                             icon: DocumentPlusIcon,              divideTop: false },
@@ -109,73 +109,73 @@ export default function Header({ sessionAuth, userDB, allRecipes }: Props) {
                                     </Link>
 
                                     {/* Profile dropdown */}
-                                        <Menu as="div" className="flex-shrink-0 relative ml-5">
-                                            <div>
-                                                <Menu.Button
-                                                    className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 focus:ring-offset-teal-400 hover:ring-1 hover:ring-offset-1 hover:ring-offset-teal-300 smooth-transition">
-                                                    <span className="sr-only">Open user menu</span>
-                                                    <Image
-                                                        width={30} height={30}
-                                                        className="h-8 w-8 rounded-full"
-                                                        src={ userDB == null ? "https://res.cloudinary.com/dmtc1wlgq/image/upload/v1641911896/media/avatar/default_zrdbiq.png" : userDB.pic}
-                                                        alt=""
-                                                    />
-                                                </Menu.Button>
-                                            </div>
-                                            <Transition
-                                                as={Fragment}
-                                                enter="transition ease-out duration-100"
-                                                enterFrom="transform opacity-0 scale-95"
-                                                enterTo="transform opacity-100 scale-100"
-                                                leave="transition ease-in duration-75"
-                                                leaveFrom="transform opacity-100 scale-100"
-                                                leaveTo="transform opacity-0 scale-95"
-                                            >
-                                                <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                                    <Menu as="div" className="flex-shrink-0 relative ml-5">
+                                        <div>
+                                            <Menu.Button
+                                                className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 focus:ring-offset-teal-400 hover:ring-1 hover:ring-offset-1 hover:ring-offset-teal-300 smooth-transition">
+                                                <span className="sr-only">Open user menu</span>
+                                                <Image
+                                                    width={30} height={30}
+                                                    className="h-8 w-8 rounded-full"
+                                                    src={ userDB == null ? "https://res.cloudinary.com/dmtc1wlgq/image/upload/v1641911896/media/avatar/default_zrdbiq.png" : userDB.pic}
+                                                    alt=""
+                                                />
+                                            </Menu.Button>
+                                        </div>
+                                        <Transition
+                                            as={Fragment}
+                                            enter="transition ease-out duration-100"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-75"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <Menu.Items className="smooth-transition origin-top-right absolute z-10 right-0 mt-2 w-52 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
 
-                                                    <Menu.Item>
-                                                        <div className="px-4 py-3 border-b border-gray-100">
-                                                            <p className="text-sm leading-5">{ sessionAuth == null ? 'Not signed in' : 'Signed in as'}</p>
-                                                            <p className="truncate text-sm font-medium leading-5 text-gray-900 font-semibold">
-                                                                { sessionAuth != null && userDB?.email}
-                                                            </p>
-                                                        </div>
-                                                    </Menu.Item>
-
-
+                                                <Menu.Item>
+                                                    <div className="px-4 py-3 border-b border-gray-100">
+                                                        <p className="text-sm leading-5">{ sessionAuth == null ? 'Not signed in' : 'Signed in as'}</p>
+                                                        <p className="truncate text-sm font-medium leading-5 text-gray-900 font-semibold">
+                                                            { sessionAuth != null && userDB?.email}
+                                                        </p>
+                                                    </div>
+                                                </Menu.Item>
 
 
-                                                    { ( sessionAuth == null ? userNavigation_notsignedin : userNavigation_signedin )
-                                                        .map(item => (
-                                                            <Menu.Item key={item.name}>
-                                                                {( itemrenderPropArgs) => (
 
-                                                                    item.isButton
-                                                                        ? (
-                                                                            <button
-                                                                                type='button'
-                                                                                onClick={item.func}
-                                                                                className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
-                                                                            >
-                                                                                <item.icon className='h-5 w-5 mr-2.5'/>
-                                                                                <span>{item.name}</span>
-                                                                            </button>
-                                                                        )
-                                                                        : (
-                                                                            <Link
-                                                                                href={item.to!}
-                                                                                className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
-                                                                            >
-                                                                                <item.icon className='h-5 w-5 mr-2.5'/>
-                                                                                <span>{item.name}</span>
-                                                                            </Link>
-                                                                        )
-                                                                )}
-                                                            </Menu.Item>
-                                                    ))}
-                                                </Menu.Items>
-                                            </Transition>
-                                        </Menu>
+
+                                                { ( sessionAuth == null ? userNavigation_notsignedin : userNavigation_signedin )
+                                                    .map(item => (
+                                                        <Menu.Item key={item.name}>
+                                                            {( itemrenderPropArgs) => (
+
+                                                                item.isButton
+                                                                    ? (
+                                                                        <button
+                                                                            type='button'
+                                                                            onClick={item.func}
+                                                                            className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
+                                                                        >
+                                                                            <item.icon className='h-5 w-5 mr-2.5'/>
+                                                                            <span>{item.name}</span>
+                                                                        </button>
+                                                                    )
+                                                                    : (
+                                                                        <Link
+                                                                            href={item.to!}
+                                                                            className={`${menuitemClassname(item.divideTop, itemrenderPropArgs)} flex`}
+                                                                        >
+                                                                            <item.icon className='h-5 w-5 mr-2.5'/>
+                                                                            <span>{item.name}</span>
+                                                                        </Link>
+                                                                    )
+                                                            )}
+                                                        </Menu.Item>
+                                                ))}
+                                            </Menu.Items>
+                                        </Transition>
+                                    </Menu>
 
                                 </div>
                             </div>

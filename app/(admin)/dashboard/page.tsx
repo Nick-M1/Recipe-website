@@ -3,6 +3,12 @@ import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 import getUserByEmail from "../../../lib/DB/server/getUserByEmail";
 import Timeline from "../../../components/dashboard/Timeline";
 import SigninRedirecting from "../../../components/accounts/SigninRedirecting";
+import {Metadata} from "next";
+
+
+export const metadata: Metadata = {
+    title: 'Dashboard'
+}
 
 export default async function Page() {
     // const sessionAuth = await getServerSession(authOptions)

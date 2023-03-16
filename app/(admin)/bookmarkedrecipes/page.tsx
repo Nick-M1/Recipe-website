@@ -8,7 +8,11 @@ import getRecipeAuthorById from "../../../lib/DB/server/getRecipeAuthorById";
 import {arrayRemove, arrayUnion, doc, updateDoc} from "@firebase/firestore";
 import {db} from "../../../firebase";
 import getBookmarkedRecipesByUser from "../../../lib/DB/server/getBookmarkedRecipesByUser";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'Your Bookmarked Recipes'
+}
 
 export default async function Page() {
     const sessionAuth = await getServerSession(authOptions)

@@ -4,7 +4,11 @@ import {authOptions} from "../../../pages/api/auth/[...nextauth]";
 import getUserByEmail from "../../../lib/DB/server/getUserByEmail";
 import getAllRecipesByUser from "../../../lib/DB/server/getAllRecipesByUser";
 import SigninRedirecting from "../../../components/accounts/SigninRedirecting";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'Your Created Recipes'
+}
 
 export default async function Page() {
     const sessionAuth = await getServerSession(authOptions)

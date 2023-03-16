@@ -2,6 +2,7 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import {BsEnvelopeAt, BsGithub, BsInstagram, BsTwitter} from 'react-icons/bs';
 import Link from "next/link";
+import SocialShare from "../recipe/detailed_view/SocialShare";
 
 type Props = {
     author: UserDB
@@ -31,13 +32,22 @@ export default function UserProfileTopbanner({ author }: Props) {
                             <ReactMarkdown className="text-gray-500 line-clamp-4">{ author.biography }</ReactMarkdown>
                         </div>
                     </div>
-                    <div className="flex justify-center pt-4 space-x-4 align-center">
-                        { socialIcons.map( (SocialIcon, idx) => (
-                            <Link href="#" key={idx} className="p-2 rounded-md text-gray-800 hover:text-indigo-600 smooth-transition">
-                                <SocialIcon className='h-5 w-5'/>
-                            </Link>
-                        ))}
+                    <div className='pt-4 pl-0.5 flex justify-center align-center'>
+                        <SocialShare
+                            urlToShare={`${process.env.NEXTAUTH_URL}/profile/${author.id}`}
+                            mediaImg={author.pic}
+                            quote='Check out my recipes!'
+                            hashtag={'AmazingFood'}
+                        />
                     </div>
+
+                    {/*<div className="flex justify-center pt-4 space-x-4 align-center">*/}
+                    {/*    { socialIcons.map( (SocialIcon, idx) => (*/}
+                    {/*        <Link href="#" key={idx} className="p-2 rounded-md text-gray-800 hover:text-indigo-600 smooth-transition">*/}
+                    {/*            <SocialIcon className='h-5 w-5'/>*/}
+                    {/*        </Link>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
                 </div>
             </section>
         </div>

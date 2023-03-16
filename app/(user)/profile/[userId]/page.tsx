@@ -10,9 +10,28 @@ import Link from "next/link";
 import getBookmarkedRecipesByUser from "../../../../lib/DB/server/getBookmarkedRecipesByUser";
 
 export const dynamic = 'force-dynamic'
-export async function generateMetadata({params: {userId}}: PageProps): Promise<Metadata> {
+export async function generateMetadata({params: { userId }}: PageProps): Promise<Metadata> {
     const author = await getUserById(userId);
-    return { title: author == null ? 'User Profile' : author.name }
+    if (author == null)
+        return { title: 'User Profile' }
+
+    return {
+        title: author.name,
+        openGraph : {
+            title: `${author.name} Profile | Recipe Website`,
+            description: author.biography,
+            siteName: "Recipe Website",
+            images: [
+                {
+                    url: author.pic,
+                    width: 1800,
+                    height: 1600
+                }
+            ],
+            locale: 'en-GB',
+            type: 'website',
+        }
+    }
 }
 
 type PageProps = {

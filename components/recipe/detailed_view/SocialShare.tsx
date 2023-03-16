@@ -1,5 +1,7 @@
 'use client'
 import {
+    EmailIcon,
+    EmailShareButton,
     FacebookIcon,
     FacebookShareButton, PinterestIcon, PinterestShareButton,
     TwitterIcon,
@@ -48,6 +50,14 @@ export default function SocialShare({ urlToShare, mediaImg, quote, hashtag }: Pr
             >
                 <PinterestIcon size={32} round className='opacity-80 grayscale-[25%] hover:opacity-100 hover:grayscale-0 smooth-transition' />
             </PinterestShareButton>
+
+            <EmailShareButton
+                url={urlToShare}
+                subject={quote}
+                body={quote}
+            >
+                <EmailIcon size={32} round className='opacity-80 grayscale-[25%] hover:opacity-100 hover:grayscale-0 smooth-transition' />
+            </EmailShareButton>
         </div>
     );
 }

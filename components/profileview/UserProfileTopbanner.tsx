@@ -1,19 +1,10 @@
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import {BsEnvelopeAt, BsGithub, BsInstagram, BsTwitter} from 'react-icons/bs';
-import Link from "next/link";
 import SocialShare from "../recipe/detailed_view/SocialShare";
 
 type Props = {
     author: UserDB
 }
-
-const socialIcons = [
-    BsGithub,
-    BsInstagram,
-    BsTwitter,
-    BsEnvelopeAt
-]
 
 export default function UserProfileTopbanner({ author }: Props) {
     return (
@@ -40,14 +31,6 @@ export default function UserProfileTopbanner({ author }: Props) {
                             hashtag={'AmazingFood'}
                         />
                     </div>
-
-                    {/*<div className="flex justify-center pt-4 space-x-4 align-center">*/}
-                    {/*    { socialIcons.map( (SocialIcon, idx) => (*/}
-                    {/*        <Link href="#" key={idx} className="p-2 rounded-md text-gray-800 hover:text-indigo-600 smooth-transition">*/}
-                    {/*            <SocialIcon className='h-5 w-5'/>*/}
-                    {/*        </Link>*/}
-                    {/*    ))}*/}
-                    {/*</div>*/}
                 </div>
             </section>
         </div>

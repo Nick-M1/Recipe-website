@@ -13,7 +13,7 @@
     "@types/marked": "^4.0.8",
     "dayjs": "^1.11.7",
     "encoding": "^0.1.13",
-    "firebase": "^9.17.1",
+    "firebase": "^9.18.0",
     "flowbite": "^1.6.3",
     "gray-matter": "^4.0.3",
     "heroicons": "^2.0.16",

@@ -42,15 +42,15 @@ export default function QuickView({open, setOpen, recipeAndAuthor, user}: Props)
                             leaveTo="opacity-0"
                         >
                             <Dialog.Overlay
-                                className="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block"/>
+                                className="hidden fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity md:block"/>
                         </Transition.Child>
 
                         <span
-                            className="hidden md:inline-block md:align-middle md:h-screen"
+                            className="inline-block h-screen-withmobile align-middle"
                             aria-hidden="true"
                         >
-              &#8203;
-            </span>
+                          &#8203;
+                        </span>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"

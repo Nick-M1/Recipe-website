@@ -48,11 +48,5 @@ https://recipe-webapp.vercel.app
 - NextAuth keys are for authentication
 
 
-## 🎬 Demo Videos:
-![demo1.gif](public%2Fdemos%2Fdemo1.gif)
-
-![demo2.gif](public%2Fdemos%2Fdemo2.gif)
-
-![demo3.gif](public%2Fdemos%2Fdemo3.gif)
-
-![demo4.gif](public%2Fdemos%2Fdemo4.gif)
+## 🎬 Demo Video:
+https://github.com/Nick-M1/Recipe-website/assets/91367903/f367356f-e2b4-4411-a8e3-4af8bc8ddebe
